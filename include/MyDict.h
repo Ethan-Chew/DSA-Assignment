@@ -1,3 +1,6 @@
+#pragma once
+#ifndef MYDICT_H
+#define MYDICT_H
 #include <iostream>
 #include <memory>
 #include "MyList.h"
@@ -164,3 +167,5 @@ public:
         return count;
     }
 };
+
+#endif

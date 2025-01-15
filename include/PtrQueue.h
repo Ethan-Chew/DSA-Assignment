@@ -1,3 +1,6 @@
+#ifndef PTR_QUEUE_H
+#define PTR_QUEUE_H
+
 #include <iostream>
 #include <memory>
 
@@ -112,3 +115,5 @@ void PtrQueue<T>::display()
     }
     std::cout << "\n";
 }
+
+#endif

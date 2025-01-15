@@ -1,3 +1,6 @@
+#ifndef MY_LINKED_LIST_H
+#define MY_LINKED_LIST_H
+
 #include <iostream>
 #include <memory>
 
@@ -127,3 +130,5 @@ void MyLinkedList<T>::print()
     }
     std::cout << "\n";
 }
+
+#endif
