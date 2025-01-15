@@ -1,6 +1,10 @@
+#ifndef MYLIST_H
+#define MYLIST_H
+
 #include <iostream>
 #include <stdexcept>
 #include <memory>
+#include <type_traits>
 
 template<typename T>
 class MyList 
@@ -77,7 +81,11 @@ public:
 
     void print() const {
         for (int i = 0; i < size; i++) {
-            std::cout << std::string(data[i]) << " ";
+            if constexpr (std::is_integral_v<T> || std::is_floating_point_v<T>) {
+                std::cout << data[i] << " ";
+            } else {
+                std::cout << std::string(data[i]) << " ";
+            }
         }
         std::cout << std::endl;
     }
@@ -123,4 +131,34 @@ public:
             }
         }
     }
+
+    // support for ranged iterator
+
+    T* begin() {
+        return &data[0];
+    }
+
+    T* end() {
+        return &data[size];
+    }
+
+    const T* begin() const {
+        return &data[0];
+    }
+
+    const T* end() const {
+        return &data[size];
+    }
+
+    // convenience
+
+    T& operator[](int idx) {
+        if (idx >= 0 && idx < size) {
+            return data[idx];
+        }
+
+        throw std::invalid_argument("attempted to access list item out of bounds");
+    }
 };
+
+#endif
