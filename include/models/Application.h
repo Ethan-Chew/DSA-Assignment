@@ -12,7 +12,6 @@
 using namespace std;
 
 // Singleton to store data of Actors and Movies
-
 class Application {
 private:
     static Application* uniqueInstance;
@@ -22,8 +21,11 @@ private:
     Application();
 public:
     static Application* getInstance();
-    void setActors(MyDict<int, Actor> actors);
-    void setMovies(MyDict<int, Movie> movies);
+
     MyDict<int, Actor> getActors();
     MyDict<int, Movie> getMovies();
+    void addActor(Actor actor);
+    void addMovie(Movie movie);
+    bool removeActor(int);
+    bool removeMovie(int);
 };

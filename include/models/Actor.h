@@ -15,4 +15,9 @@ private:
     DoubleLinkedList movies;
 public:
     Actor(int, string, int);
+    int getId();
+    string getName();
+    int getBirthYear();
+    void setName(string);
+    void setBirthYear(int);
 };

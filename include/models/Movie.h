@@ -27,4 +27,11 @@ private:
     DoubleLinkedList actors;
 public:
     Movie(int, string, int, string, Genre);
+    int getId();
+    string getTitle();
+    string getPlot();
+    Genre getGenre();
+    void setTitle(string);
+    void setPlot(string);
+    void setGenre(Genre);
 };

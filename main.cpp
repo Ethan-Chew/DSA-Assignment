@@ -4,52 +4,42 @@
 #include "models/Movie.h"
 #include "models/Application.h"
 
-void parseActors(MyDict<int, Actor> &actors) {
-    DataParser parser(
+void setupApplication(Application &application) {
+    // Parse the Actors from the CSV into the Application
+    DataParser actorParser(
         "./data/actors.csv",
         HeaderSpec("id", ColumnType::INT),
         HeaderSpec("name", ColumnType::STRING),
         HeaderSpec("birth", ColumnType::INT));
 
-    auto result = parser.ParseData();
+    auto actorResult = actorParser.ParseData();
 
-    auto *ids = reinterpret_cast<MyList<int>*>((*result)["id"]);
-    auto *names = reinterpret_cast<MyList<std::string>*>((*result)["name"]);
-    auto *birth = reinterpret_cast<MyList<int>*>((*result)["birth"]);
+    auto *ids = reinterpret_cast<MyList<int>*>((*actorResult)["id"]);
+    auto *names = reinterpret_cast<MyList<std::string>*>((*actorResult)["name"]);
+    auto *birth = reinterpret_cast<MyList<int>*>((*actorResult)["birth"]);
 
     for (int i = 0; i < ids->get_length(); i++) {
-        actors.add(ids->get(i), Actor(ids->get(i), names->get(i), birth->get(i)));
+        Actor actor = Actor(ids->get(i), names->get(i), birth->get(i));
+        application.addActor(actor);
     }
-}
 
-void parseMovies(MyDict<int, Movie> &movies) {
-    DataParser parser(
+    // Parse the Movies from the CSV into the Application
+    DataParser movieParser(
         "./data/movies.csv",
         HeaderSpec("id", ColumnType::INT),
         HeaderSpec("title", ColumnType::STRING),
         HeaderSpec("year", ColumnType::INT));
 
-    auto result = parser.ParseData();
+    auto movieResult = movieParser.ParseData();
 
-    auto *ids = reinterpret_cast<MyList<int>*>((*result)["id"]);
-    auto *titles = reinterpret_cast<MyList<std::string>*>((*result)["title"]);
-    auto *years = reinterpret_cast<MyList<int>*>((*result)["year"]);
+    auto *movieIds = reinterpret_cast<MyList<int>*>((*movieResult)["id"]);
+    auto *titles = reinterpret_cast<MyList<std::string>*>((*movieResult)["title"]);
+    auto *years = reinterpret_cast<MyList<int>*>((*movieResult)["year"]);
 
-    for (int i = 0; i < ids->get_length(); i++) {
-        movies.add(ids->get(i), Movie(ids->get(i), titles->get(i), years->get(i), "", Genre::NONE));
+    for (int i = 0; i < movieIds->get_length(); i++) {
+        Movie movie = Movie(movieIds->get(i), titles->get(i), years->get(i), "", Genre::NONE);
+        application.addMovie(movie);
     }
-}
-
-void setupApplication(Application &application) {
-    // Parse the Actors from the CSV into the Application
-    MyDict<int, Actor> actors;
-    parseActors(actors);
-    application.setActors(std::move(actors));
-
-    // Parse the Movies from the CSVV into the Application
-    MyDict<int, Movie> movies;
-    parseMovies(movies);
-    application.setMovies(std::move(movies));
 }
 
 int main()
