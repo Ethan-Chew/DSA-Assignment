@@ -6,9 +6,9 @@
 using namespace std;
 
 enum Genre {
-    ACTION = "Action",
-    SCIFI = "Science Fiction",
-    HORROR = "Horror",
+    ACTION,
+    SCIFI,
+    HORROR,
     THRILLER,
     ROMANCE,
     FANTASY

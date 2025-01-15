@@ -20,4 +20,6 @@ add_executable(dsa main.cpp
         include/models/Actor.h
         src/models/Actor.cpp
         include/models/Application.h
-        src/models/Application.cpp)
+        src/models/Application.cpp
+        include/DoubleLinkedList.h
+        src/DoubleLinkedList.cpp)
