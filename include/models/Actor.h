@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "DoubleLinkedList.h"
 #include <iostream>
 using namespace std;
 
@@ -11,6 +12,7 @@ private:
     int id;
     string name;
     int birthYear;
+    DoubleLinkedList movies;
 public:
     Actor(int, string, int);
 };

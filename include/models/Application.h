@@ -21,5 +21,9 @@ private:
 
     Application();
 public:
-    static Application& getInstance();
+    static Application* getInstance();
+    void setActors(MyDict<int, Actor> actors);
+    void setMovies(MyDict<int, Movie> movies);
+    MyDict<int, Actor> getActors();
+    MyDict<int, Movie> getMovies();
 };
