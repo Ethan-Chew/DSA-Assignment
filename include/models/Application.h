@@ -2,7 +2,7 @@
 // Created by ethan on 15/1/2025.
 //
 
-#pragma once;
+#pragma once
 
 #include "MyDict.h"
 #include "Actor.h"

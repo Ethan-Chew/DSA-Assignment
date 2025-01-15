@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include "DataParser.h"
 
 int main()

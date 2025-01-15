@@ -4,10 +4,8 @@
 
 #include "models/Application.h"
 
-Application::Application() {
-    uniqueInstance = nullptr;
-}
-
+Application* Application::uniqueInstance = nullptr;
+Application::Application() { }
 Application& Application::getInstance() {
     if (uniqueInstance == nullptr) {
         uniqueInstance = new Application();
