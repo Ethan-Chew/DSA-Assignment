@@ -15,6 +15,10 @@ int Actor::getId() {
 string Actor::getName() {
     return name;
 }
+int Actor::getBirthYear() {
+    return birthYear;
+}
+
 void Actor::setName(string name) {
     this->name = name;
 }

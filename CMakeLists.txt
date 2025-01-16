@@ -14,4 +14,7 @@ add_executable(dsa main.cpp
         src/models/Movie.cpp
         src/DoubleLinkedList.cpp
         include/models/Stack.h
-        src/models/Stack.cpp)
+        src/models/Stack.cpp
+        include/models/Administrator.h
+        include/SortedList.h
+        include/SortedList.cpp)

@@ -41,6 +41,23 @@ void setupApplication(Application &application) {
         Movie movie = Movie(movieIds->get(i), titles->get(i), years->get(i), "", Genre::NONE);
         application.addMovie(movie);
     }
+
+    // Parse the Actors and Movies relationship from the CSV into the Application
+    DataParser castParser(
+        "./data/cast.csv",
+        HeaderSpec("person_id", ColumnType::INT),
+        HeaderSpec("movie_id", ColumnType::INT));
+
+    /// Retrieve the result
+    auto castResult = castParser.ParseData();
+
+    /// Get each Column from the CSV
+    auto *castPersonIds = reinterpret_cast<MyList<int>*>((*castResult)["person_id"]);
+    auto *castMovieIds = reinterpret_cast<MyList<int>*>((*castResult)["movie_id"]);
+
+    for (int i = 0; i < castPersonIds->get_length(); i++) {
+        application.addActorToMovie(castPersonIds->get(i), castMovieIds->get(i));
+    }
 }
 
 void displayMenu() {
