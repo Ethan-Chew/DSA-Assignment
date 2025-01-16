@@ -2,16 +2,19 @@
 // Created by ethan on 15/1/2025.
 //
 
+#pragma once
+#include "DoubleLinkedList.h"
 #include <iostream>
 using namespace std;
 
 enum Genre {
-    ACTION = "Action",
-    SCIFI = "Science Fiction",
-    HORROR = "Horror",
+    ACTION,
+    SCIFI,
+    HORROR,
     THRILLER,
     ROMANCE,
-    FANTASY
+    FANTASY,
+    NONE,
 };
 
 class Movie {
@@ -21,6 +24,14 @@ private:
     string plot;
     Genre genre;
     int releaseYear;
+    DoubleLinkedList actors;
 public:
     Movie(int, string, int, string, Genre);
+    int getId();
+    string getTitle();
+    string getPlot();
+    Genre getGenre();
+    void setTitle(string);
+    void setPlot(string);
+    void setGenre(Genre);
 };

@@ -1,44 +1,51 @@
 #include <iostream>
-
 #include "DataParser.h"
+#include "models/Actor.h"
+#include "models/Movie.h"
+#include "models/Application.h"
+
+void setupApplication(Application &application) {
+    // Parse the Actors from the CSV into the Application
+    DataParser actorParser(
+        "./data/actors.csv",
+        HeaderSpec("id", ColumnType::INT),
+        HeaderSpec("name", ColumnType::STRING),
+        HeaderSpec("birth", ColumnType::INT));
+
+    auto actorResult = actorParser.ParseData();
+
+    auto *ids = reinterpret_cast<MyList<int>*>((*actorResult)["id"]);
+    auto *names = reinterpret_cast<MyList<std::string>*>((*actorResult)["name"]);
+    auto *birth = reinterpret_cast<MyList<int>*>((*actorResult)["birth"]);
+
+    for (int i = 0; i < ids->get_length(); i++) {
+        Actor actor = Actor(ids->get(i), names->get(i), birth->get(i));
+        application.addActor(actor);
+    }
+
+    // Parse the Movies from the CSV into the Application
+    DataParser movieParser(
+        "./data/movies.csv",
+        HeaderSpec("id", ColumnType::INT),
+        HeaderSpec("title", ColumnType::STRING),
+        HeaderSpec("year", ColumnType::INT));
+
+    auto movieResult = movieParser.ParseData();
+
+    auto *movieIds = reinterpret_cast<MyList<int>*>((*movieResult)["id"]);
+    auto *titles = reinterpret_cast<MyList<std::string>*>((*movieResult)["title"]);
+    auto *years = reinterpret_cast<MyList<int>*>((*movieResult)["year"]);
+
+    for (int i = 0; i < movieIds->get_length(); i++) {
+        Movie movie = Movie(movieIds->get(i), titles->get(i), years->get(i), "", Genre::NONE);
+        application.addMovie(movie);
+    }
+}
 
 int main()
 {
-    DataParser testParser(
-            "./data/test.csv",
-            HeaderSpec("tegfnfst", ColumnType::INT),
-            HeaderSpec("skbiditoilet", ColumnType::STRING)
-            );
+    Application* application = Application::getInstance();
+    setupApplication(*application);
 
-    auto testResult = testParser.ParseData();
-    auto *row1 = reinterpret_cast<MyList<int>*>((*testResult)["tegfnfst"]);
-    auto *row2 = reinterpret_cast<MyList<std::string>*>((*testResult)["skbiditoilet"]);
-
-    row1->print();
-    row2->print();
-
-    DataParser parser(
-            "./data/actors.csv",
-            HeaderSpec("id", ColumnType::INT),
-            HeaderSpec("name", ColumnType::STRING),
-            HeaderSpec("birth", ColumnType::INT));
-
-    auto result = parser.ParseData();
-
-    auto *names = reinterpret_cast<MyList<std::string>*>((*result)["name"]);
-    auto *ids = reinterpret_cast<MyList<int>*>((*result)["id"]);
-    auto *birth = reinterpret_cast<MyList<int>*>((*result)["birth"]);
-
-    std::cout << std::endl;
-
-
-    for (int i = 0; i < names->get_length(); i++) {
-        std::cout
-                << "row" << std::setw(2) << i+1 << ": "
-                << std::setw(8) << ids->get(i)
-                << std::setw(20) << std::left << names->get(i)
-                << std::setw(6) << birth->get(i)
-                << "\n";
-    }
     return 0;
 }

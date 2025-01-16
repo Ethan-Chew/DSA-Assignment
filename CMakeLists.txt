@@ -8,4 +8,8 @@ file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 include_directories(include)
 include_directories(src)
 
-add_executable(dsa main.cpp)
+add_executable(dsa main.cpp
+        src/models/Application.cpp
+        src/models/Actor.cpp
+        src/models/Movie.cpp
+        src/DoubleLinkedList.cpp)

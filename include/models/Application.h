@@ -2,7 +2,7 @@
 // Created by ethan on 15/1/2025.
 //
 
-#pragma once;
+#pragma once
 
 #include "MyDict.h"
 #include "Actor.h"
@@ -12,7 +12,6 @@
 using namespace std;
 
 // Singleton to store data of Actors and Movies
-
 class Application {
 private:
     static Application* uniqueInstance;
@@ -21,5 +20,12 @@ private:
 
     Application();
 public:
-    static Application& getInstance();
+    static Application* getInstance();
+
+    MyDict<int, Actor> getActors();
+    MyDict<int, Movie> getMovies();
+    void addActor(Actor actor);
+    void addMovie(Movie movie);
+    bool removeActor(int);
+    bool removeMovie(int);
 };

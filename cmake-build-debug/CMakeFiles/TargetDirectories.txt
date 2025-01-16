@@ -1,3 +1,0 @@
-/Users/whywhy/Documents/np-schoolwork/DSA/Assignment/DSA-Assignment/cmake-build-debug/CMakeFiles/dsa.dir
-/Users/whywhy/Documents/np-schoolwork/DSA/Assignment/DSA-Assignment/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/whywhy/Documents/np-schoolwork/DSA/Assignment/DSA-Assignment/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -9,3 +9,15 @@ Actor::Actor(int id, string name, int birthYear) {
     this->name = name;
     this->birthYear = birthYear;
 }
+int Actor::getId() {
+    return id;
+}
+string Actor::getName() {
+    return name;
+}
+void Actor::setName(string name) {
+    this->name = name;
+}
+void Actor::setBirthYear(int birthYear) {
+    this->birthYear = birthYear;
+}
