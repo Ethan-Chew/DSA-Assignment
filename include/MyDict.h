@@ -5,6 +5,17 @@
 #include <memory>
 #include "MyList.h"
 
+template<typename T>
+struct is_string_like {
+    static constexpr bool value =
+            std::is_convertible_v<T, std::string_view> ||
+            (std::is_pointer_v<T> &&
+             std::is_same_v<std::remove_cv_t<std::remove_pointer_t<T>>, char>);
+};
+
+template<typename T>
+inline constexpr bool is_string_like_v = is_string_like<T>::value;
+
 template<typename K, typename V>
 class MyDict
 {
@@ -17,15 +28,33 @@ private:
         Node(const K& k, const V& v) : key(k), val(v), next(nullptr) {};
     };
 
-    static const int INIT = 16;
-    static constexpr double LD_FAC = 0.75;
+    static const int INIT = 128;
+    static constexpr double LD_FAC = 0.5;
 
     MyList<std::unique_ptr<Node>> buckets;
     int count;
 
-    size_t hash(const K& key)
-    {
-        return std::hash<K>{}(key) % buckets.get_length();
+    uint64_t get_hash(const K &key) {
+        if constexpr (std::is_integral_v<K>) {
+            return static_cast<size_t>(key);
+        }
+        else if constexpr (is_string_like_v<K>) {
+            uint64_t hash = 0xcbf29ce484222325ULL;
+            std::string_view sv = key;
+            for (char c : sv) {
+                hash ^= static_cast<unsigned char>(c);
+                hash *= 0x100000001b3ULL;
+            }
+            return hash;
+        }
+    }
+
+    size_t get_index(uint64_t hash, size_t size) {
+        return hash & (size - 1);
+    }
+
+    size_t hash(const K &key) {
+        return get_index(get_hash(key), buckets.get_length());
     }
 
     void rehash()
@@ -43,8 +72,8 @@ private:
             auto& bucket = buckets.get(i);
             while (bucket)
             {
-                size_t new_idx = std::hash<K>{}(bucket->key) % new_size;
                 auto next = std::move(bucket->next);
+                size_t new_idx = get_index(get_hash(bucket->key), new_size);
                 bucket->next = std::move(new_buckets.get(new_idx));
                 new_buckets.replace(new_idx, std::move(bucket));
                 bucket = std::move(next);
