@@ -12,12 +12,6 @@ Application* Application::getInstance() {
     }
     return uniqueInstance;
 }
-MyDict<int, Actor> Application::getActors() {
-    return std::move(actors);
-}
-MyDict<int, Movie> Application::getMovies() {
-    return std::move(movies);
-}
 void Application::addActor(Actor actor) {
     actors.add(actor.getId(), actor);
 }

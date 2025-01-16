@@ -18,12 +18,13 @@ private:
     MyDict<int, Actor> actors;
     MyDict<int, Movie> movies;
 
+    MyDict<int, MyList<int>> actorsToMovies;
+    MyDict<int, MyList<int>> moviesToActors;
+
     Application();
 public:
     static Application* getInstance();
 
-    MyDict<int, Actor> getActors();
-    MyDict<int, Movie> getMovies();
     void addActor(Actor actor);
     void addMovie(Movie movie);
     bool removeActor(int);
