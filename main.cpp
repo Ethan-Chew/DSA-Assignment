@@ -4,6 +4,19 @@
 
 int main()
 {
+    DataParser testParser(
+            "./data/test.csv",
+            HeaderSpec("tegfnfst", ColumnType::INT),
+            HeaderSpec("skbiditoilet", ColumnType::STRING)
+            );
+
+    auto testResult = testParser.ParseData();
+    auto *row1 = reinterpret_cast<MyList<int>*>((*testResult)["tegfnfst"]);
+    auto *row2 = reinterpret_cast<MyList<std::string>*>((*testResult)["skbiditoilet"]);
+
+    row1->print();
+    row2->print();
+
     DataParser parser(
             "./data/actors.csv",
             HeaderSpec("id", ColumnType::INT),
