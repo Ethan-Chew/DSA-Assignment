@@ -58,7 +58,7 @@ private:
 			token = "";
         }
         // last token
-		!token.empty() ? tokens.append(token) : void();
+        !token.empty() ? tokens.append(token) : void();
         return tokens;
     }
 
