@@ -28,6 +28,7 @@ public:
     void insert(int item);
     void remove(int item);
     int find(int item);
+    int get(int index);
     void print();
     bool isEmpty();
     int getLength();

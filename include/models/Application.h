@@ -11,6 +11,7 @@
 #include <iostream>
 #include <MyLinkedList.h>
 
+#include "Account.h"
 #include "SortedList.h"
 using namespace std;
 
@@ -18,15 +19,20 @@ using namespace std;
 class Application {
 private:
     static Application* uniqueInstance;
-    MyDict<int, Actor> actors;
-    MyDict<int, Movie> movies;
+    MyDict<int, Actor*> actors;
+    MyDict<int, Movie*> movies;
 
     MyDict<int, SortedList*> actorsToMovies;
     MyDict<int, SortedList*> moviesToActors;
 
+    MyDict<string, Account*> accounts;
+
     Application();
 public:
     static Application* getInstance();
+
+    // Retrieve Account
+    Account* getAccount(string username);
 
     // Add/Remove Actor Objects
     void addActor(Actor actor);

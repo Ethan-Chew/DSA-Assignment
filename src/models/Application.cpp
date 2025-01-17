@@ -7,7 +7,14 @@
 #include <MyLinkedList.h>
 
 Application* Application::uniqueInstance = nullptr;
-Application::Application() { }
+Application::Application() {
+    accounts.add("user1", new Account("user1", "password1", false));
+    accounts.add("user2", new Account("user2", "password2", false));
+    accounts.add("user3", new Account("user3", "password3", false));
+    accounts.add("admin1", new Account("admin1", "password4", true));
+    accounts.add("admin2", new Account("admin2", "password5", true));
+    accounts.add("admin3", new Account("admin3", "password6", true));
+}
 Application* Application::getInstance() {
     if (uniqueInstance == nullptr) {
         uniqueInstance = new Application();
@@ -15,12 +22,16 @@ Application* Application::getInstance() {
     return uniqueInstance;
 }
 
+Account* Application::getAccount(string username) {
+    return accounts[username];
+}
+
 // Setters for Actor and Movie
 void Application::addActor(Actor actor) {
-    actors.add(actor.getId(), actor);
+    actors.add(actor.getId(), &actor);
 }
 void Application::addMovie(Movie movie) {
-    movies.add(movie.getId(), movie);
+    movies.add(movie.getId(), &movie);
 }
 bool Application::removeActor(int id) {
     return actors.remove(id);
@@ -64,7 +75,7 @@ MyLinkedList<Actor*>* Application::getActors(int movieId) {
     MyLinkedList<Actor*>* movieActors = new MyLinkedList<Actor*>();
 
     for (int i = 0; i < actorIds->getLength(); i++) {
-        movieActors->append(&actors[actorIds->find(i)]);
+        movieActors->append(actors[actorIds->get(i)]);
     }
 
     return movieActors;
@@ -74,7 +85,7 @@ MyLinkedList<Movie*>* Application::getMovies(int actorId) {
     MyLinkedList<Movie*>* actorMovies = new MyLinkedList<Movie*>();
 
     for (int i = 0; i < movieIds->getLength(); i++) {
-        actorMovies->append(&movies[movieIds->find(i)]);
+        actorMovies->append(movies[movieIds->get(i)]);
     }
 
     return actorMovies;

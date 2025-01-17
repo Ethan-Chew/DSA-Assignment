@@ -9,6 +9,7 @@ using namespace std;
 SortedList::SortedList() {
     size = 0;
     capacity = 1;
+    data = new int[capacity];
 }
 void SortedList::insert(int item) {
     if (size >= capacity) {
@@ -28,7 +29,7 @@ void SortedList::insert(int item) {
     }
 
     // Shift elements to the right to make space for the new item
-    for (int i = size; i > start; --i) {
+    for (int i = size; i > start; i--) {
         data[i] = data[i - 1];
     }
 
@@ -62,6 +63,13 @@ int SortedList::find(int item) {
     }
     return -1;
 }
+int SortedList::get(int index) {
+    if (index >= size || index < 0) {
+        return data[index];
+    }
+    return -1;
+}
+
 void SortedList::print() {
     for (int i = 0; i < size; i++) {
         cout << data[i] << " ";

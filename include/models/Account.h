@@ -10,8 +10,10 @@ class Account {
 private:
     string username;
     string password;
+    bool isAdmin;
 public:
-    Account(string, string);
+    Account(string, string, bool);
     string getUsername();
     bool comparePassword(string);
+    bool isAdministrator();
 };
