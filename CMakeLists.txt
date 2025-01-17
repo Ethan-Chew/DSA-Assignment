@@ -16,5 +16,7 @@ add_executable(dsa main.cpp
         include/models/Stack.h
         src/models/Stack.cpp
         include/SortedList.h
-        include/SortedList.cpp
-        src/models/Account.cpp)
+        src/models/Account.cpp
+        src/models/SortedList.cpp
+        src/models/BasicFeatures.cpp
+        include/BasicFeatures.h)

@@ -2,7 +2,7 @@
 // Created by ethan on 16/1/2025.
 //
 
-#include "SortedList.h"
+#include "../../include/SortedList.h"
 #include <iostream>
 using namespace std;
 

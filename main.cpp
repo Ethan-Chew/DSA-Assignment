@@ -4,6 +4,7 @@
 #include "models/Movie.h"
 #include "models/Account.h"
 #include "models/Application.h"
+#include "models/BasicFeatures.h"
 using namespace std;
 
 void setupApplication(Application &application) {
@@ -77,7 +78,7 @@ Account loginUser(Application &application) {
             cout << "No account with username found." << endl;
         } else {
             if (account->comparePassword(password)) {
-                cout << "Successfully Logged In!" << endl;
+                cout << "Welcome, " + username + "!" << endl;
                 return *account;
             } else {
                 cout << "Incorrect Password." << endl;
@@ -87,16 +88,17 @@ Account loginUser(Application &application) {
 }
 
 void displayMenu(bool isAdmin) {
-    int choice = 0;
+    int choice = -1;
     while (choice != 0) {
-        if (isAdmin) {
+        if (!isAdmin) {
             cout <<
+                "Available User Functions\n"
                 "1. Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user\n"
                 "2. Display movies made within the past 3 years (in ascending order of year)\n"
                 "3. Display all movies an actor starred in (in alphabetical order)\n"
                 "4. Display all the actors in a particular movie (in alphabetical order)\n"
                 "5. Display a list of all actors that a particular actor knows.\n"
-                "0. Reselect user role\n"
+                "0. Exit App\n"
                 "Enter Choice: " << endl;
             cin >> choice;
 
@@ -117,11 +119,12 @@ void displayMenu(bool isAdmin) {
             }
         } else {
             cout <<
+                "Available Admin Commands\n"
                 "1. Add new actor\n"
                 "2. Add new movie\n"
                 "3. Add an actor to a movie\n"
                 "4. Update actor/movie details.\n"
-                "0. Reselect user role\n"
+                "0. Exit App\n"
                 "Enter Choice: " << endl;
             cin >> choice;
 
