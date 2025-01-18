@@ -19,4 +19,8 @@ public:
     int getBirthYear();
     void setName(string);
     void setBirthYear(int);
+    void print();
+
+    // Overload Comparison Operators
+    bool operator<(const Actor& other) const;
 };

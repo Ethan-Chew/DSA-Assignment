@@ -4,7 +4,7 @@
 #include "models/Movie.h"
 #include "models/Account.h"
 #include "models/Application.h"
-#include "../include/BasicFeatures.h"
+#include "BasicFeatures.h"
 using namespace std;
 
 void setupApplication(Application &application) {
@@ -111,7 +111,10 @@ void displayMenu(Application &application, bool isAdmin) {
 
                 case 3: { break; }
 
-                case 4: { break; }
+                case 4: {
+                    BasicFeatures::displayActorsInMovie(application, 109830);
+                    break;
+                }
 
                 case 5: { break; }
 

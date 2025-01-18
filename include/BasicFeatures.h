@@ -1,6 +1,4 @@
 #pragma once
-#ifndef BASICFEATURES_H
-#define BASICFEATURES_H
 #include "MyDict.h"
 #include "models/Application.h"
 #include "models/Actor.h"
@@ -9,16 +7,15 @@
 #include <iostream>
 using namespace std;
 
-// Admin Features
-bool addNewActor(Application);
-bool addNewMovie(Application);
-bool addActorToMovie(Application);
-bool updateActorOrMovie(Application);
+class BasicFeatures {
+public:
+    // Admin Features
+    static bool addNewActor(Application&);
+    static bool addNewMovie(Application&);
+    static bool addActorToMovie(Application&, int, int, MyDict<int, Actor*>, MyDict<int, Movie*>);
+    static bool updateActorOrMovie(Application&, bool, int, MyDict<int, Actor*>, MyDict<int, Movie*>);
 
-// User Features
-bool displayActors(Application);
-bool displayMovies(Application);
-bool displayActorMovies(Application);
-bool displayMovieActors(Application);
-
-#endif //BASICFEATURES_H
+    // User Features
+    static void displayActorsInMovie(Application& application, int id);
+    static MyLinkedList<Actor*> displayKnownActors(Application& application, int id);
+};

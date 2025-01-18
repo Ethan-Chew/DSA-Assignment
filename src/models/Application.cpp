@@ -3,7 +3,7 @@
 //
 
 #include "models/Application.h"
-
+#include "DoubleLinkedList.h"
 #include <MyLinkedList.h>
 
 Application* Application::uniqueInstance = nullptr;
@@ -69,24 +69,36 @@ bool Application::removeActorFromMovie(int actorId, int movieId) {
 
     return true;
 }
-MyLinkedList<Actor*>* Application::getActors(int movieId) {
+DoubleLinkedList<Actor*>* Application::getActors(int movieId) {
     SortedList* actorIds = moviesToActors[movieId];
-    actorIds->print();
-    MyLinkedList<Actor*>* movieActors = new MyLinkedList<Actor*>();
+    DoubleLinkedList<Actor*>* movieActors = new DoubleLinkedList<Actor*>();
 
     for (int i = 0; i < actorIds->getLength(); i++) {
-        movieActors->append(actors[actorIds->get(i)]);
+        Actor* actor = actors[actorIds->get(i)];
+        movieActors->add(actor);
     }
 
     return movieActors;
 }
-MyLinkedList<Movie*>* Application::getMovies(int actorId) {
+DoubleLinkedList<Movie*>* Application::getMovies(int actorId) {
     SortedList* movieIds = actorsToMovies[actorId];
-    MyLinkedList<Movie*>* actorMovies = new MyLinkedList<Movie*>();
+    DoubleLinkedList<Movie*>* actorMovies = new DoubleLinkedList<Movie*>();
 
     for (int i = 0; i < movieIds->getLength(); i++) {
-        actorMovies->append(movies[movieIds->get(i)]);
+        actorMovies->add(movies[movieIds->get(i)]);
     }
 
     return actorMovies;
 }
+SortedList* Application::getActorMovies(int id) {
+    return actorsToMovies[id];
+}
+SortedList* Application::getMovieActors(int id) {
+    return moviesToActors[id];
+}
+// const MyDict<int, SortedList*>& Application::getActorsToMoviesRelationship() const {
+//     return actorsToMovies;
+// }
+// const MyDict<int, SortedList *> &Application::getMoviesToActorsRelationship() const {
+//     return moviesToActors;
+// }

@@ -8,11 +8,12 @@
 #include "models/Application.h"
 #include "models/Actor.h"
 #include "models/Movie.h"
+#include "DoubleLinkedList.h"
 using namespace std;
 
 // Admin Basic Functions
 // Add new actor
-bool addNewActor(Application &application) {
+bool BasicFeatures::addNewActor(Application &application) {
     try {
         string name;
         int birthYear;
@@ -39,7 +40,7 @@ bool addNewActor(Application &application) {
 }
 
 // Add new movie
-bool addNewMovie(Application &application) {
+bool BasicFeatures::addNewMovie(Application &application) {
     try {
         string title;
         int releaseYear;
@@ -69,8 +70,10 @@ bool addNewMovie(Application &application) {
     }
 }
 
+
+
 // Add an actor to a movie
-bool addActorToMovie(Application &application) {
+bool BasicFeatures::addActorToMovie(Application &application, int actorId, int movieId, MyDict<int, Actor*> actorList, MyDict<int, Movie*> movieList) {
     int actorId;
     int movieId;
 
@@ -88,8 +91,8 @@ bool addActorToMovie(Application &application) {
     return false;
 }
 
-// d. Update actor/movie details
-bool updateActorOrMovie(Application &application) {
+// Update actor/movie details
+bool BasicFeatures::updateActorOrMovie(Application &application, bool isActor, int actorMovieId, MyDict<int, Actor*> actorList, MyDict<int, Movie*> movieList) {
     int movieActorChoice;
     int actorMovieId;
 
@@ -145,8 +148,11 @@ bool displayActorMovies(Application &application) {
 }
 
 // Display all the actors in a particular movie (in alphabetical order)
-bool displayMovieActors(Application &application) {
+void BasicFeatures::displayActorsInMovie(Application& application, int id) {
     int movieId;
+    DoubleLinkedList<Actor*>* actors = application.getActors(id);
+    actors->sort();
+    actors->print();
 
     cout <<
             "Option: 'Display all the actors in a particular movie.\n"
@@ -157,8 +163,10 @@ bool displayMovieActors(Application &application) {
     if (actors == nullptr) { return false; }
 
     // TODO: Sort alphabetically
-
-    return true;
 }
 
 // i. Display a list of all actors that a particular actor knows.
+// MyLinkedList<Actor*> BasicFeatures::displayKnownActors(Application &application, int id) {
+//     SortedList* actorMovies = application.getActorMovies(id);
+//
+// }

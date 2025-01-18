@@ -32,3 +32,12 @@ void Movie::setPlot(string plot) {
 void Movie::setGenre(Genre genre) {
     this->genre = genre;
 }
+void Movie::print() {
+    cout << "Movie ID: " << id << " | Title: " << title << " | Plot: " << plot << " | Genre: " << genre << endl;
+}
+
+
+// Overload Operator for Comparison
+bool Movie::operator<(const Movie& other) const {
+    return title < other.title;
+}
