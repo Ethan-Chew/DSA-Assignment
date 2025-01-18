@@ -24,7 +24,6 @@ private:
     string plot;
     Genre genre;
     int releaseYear;
-    DoubleLinkedList actors;
 public:
     Movie(int, string, int, string, Genre);
     int getId();
@@ -34,4 +33,8 @@ public:
     void setTitle(string);
     void setPlot(string);
     void setGenre(Genre);
+    void print();
+
+    // Overload Comparison Operator
+    bool operator<(const Movie& other) const;
 };

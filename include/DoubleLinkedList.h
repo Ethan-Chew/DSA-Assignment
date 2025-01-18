@@ -7,27 +7,31 @@
 #include<iostream>
 using namespace std;
 
-typedef int ItemType;
-
-// DoubleLinkedList to store Actor and Movie IDs (int)
+template <typename T>
 class DoubleLinkedList {
 private:
     struct Node {
-        ItemType item;
+        T item;
         Node* next;
         Node* prev;
     };
     Node* firstNode;
     Node* lastNode;
     int size;
+
+    // Merge Sort Helper Functions
+    Node* split(Node*); // Splits the List into 2 Halves
+    Node* merge(Node*, Node*); // Merges 2 Doubly-Linked Lists into One
+    Node* MergeSort(Node*); // Recursive Merge Sort
 public:
     DoubleLinkedList();
     ~DoubleLinkedList();
 
-    void add(ItemType item);
-    bool remove(ItemType item);
-    int find(ItemType item);
+    void add(T item);
+    bool remove(T item);
+    int find(T item);
     bool isEmpty();
     int getLength();
     void print();
+    void sort();
 };

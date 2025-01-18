@@ -64,10 +64,10 @@ int SortedList::find(int item) {
     return -1;
 }
 int SortedList::get(int index) {
-    if (index >= size || index < 0) {
-        return data[index];
+    if (index < 0 || index >= size) {
+        return -1;
     }
-    return -1;
+    return data[index];
 }
 
 void SortedList::print() {

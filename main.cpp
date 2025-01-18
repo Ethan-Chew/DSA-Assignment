@@ -4,7 +4,7 @@
 #include "models/Movie.h"
 #include "models/Account.h"
 #include "models/Application.h"
-#include "models/BasicFeatures.h"
+#include "BasicFeatures.h"
 using namespace std;
 
 void setupApplication(Application &application) {
@@ -87,7 +87,7 @@ Account loginUser(Application &application) {
     }
 }
 
-void displayMenu(bool isAdmin) {
+void displayMenu(Application& application, bool isAdmin) {
     int choice = -1;
     while (choice != 0) {
         if (!isAdmin) {
@@ -111,7 +111,10 @@ void displayMenu(bool isAdmin) {
 
                 case 3: { break; }
 
-                case 4: { break; }
+                case 4: {
+                    BasicFeatures::displayActorsInMovie(application, 109830);
+                    break;
+                }
 
                 case 5: { break; }
 
@@ -152,7 +155,7 @@ int main()
 
     // Login and Main Menu Setup
     Account account = loginUser(*application);
-    displayMenu(account.isAdministrator());
+    displayMenu(*application, account.isAdministrator());
 
 
     return 0;

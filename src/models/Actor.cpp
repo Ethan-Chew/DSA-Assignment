@@ -18,10 +18,18 @@ string Actor::getName() {
 int Actor::getBirthYear() {
     return birthYear;
 }
-
 void Actor::setName(string name) {
     this->name = name;
 }
 void Actor::setBirthYear(int birthYear) {
     this->birthYear = birthYear;
+}
+void Actor::print() {
+    cout << "Actor ID: " << id << " | Name: " << name << " | Birth Year: " << birthYear << endl;
+}
+
+
+// Overload Operator for Comparison
+bool Actor::operator<(const Actor& other) const {
+    return name < other.name;
 }

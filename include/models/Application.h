@@ -47,7 +47,11 @@ public:
     bool addActorToMovie(int, int);
     bool removeActorFromMovie(int, int);
     /// Get Actors who acted in Movie ID
-    MyLinkedList<Actor*>* getActors(int);
+    // const MyDict<int, SortedList *> &getActorsToMoviesRelationship() const;
+    SortedList *getActorMovies(int id);
+    DoubleLinkedList<Actor*>* getActors(int);
     /// Get Movies acted by Actor ID
-    MyLinkedList<Movie*>* getMovies(int);
+    // const MyDict<int, SortedList *> &getMoviesToActorsRelationship() const;
+    DoubleLinkedList<Movie*>* getMovies(int);
+    SortedList *getMovieActors(int id);
 };
