@@ -21,7 +21,7 @@ bool BasicFeatures::addNewActor(Application &application) {
         cout <<
             "Option: 'Add New Actor' Selected.\n"
             "Please enter name: ";
-        cin >> name;
+        getline(cin, name);
 
         cout << "\nPlease enter birth year: ";
         cin >> birthYear;
@@ -49,13 +49,13 @@ bool BasicFeatures::addNewMovie(Application &application) {
         cout <<
             "Option: 'Add New Movie' Selected.\n"
             "Please enter movie title: ";
-        cin >> title;
+        getline(cin, title);
 
         cout << "\nPlease enter movie release year: ";
         cin >> releaseYear;
 
         cout << "\nPlease enter movie plot: ";
-        cin >> plot;
+        getline(cin, plot);
 
         // TODO: Add Id parser and Genre
 
@@ -70,10 +70,8 @@ bool BasicFeatures::addNewMovie(Application &application) {
     }
 }
 
-
-
 // Add an actor to a movie
-bool BasicFeatures::addActorToMovie(Application &application, int actorId, int movieId, MyDict<int, Actor*> actorList, MyDict<int, Movie*> movieList) {
+bool BasicFeatures::addActorToMovie(Application &application) {
     int actorId;
     int movieId;
 
@@ -86,13 +84,14 @@ bool BasicFeatures::addActorToMovie(Application &application, int actorId, int m
     cin >> movieId;
 
     if (application.addActorToMovie(actorId, movieId)) {
+        cout << "Actor added successfully!" << endl;
         return true;
     }
     return false;
 }
 
 // Update actor/movie details
-bool BasicFeatures::updateActorOrMovie(Application &application, bool isActor, int actorMovieId, MyDict<int, Actor*> actorList, MyDict<int, Movie*> movieList) {
+bool BasicFeatures::updateActorOrMovie(Application &application) {
     int movieActorChoice;
     int actorMovieId;
 
@@ -101,14 +100,18 @@ bool BasicFeatures::updateActorOrMovie(Application &application, bool isActor, i
             "Update (1) Actor or (2) Movie: ";
     cin >> movieActorChoice;
 
-    // TODO: Add get actor with Id functionality in application
+    // TODO: Add get actor/movie with Id functionality in application
     if (movieActorChoice == 1) {
         cout << "\nPlease enter actor id: ";
         cin >> actorMovieId;
+
+        application.getActor(actorMovieId);
     }
     else if (movieActorChoice == 2) {
         cout << "\nPlease enter actor id: ";
         cin >> actorMovieId;
+
+        application.getMovie(actorMovieId);
     }
     else {
         cout << "Invalid Input. Please try again." << endl;
@@ -119,7 +122,12 @@ bool BasicFeatures::updateActorOrMovie(Application &application, bool isActor, i
 // User Basic Functions
 // Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user
 bool displayActors(Application &application) {
+    string ageRange;
 
+    cout <<
+        "Option: 'Display Actors' Selected.\n"
+        "Enter actor age range, seperated by a comma: ";
+    cin >> ageRange;
 
     return true;
 }
@@ -139,7 +147,7 @@ bool displayActorMovies(Application &application) {
             "Enter actor's id: ";
     cin >> actorId;
 
-    MyLinkedList<Movie*>* movies = application.getMovies(actorId);
+    DoubleLinkedList<Movie*>* movies = application.getMovies(actorId);
     if (movies == nullptr) { return  false; }
 
     // TODO: Sort alphabetically
@@ -159,13 +167,10 @@ void BasicFeatures::displayActorsInMovie(Application& application, int id) {
             "Enter movie id: ";
     cin >> movieId;
 
-    MyLinkedList<Actor*>* actors = application.getActors(movieId);
-    if (actors == nullptr) { return false; }
-
     // TODO: Sort alphabetically
 }
 
-// i. Display a list of all actors that a particular actor knows.
+// Display a list of all actors that a particular actor knows.
 // MyLinkedList<Actor*> BasicFeatures::displayKnownActors(Application &application, int id) {
 //     SortedList* actorMovies = application.getActorMovies(id);
 //

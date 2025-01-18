@@ -12,8 +12,8 @@ public:
     // Admin Features
     static bool addNewActor(Application&);
     static bool addNewMovie(Application&);
-    static bool addActorToMovie(Application&, int, int, MyDict<int, Actor*>, MyDict<int, Movie*>);
-    static bool updateActorOrMovie(Application&, bool, int, MyDict<int, Actor*>, MyDict<int, Movie*>);
+    static bool addActorToMovie(Application&);
+    static bool updateActorOrMovie(Application&);
 
     // User Features
     static void displayActorsInMovie(Application& application, int id);

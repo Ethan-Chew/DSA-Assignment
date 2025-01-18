@@ -34,13 +34,15 @@ public:
     // Retrieve Account
     Account* getAccount(string username);
 
-    // Add/Remove Actor Objects
+    // Add/Remove/Retrieve Actor Objects
     void addActor(Actor actor);
     bool removeActor(int);
+    Actor* getActor(int);
 
-    // Add/Remove Movie Objects
+    // Add/Remove/Retrieve Movie Objects
     void addMovie(Movie movie);
     bool removeMovie(int);
+    Movie* getMovie(int);
 
     // Relationships
     /// Add/Remove Actor ID into Movie ID

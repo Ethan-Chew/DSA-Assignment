@@ -30,14 +30,36 @@ Account* Application::getAccount(string username) {
 void Application::addActor(Actor actor) {
     actors.add(actor.getId(), &actor);
 }
+
 void Application::addMovie(Movie movie) {
     movies.add(movie.getId(), &movie);
 }
+
 bool Application::removeActor(int id) {
     return actors.remove(id);
 }
+
 bool Application::removeMovie(int id) {
     return movies.remove(id);
+}
+
+// Getters for Actor and Movie
+Actor* Application::getActor(int id) {
+    if (actors[id] != nullptr) {
+        return actors[id];
+    }
+    else {
+        return nullptr;
+    }
+}
+
+Movie* Application::getMovie(int id) {
+    if (movies[id] != nullptr) {
+        return movies[id];
+    }
+    else {
+        return nullptr;
+    }
 }
 
 // Relationships

@@ -117,8 +117,6 @@ void displayMenu(Application &application, bool isAdmin) {
                 }
 
                 case 5: { break; }
-
-                case 0: break;
             }
         } else {
             cout <<
@@ -135,16 +133,24 @@ void displayMenu(Application &application, bool isAdmin) {
                 default: { break; }
 
                 case 1: {
-
+                    BasicFeatures::addNewActor(application);
+                    break;
                 }
 
-                case 2: { break; }
+                case 2: {
+                    BasicFeatures::addNewMovie(application);
+                    break;
+                }
 
-                case 3: { break; }
+                case 3: {
+                    BasicFeatures::addActorToMovie(application);
+                    break;
+                }
 
-                case 4: { break; }
-
-                case 0: break;
+                case 4: {
+                    BasicFeatures::updateActorOrMovie(application);
+                    break;
+                }
             }
         }
     }
