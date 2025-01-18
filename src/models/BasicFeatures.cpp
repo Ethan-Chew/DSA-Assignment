@@ -11,7 +11,7 @@
 using namespace std;
 
 // Admin Basic Functions
-// a. Add new actor
+// Add new actor
 bool addNewActor(Application &application) {
     try {
         string name;
@@ -38,7 +38,7 @@ bool addNewActor(Application &application) {
     }
 }
 
-// b. Add new movie
+// Add new movie
 bool addNewMovie(Application &application) {
     try {
         string title;
@@ -69,29 +69,96 @@ bool addNewMovie(Application &application) {
     }
 }
 
-// c. Add an actor to a movie
-bool addActorToMovie(Application &application, int actorId, int movieId, MyDict<int, Actor*> actorList, MyDict<int, Movie*> movieList) {
+// Add an actor to a movie
+bool addActorToMovie(Application &application) {
+    int actorId;
+    int movieId;
 
+    cout <<
+            "Option: 'Add Actor to Movie' Selected.\n"
+            "Please enter actor's id: ";
+    cin >> actorId;
+
+    cout << "\nPlease enter movie id: ";
+    cin >> movieId;
+
+    if (application.addActorToMovie(actorId, movieId)) {
+        return true;
+    }
     return false;
 }
 
 // d. Update actor/movie details
-bool updateActorOrMovie(Application &application, bool isActor, int actorMovieId, MyDict<int, Actor*> actorList, MyDict<int, Movie*> movieList) {
+bool updateActorOrMovie(Application &application) {
+    int movieActorChoice;
+    int actorMovieId;
 
-    return false;
+    cout <<
+            "Option: 'Update actor/movie details' Selected.\n"
+            "Update (1) Actor or (2) Movie: ";
+    cin >> movieActorChoice;
+
+    // TODO: Add get actor with Id functionality in application
+    if (movieActorChoice == 1) {
+        cout << "\nPlease enter actor id: ";
+        cin >> actorMovieId;
+    }
+    else if (movieActorChoice == 2) {
+        cout << "\nPlease enter actor id: ";
+        cin >> actorMovieId;
+    }
+    else {
+        cout << "Invalid Input. Please try again." << endl;
+        return false;
+    }
 }
 
 // User Basic Functions
-// e. Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user
+// Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user
+bool displayActors(Application &application) {
 
 
-// f. Display movies made within the past 3 years (in ascending order of year)
+    return true;
+}
 
+// Display movies made within the past 3 years (in ascending order of year)
+bool displayMovies(Application &application) {
 
-// g. Display all movies an actor starred in (in alphabetical order)
+    return true;
+}
 
+// Display all movies an actor starred in (in alphabetical order)
+bool displayActorMovies(Application &application) {
+    int actorId;
 
-// h. Display all the actors in a particular movie (in alphabetical order)
+    cout <<
+            "Option: 'Display all movies an actor starred in.\n"
+            "Enter actor's id: ";
+    cin >> actorId;
 
+    MyLinkedList<Movie*>* movies = application.getMovies(actorId);
+    if (movies == nullptr) { return  false; }
+
+    // TODO: Sort alphabetically
+
+    return true;
+}
+
+// Display all the actors in a particular movie (in alphabetical order)
+bool displayMovieActors(Application &application) {
+    int movieId;
+
+    cout <<
+            "Option: 'Display all the actors in a particular movie.\n"
+            "Enter movie id: ";
+    cin >> movieId;
+
+    MyLinkedList<Actor*>* actors = application.getActors(movieId);
+    if (actors == nullptr) { return false; }
+
+    // TODO: Sort alphabetically
+
+    return true;
+}
 
 // i. Display a list of all actors that a particular actor knows.

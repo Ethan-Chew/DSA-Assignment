@@ -12,7 +12,13 @@ using namespace std;
 // Admin Features
 bool addNewActor(Application);
 bool addNewMovie(Application);
-bool addActorToMovie(Application, int, int, MyDict<int, Actor*>, MyDict<int, Movie*>);
-bool updateActorOrMovie(Application, bool, int, MyDict<int, Actor*>, MyDict<int, Movie*>);
+bool addActorToMovie(Application);
+bool updateActorOrMovie(Application);
+
+// User Features
+bool displayActors(Application);
+bool displayMovies(Application);
+bool displayActorMovies(Application);
+bool displayMovieActors(Application);
 
 #endif //BASICFEATURES_H
