@@ -87,7 +87,7 @@ public:
                 std::cout << std::string(data[i]) << " ";
             }
         }
-        std::cout << std::"\n";
+        std::cout << "\n";
     }
 
     void replace(int idx, T item) {

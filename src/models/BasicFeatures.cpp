@@ -156,7 +156,7 @@ bool displayActorMovies(Application &application) {
 }
 
 // Display all the actors in a particular movie (in alphabetical order)
-void BasicFeatures::displayActorsInMovie(Application& application, int id) {
+void BasicFeatures::displayActorsInMovie(Application& application, const int id) {
     int movieId;
     DoubleLinkedList<Actor*>* actors = application.getActors(id);
     actors->sort();

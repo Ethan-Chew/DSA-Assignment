@@ -25,7 +25,7 @@ private:
         K key;
         V val;
         std::unique_ptr<Node> next;
-        Node(const K& k, const V& v) : key(k), val(v), next(nullptr) {};
+        Node(const K& k, V v) : key(k), val(std::move(v)), next(nullptr) {};
     };
 
     static const int INIT = 128;
@@ -46,6 +46,10 @@ private:
                 hash *= 0x100000001b3ULL;
             }
             return hash;
+        }
+        else
+        {
+            throw std::invalid_argument("key type is not supported.");
         }
     }
 
@@ -89,7 +93,7 @@ public:
         }
     }
 
-    void add(const K& key, const V val) {
+    void add(const K& key, V val) {
         if (static_cast<double>(count + 1) / buckets.get_length() > LD_FAC) {
             rehash();
         }
@@ -100,13 +104,13 @@ public:
 
         while (curr_ptr) {
             if (curr_ptr->key == key) {
-                curr_ptr->val = val;
+                curr_ptr->val = std::move(val);
                 return;
             }
             curr_ptr = curr_ptr->next.get();
         }
 
-        auto new_node = std::make_unique<Node>(key, val);
+        auto new_node = std::make_unique<Node>(key, std::move(val));
         new_node->next = std::move(current);
         current = std::move(new_node);
         count++;

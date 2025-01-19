@@ -1,3 +1,4 @@
+#include <cassert>
 #include <iostream>
 #include "DataParser.h"
 #include "models/Actor.h"
@@ -21,7 +22,11 @@ void setupApplication(Application &application) {
     auto *birth = reinterpret_cast<MyList<int>*>((*actorResult)["birth"]);
 
     for (int i = 0; i < ids->get_length(); i++) {
-        std::unique_ptr<Actor> actor = std::make_unique<Actor>(ids->get(i), names->get(i), birth->get(i));
+        int id = ids->get(i);
+        std::string name = names->get(i);
+        int birthYear = birth->get(i);
+
+        std::unique_ptr<Actor> actor(new Actor(id, name, birthYear));
         application.addActor(std::move(actor));
     }
 

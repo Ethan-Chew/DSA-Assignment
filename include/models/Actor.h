@@ -14,6 +14,7 @@ private:
     int birthYear;
 public:
     Actor(int, std::string, int);
+    ~Actor();
     int getId();
     std::string getName();
     int getBirthYear();

@@ -28,13 +28,15 @@ Account* Application::getAccount(const std::string &username) {
 
 // Setters for Actor and Movie
 void Application::addActor(std::unique_ptr<Actor> actor) {
+    int id = actor->getId();
     // reminder: actors dict will OWN the pointer
-    actors.add(actor->getId(), std::move(actor));
+    actors.add(id, std::move(actor));
 }
 
 void Application::addMovie(std::unique_ptr<Movie> movie) {
     // reminder: movies dict will OWN the pointer
-    movies.add(movie->getId(), std::move(movie));
+    int id = movie->getId();
+    movies.add(id, std::move(movie));
 }
 
 bool Application::removeActor(const int id) {
@@ -65,18 +67,18 @@ Movie* Application::getMovie(const int id) {
 // Relationships
 bool Application::addActorToMovie(const int actorId, const int movieId) {
     // Add Actor to the Actor-to-Movie Relationship
-    std::unique_ptr<SortedList> actorMovieIds = std::move(actorsToMovies[actorId]);
+    SortedList *actorMovieIds = actorsToMovies[actorId].get();
     if (actorMovieIds == nullptr) {
-        actorMovieIds = std::make_unique<SortedList>(SortedList());
-        actorsToMovies[actorId] = std::move(actorMovieIds);
+        actorsToMovies[actorId] = std::make_unique<SortedList>(SortedList());
+        actorMovieIds = actorsToMovies[actorId].get();
     }
     actorMovieIds->insert(movieId);
 
     // Add Movie to Movie-to-Actor Relationship
-    std::unique_ptr<SortedList> movieActorIds = std::move(moviesToActors[movieId]);
+    SortedList *movieActorIds = moviesToActors[movieId].get();
     if (movieActorIds == nullptr) {
-        movieActorIds = std::make_unique<SortedList>(SortedList());
-        moviesToActors[movieId] = std::move(movieActorIds);
+        moviesToActors[movieId] = std::make_unique<SortedList>(SortedList());
+        movieActorIds = moviesToActors[movieId].get();
     }
     movieActorIds->insert(actorId);
 

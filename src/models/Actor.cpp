@@ -9,6 +9,9 @@ Actor::Actor(int id, std::string name, int birthYear) {
     this->name = name;
     this->birthYear = birthYear;
 }
+
+Actor::~Actor() {}
+
 int Actor::getId() {
     return id;
 }
