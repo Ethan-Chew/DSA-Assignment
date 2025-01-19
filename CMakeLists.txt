@@ -19,4 +19,5 @@ add_executable(dsa main.cpp
         src/models/SortedList.cpp
         src/models/BasicFeatures.cpp
         include/BasicFeatures.h
-        include/MyLinkedList.h)
+        include/MyLinkedList.h
+        include/PtrQueue.h)

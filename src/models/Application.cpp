@@ -116,6 +116,7 @@ MyLinkedList<Movie*>* Application::getMovies(int actorId) {
     return actorMovies;
 }
 SortedList* Application::getActorMovies(int id) {
+
     return actorsToMovies[id].get();
 }
 SortedList* Application::getMovieActors(int id) {

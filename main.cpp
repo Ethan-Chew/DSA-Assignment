@@ -120,7 +120,9 @@ void displayMenu(Application &application, bool isAdmin) {
                     break;
                 }
 
-                case 5: { break; }
+                case 5: {
+                    BasicFeatures::displayKnownActors(application);
+                }
             }
         } else {
             std::cout <<
@@ -162,18 +164,12 @@ void displayMenu(Application &application, bool isAdmin) {
 
 int main()
 {
-    MyLinkedList<std::string> list;
-    list.append("bob");
-    list.append("charlie");
-    list.append("aaaaah");
-    list.sort();
-    // Application* application = Application::getInstance();
-    // setupApplication(*application);
-    //
-    // // Login and Main Menu Setup
-    // Account account = loginUser(*application);
-    // displayMenu(*application, account.isAdministrator());
+    Application* application = Application::getInstance();
+    setupApplication(*application);
 
+    // Login and Main Menu Setup
+    Account account = loginUser(*application);
+    displayMenu(*application, account.isAdministrator());
 
     return 0;
 }

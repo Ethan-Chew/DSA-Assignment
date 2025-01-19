@@ -9,7 +9,7 @@
 #include "models/Actor.h"
 #include "models/Movie.h"
 #include "MyLinkedList.h"
-
+#include "PtrQueue.h"
 
 // Admin Basic Functions
 // Add new actor
@@ -171,7 +171,85 @@ void BasicFeatures::displayActorsInMovie(Application& application, const int id)
 }
 
 // Display a list of all actors that a particular actor knows.
-// MyLinkedList<Actor*> BasicFeatures::displayKnownActors(Application &application, int id) {
-//     SortedList* actorMovies = application.getActorMovies(id);
-//
-// }
+void BasicFeatures::displayKnownActors(Application &application) {
+    // Display Starting Menu
+    std::cout << "=== Option 5: Display list of all actors that a paricular actor knows ===" << std::endl;
+    int actorId;
+    std::cout << "Actor ID: ";
+    std::cin >> actorId;
+
+    SortedList* firstLevel = new SortedList(); // First Level Connections (directly worked with them in a Movie)
+    SortedList* secondLevel = new SortedList(); // Second Level Connections (knowing someone through another person)
+
+    // Perform Breadth-First Search (BFS) on the Relationship Dictionaries to determine first and second level connections
+    PtrQueue<int>* queue = new PtrQueue<int>();
+    SortedList* visitedNodes = new SortedList(); // Hold the nodes that has already been visited (reduce repeats)
+    queue->enqueue(actorId);
+    visitedNodes->insert(actorId);
+
+    int depth = 1; // How 'deep' you are in the tree. Start at depth = 1
+    int currentDepthCount = 1; // Number of nodes in the current depth
+    int nextDepthCount = 0;    // Number of nodes in the next depth
+
+    while (!queue->is_empty() && depth <= 2) { // Only need to search until 2nd Layer
+        int currentActorId;
+        queue->get_front(currentActorId);
+        queue->dequeue();
+        currentDepthCount--; // Once popped from the queue, there is one less node to traverse later
+
+        SortedList* movies = application.getActorMovies(currentActorId);
+        if (movies == nullptr) {
+            std::cout << "Actor has not acted in any movies." << std::endl;
+            return;
+        }
+        for (int i = 0; i < movies->getLength(); i++) {
+            int movieId = movies->get(i);
+
+            if (visitedNodes->find(movieId) != -1) continue; // Skip Movies that have already been iterated through
+            visitedNodes->insert(movieId); // We have now visited it, so mark it as visited
+
+            // Find the Other Actors that have acted in the Movie
+            SortedList* otherActors = application.getMovieActors(movieId);
+            for (int j = 0; j < otherActors->getLength(); j++) {
+                int otherActorId = otherActors->get(j);
+
+                if (visitedNodes->find(otherActorId) != -1) continue; // Skip the actor that has already been iterated through
+                visitedNodes->insert(otherActorId); // Now that we have visited the actor, mark as visited
+
+                // Add the Actor to either the First or Second Level
+                if (depth == 1) {
+                    firstLevel->insert(otherActorId);
+                } else if (depth == 2) {
+                    secondLevel->insert(otherActorId);
+                }
+
+                // Enqueue the Other Actor ID for further processing
+                queue->enqueue(otherActorId);
+                nextDepthCount++; // Increment 1 to the number of nodes in the next depth
+            }
+        }
+        if (currentDepthCount == 0) { // Only proceed to the next level when all nodes in the current level has been processed
+            depth++;
+            currentDepthCount = nextDepthCount; // Move to next level
+            nextDepthCount = 0; // Reset the count for next level
+        }
+    }
+
+    // Display the First Level Actors
+    std::cout << "=== First Level (Actor has directly interacted with) ===" << std::endl;
+    for (int i = 0; i < firstLevel->getLength(); i++) {
+        Actor* actor = application.getActor(firstLevel->get(i));
+        actor->print();
+    }
+
+    std::cout << std::endl; // Print Empty Line
+
+    // Display the Second Level Actors
+    std::cout << "=== Second Level (Actor knows someone who has interacted with) ===" << std::endl;
+    for (int i = 0; i < secondLevel->getLength(); i++) {
+        Actor* actor = application.getActor(secondLevel->get(i));
+        actor->print();
+    }
+
+    std::cout << std::endl; // Print Empty Line
+}

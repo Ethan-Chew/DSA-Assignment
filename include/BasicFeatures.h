@@ -17,5 +17,5 @@ public:
 
     // User Features
     static void displayActorsInMovie(Application& application, int id);
-    static MyLinkedList<Actor*> displayKnownActors(Application& application, int id);
+    static void displayKnownActors(Application& application);
 };
