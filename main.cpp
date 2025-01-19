@@ -35,16 +35,18 @@ void setupApplication(Application &application) {
         "./data/movies.csv",
         HeaderSpec("id", ColumnType::INT),
         HeaderSpec("title", ColumnType::STRING),
+        HeaderSpec("plot",ColumnType::STRING),
         HeaderSpec("year", ColumnType::INT));
 
     auto movieResult = movieParser.ParseData();
 
     auto *movieIds = reinterpret_cast<MyList<int>*>((*movieResult)["id"]);
     auto *titles = reinterpret_cast<MyList<std::string>*>((*movieResult)["title"]);
+    auto *plots = reinterpret_cast<MyList<std::string>*>((*movieResult)["plot"]);
     auto *years = reinterpret_cast<MyList<int>*>((*movieResult)["year"]);
 
     for (int i = 0; i < movieIds->get_length(); i++) {
-        std::unique_ptr<Movie> movie = std::make_unique<Movie>(movieIds->get(i), titles->get(i), years->get(i), "", Genre::NONE);
+        std::unique_ptr<Movie> movie = std::make_unique<Movie>(movieIds->get(i), titles->get(i), years->get(i), plots->get(i), Genre::NONE);
         application.addMovie(std::move(movie));
     }
 
