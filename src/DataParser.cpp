@@ -6,12 +6,14 @@
 
 #include "DataParser.h"
 
+// enum for possible types
 enum class ColumnType {
     INT,
     STRING,
     DOUBLE
 };
 
+// header struct caller must pass to provide context to parser
 struct HeaderSpec {
     std::string name;
     ColumnType type;
@@ -32,6 +34,8 @@ private:
          // base case
     }
 
+    // for the sake of handling variadic arguments i use recursion
+    // this maps each header name to the type passed via HeaderSpec
     template<typename FirstHeader, typename... OtherHeaders>
     void ParseHeader(FirstHeader first, OtherHeaders... others) {
         headerTypes[first.name] = first.type;
@@ -39,6 +43,8 @@ private:
         ParseHeader(others...);
     }
 
+    // splits a line into tokens
+    // basically line.split(',') but quote aware
     MyList<std::string> TokeniseLine(const std::string &buf) {
    		MyList<std::string> tokens;
         std::string token;
@@ -46,6 +52,8 @@ private:
 
         for (const char &chr : buf) {
          	if (chr == '\"') {
+         	    // if a quote is found i just ignore everything till the quote ends
+         	    // this cleanly handles cases such as "foo,bar",baz
                 quote = !quote;
                 continue;
             }
@@ -62,6 +70,7 @@ private:
         return tokens;
     }
 
+    // find offset required to reach header x for all x in the header list
     void InitHeaderOffset(const std::string &buf) {
         MyList<std::string> tokens = TokeniseLine(buf);
 
@@ -77,6 +86,7 @@ public:
     template<typename... Headers>
     DataParser(const std::string &filename, Headers... headers)
     : result(new MyDict<std::string, void*>,
+        // lambda function passed to unique_ptr to handle cleanup
         [this](MyDict<std::string, void*>* dict) {
          for (int i = 0; i < headerCount; i++) {
              void* store = (*dict)[headerOffsets[i]];
@@ -124,6 +134,11 @@ public:
             MyList<std::string> tokens = TokeniseLine(buffer);
             for (int currentOffset = 0; currentOffset < tokens.get_length(); currentOffset++) {
                 currentColumn = headerOffsets[currentOffset];
+
+                // excessively complex system to fit everything into 1 hashmap
+                // nested templating is too complex, and all pointers can be stored as a void* (64 bit address)
+                // and reinterpreted back to what it should be based on the header type mapping
+                // quite hacky, please don't touch, this works well and that's all you must know
                 if ((*result)[currentColumn] == nullptr) {
                     switch (headerTypes[currentColumn]) {
                         case ColumnType::INT:
@@ -158,6 +173,8 @@ public:
             }
         }
 
+        // imperative to give ownership to caller
+        // to prevent class destructor from deleting data or double freeing
         return std::move(result);
     }
 };
