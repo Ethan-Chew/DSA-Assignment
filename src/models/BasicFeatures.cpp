@@ -28,12 +28,12 @@ bool BasicFeatures::addNewActor(Application &application) {
 
         // TODO: Add Id parser
 
-        Actor newActor = Actor(0, name, birthYear);
-        application.addActor(newActor);
+        std::unique_ptr<Actor> newActor = std::make_unique<Actor>(Actor(0, name, birthYear));
+        application.addActor(std::move(newActor));
 
         return true;
     }
-    catch(exception &e) {
+    catch(std::exception &e) {
         std::cout << "An error has occurred. Please try again." << "\n";
         return false;
     }
@@ -59,12 +59,12 @@ bool BasicFeatures::addNewMovie(Application &application) {
 
         // TODO: Add Id parser and Genre
 
-        Movie newMovie = Movie(0, title, releaseYear, plot, Genre::NONE);
-        application.addMovie(newMovie);
+        std::unique_ptr<Movie> newMovie = std::make_unique<Movie>(Movie(0, title, releaseYear, plot, Genre::NONE));
+        application.addMovie(std::move(newMovie));
 
         return true;
     }
-    catch (exception &e) {
+    catch (std::exception &e) {
         std::cout << "An error has occurred. Please try again." << "\n";
         return false;
     }
