@@ -8,12 +8,12 @@
 
 Application* Application::uniqueInstance = nullptr;
 Application::Application() {
-    accounts.add("user1", new Account("user1", "password1", false));
-    accounts.add("user2", new Account("user2", "password2", false));
-    accounts.add("user3", new Account("user3", "password3", false));
-    accounts.add("admin1", new Account("admin1", "password4", true));
-    accounts.add("admin2", new Account("admin2", "password5", true));
-    accounts.add("admin3", new Account("admin3", "password6", true));
+    accounts.add("user1", std::make_unique<Account>(Account("user1", "password1", false)));
+    accounts.add("user2", std::make_unique<Account>(Account("user2", "password2", false)));
+    accounts.add("user3", std::make_unique<Account>(Account("user3", "password3", false)));
+    accounts.add("admin1",  std::make_unique<Account>(Account("admin1", "password4", true)));
+    accounts.add("admin2", std::make_unique<Account>(Account("admin2", "password5", true)));
+    accounts.add("admin3", std::make_unique<Account>(Account("admin3", "password6", true)));
 }
 Application* Application::getInstance() {
     if (uniqueInstance == nullptr) {
@@ -22,101 +22,102 @@ Application* Application::getInstance() {
     return uniqueInstance;
 }
 
-Account* Application::getAccount(std::string username) {
-    return accounts[username];
+Account* Application::getAccount(const std::string &username) {
+    return accounts[username].get();
 }
 
 // Setters for Actor and Movie
-void Application::addActor(Actor actor) {
-    actors.add(actor.getId(), &actor);
+void Application::addActor(std::unique_ptr<Actor> actor) {
+    // reminder: actors dict will OWN the pointer
+    actors.add(actor->getId(), std::move(actor));
 }
 
-void Application::addMovie(Movie movie) {
-    movies.add(movie.getId(), &movie);
+void Application::addMovie(std::unique_ptr<Movie> movie) {
+    // reminder: movies dict will OWN the pointer
+    movies.add(movie->getId(), std::move(movie));
 }
 
-bool Application::removeActor(int id) {
+bool Application::removeActor(const int id) {
     return actors.remove(id);
 }
 
-bool Application::removeMovie(int id) {
+bool Application::removeMovie(const int id) {
     return movies.remove(id);
 }
 
 // Getters for Actor and Movie
-Actor* Application::getActor(int id) {
+Actor* Application::getActor(const int id) {
     if (actors[id] != nullptr) {
-        return actors[id];
+        return actors[id].get();
     }
-    else {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
-Movie* Application::getMovie(int id) {
+Movie* Application::getMovie(const int id) {
     if (movies[id] != nullptr) {
-        return movies[id];
+        return movies[id].get();
     }
-    else {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 // Relationships
-bool Application::addActorToMovie(int actorId, int movieId) {
+bool Application::addActorToMovie(const int actorId, const int movieId) {
     // Add Actor to the Actor-to-Movie Relationship
-    SortedList* actorMovieIds = actorsToMovies[actorId];
+    std::unique_ptr<SortedList> actorMovieIds = std::move(actorsToMovies[actorId]);
     if (actorMovieIds == nullptr) {
-        actorMovieIds = new SortedList();
-        actorsToMovies[actorId] = actorMovieIds;
+        actorMovieIds = std::make_unique<SortedList>(SortedList());
+        actorsToMovies[actorId] = std::move(actorMovieIds);
     }
     actorMovieIds->insert(movieId);
 
     // Add Movie to Movie-to-Actor Relationship
-    SortedList* movieActorIds = moviesToActors[movieId];
+    std::unique_ptr<SortedList> movieActorIds = std::move(moviesToActors[movieId]);
     if (movieActorIds == nullptr) {
-        movieActorIds = new SortedList();
-        moviesToActors[movieId] = movieActorIds;
+        movieActorIds = std::make_unique<SortedList>(SortedList());
+        moviesToActors[movieId] = std::move(movieActorIds);
     }
     movieActorIds->insert(actorId);
 
     return true;
 }
-bool Application::removeActorFromMovie(int actorId, int movieId) {
-    SortedList* actorMovieIds = actorsToMovies[actorId];
+bool Application::removeActorFromMovie(const int actorId, const int movieId) {
+    // not using std::move as we don't need ownership, we just need to modify
+    SortedList* actorMovieIds = actorsToMovies[actorId].get();
     actorMovieIds->remove(movieId);
 
-    SortedList* movieActorIds = moviesToActors[movieId];
+    SortedList* movieActorIds = moviesToActors[movieId].get();
     movieActorIds->remove(actorId);
 
     return true;
 }
-DoubleLinkedList<Actor*>* Application::getActors(int movieId) {
-    SortedList* actorIds = moviesToActors[movieId];
-    DoubleLinkedList<Actor*>* movieActors = new DoubleLinkedList<Actor*>();
+DoubleLinkedList<Actor*>* Application::getActors(const int movieId) {
+    SortedList* actorIds = moviesToActors[movieId].get();
+    auto movieActors = new DoubleLinkedList<Actor*>();
 
     for (int i = 0; i < actorIds->getLength(); i++) {
-        Actor* actor = actors[actorIds->get(i)];
+        Actor* actor = actors[actorIds->get(i)].get();
         movieActors->add(actor);
     }
 
     return movieActors;
 }
 DoubleLinkedList<Movie*>* Application::getMovies(int actorId) {
-    SortedList* movieIds = actorsToMovies[actorId];
-    DoubleLinkedList<Movie*>* actorMovies = new DoubleLinkedList<Movie*>();
+    SortedList* movieIds = actorsToMovies[actorId].get();
+    auto actorMovies = new DoubleLinkedList<Movie*>();
 
     for (int i = 0; i < movieIds->getLength(); i++) {
-        actorMovies->add(movies[movieIds->get(i)]);
+        actorMovies->add(movies[movieIds->get(i)].get());
     }
 
     return actorMovies;
 }
 SortedList* Application::getActorMovies(int id) {
-    return actorsToMovies[id];
+    return actorsToMovies[id].get();
 }
 SortedList* Application::getMovieActors(int id) {
-    return moviesToActors[id];
+    return moviesToActors[id].get();
 }
 // const MyDict<int, SortedList*>& Application::getActorsToMoviesRelationship() const {
 //     return actorsToMovies;
