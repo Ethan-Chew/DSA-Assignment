@@ -4,15 +4,15 @@
 
 #include "models/Account.h"
 
-Account::Account(string usrname, string pwd, bool usrIsAdmin) {
+Account::Account(std::string usrname, std::string pwd, bool usrIsAdmin) {
     username = usrname;
     password = pwd;
     isAdmin = usrIsAdmin;
 }
-string Account::getUsername() {
+std::string Account::getUsername() {
     return username;
 }
-bool Account::comparePassword(string pwd) {
+bool Account::comparePassword(std::string pwd) {
     if (password == pwd) {
         return true;
     }

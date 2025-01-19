@@ -22,7 +22,7 @@ Application* Application::getInstance() {
     return uniqueInstance;
 }
 
-Account* Application::getAccount(string username) {
+Account* Application::getAccount(std::string username) {
     return accounts[username];
 }
 

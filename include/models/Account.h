@@ -8,12 +8,12 @@ using namespace std;
 
 class Account {
 private:
-    string username;
-    string password;
+    std::string username;
+    std::string password;
     bool isAdmin;
 public:
-    Account(string, string, bool);
-    string getUsername();
-    bool comparePassword(string);
+    Account(std::string, std::string, bool);
+    std::string getUsername();
+    bool comparePassword(std::string);
     bool isAdministrator();
 };

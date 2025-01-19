@@ -4,7 +4,7 @@
 
 #include "models/Movie.h"
 
-Movie::Movie(int id, string title, int releaseYear, string plot, Genre genre) {
+Movie::Movie(int id, std::string title, int releaseYear, std::string plot, Genre genre) {
     this->id = id;
     this->title = title;
     this->releaseYear = releaseYear;
@@ -14,19 +14,19 @@ Movie::Movie(int id, string title, int releaseYear, string plot, Genre genre) {
 int Movie::getId() {
   return this->id;
 }
-string Movie::getTitle() {
+std::string Movie::getTitle() {
     return this->title;
 }
-string Movie::getPlot() {
+std::string Movie::getPlot() {
     return this->plot;
 }
 Genre Movie::getGenre() {
     return this->genre;
 }
-void Movie::setTitle(string title) {
+void Movie::setTitle(std::string title) {
     this->title = title;
 }
-void Movie::setPlot(string plot) {
+void Movie::setPlot(std::string plot) {
     this->plot = plot;
 }
 void Movie::setGenre(Genre genre) {

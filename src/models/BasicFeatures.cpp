@@ -15,7 +15,7 @@ using namespace std;
 // Add new actor
 bool BasicFeatures::addNewActor(Application &application) {
     try {
-        string name;
+        std::string name;
         int birthYear;
 
         std::cout <<
@@ -42,9 +42,9 @@ bool BasicFeatures::addNewActor(Application &application) {
 // Add new movie
 bool BasicFeatures::addNewMovie(Application &application) {
     try {
-        string title;
+        std::string title;
         int releaseYear;
-        string plot;
+        std::string plot;
 
         std::cout <<
             "Option: 'Add New Movie' Selected.\n"
@@ -122,7 +122,7 @@ bool BasicFeatures::updateActorOrMovie(Application &application) {
 // User Basic Functions
 // Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user
 bool displayActors(Application &application) {
-    string ageRange;
+    std::string ageRange;
 
     std::cout <<
         "Option: 'Display Actors' Selected.\n"

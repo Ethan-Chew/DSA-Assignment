@@ -25,14 +25,14 @@ private:
     MyDict<int, SortedList*> actorsToMovies;
     MyDict<int, SortedList*> moviesToActors;
 
-    MyDict<string, Account*> accounts;
+    MyDict<std::string, Account*> accounts;
 
     Application();
 public:
     static Application* getInstance();
 
     // Retrieve Account
-    Account* getAccount(string username);
+    Account* getAccount(std::string username);
 
     // Add/Remove/Retrieve Actor Objects
     void addActor(Actor actor);

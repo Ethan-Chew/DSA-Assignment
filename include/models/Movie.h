@@ -20,18 +20,18 @@ enum Genre {
 class Movie {
 private:
     int id;
-    string title;
-    string plot;
+    std::string title;
+    std::string plot;
     Genre genre;
     int releaseYear;
 public:
-    Movie(int, string, int, string, Genre);
+    Movie(int, std::string, int, std::string, Genre);
     int getId();
-    string getTitle();
-    string getPlot();
+    std::string getTitle();
+    std::string getPlot();
     Genre getGenre();
-    void setTitle(string);
-    void setPlot(string);
+    void setTitle(std::string);
+    void setPlot(std::string);
     void setGenre(Genre);
     void print();
 

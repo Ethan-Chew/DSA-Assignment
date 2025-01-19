@@ -10,14 +10,14 @@ using namespace std;
 class Actor {
 private:
     int id;
-    string name;
+    std::string name;
     int birthYear;
 public:
-    Actor(int, string, int);
+    Actor(int, std::string, int);
     int getId();
-    string getName();
+    std::string getName();
     int getBirthYear();
-    void setName(string);
+    void setName(std::string);
     void setBirthYear(int);
     void print();
 

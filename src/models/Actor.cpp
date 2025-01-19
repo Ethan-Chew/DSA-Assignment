@@ -4,7 +4,7 @@
 
 #include "models/Actor.h"
 
-Actor::Actor(int id, string name, int birthYear) {
+Actor::Actor(int id, std::string name, int birthYear) {
     this->id = id;
     this->name = name;
     this->birthYear = birthYear;
@@ -12,13 +12,13 @@ Actor::Actor(int id, string name, int birthYear) {
 int Actor::getId() {
     return id;
 }
-string Actor::getName() {
+std::string Actor::getName() {
     return name;
 }
 int Actor::getBirthYear() {
     return birthYear;
 }
-void Actor::setName(string name) {
+void Actor::setName(std::string name) {
     this->name = name;
 }
 void Actor::setBirthYear(int birthYear) {

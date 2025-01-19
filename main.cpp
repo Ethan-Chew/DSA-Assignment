@@ -66,7 +66,7 @@ Account loginUser(Application &application) {
     std::cout << "-----------------" << "\n";
 
     while (true) {
-        string username = "", password = "";
+        std::string username = "", password = "";
         std::cout << "Username: ";
         std::cin >> username;
         std::cout << "Password: ";
