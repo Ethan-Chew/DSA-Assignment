@@ -4,7 +4,7 @@
 
 #include "../../include/SortedList.h"
 #include <iostream>
-using namespace std;
+
 
 SortedList::SortedList() {
     size = 0;

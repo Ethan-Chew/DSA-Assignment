@@ -5,7 +5,6 @@
 #pragma once
 #include "DoubleLinkedList.h"
 #include <iostream>
-using namespace std;
 
 enum Genre {
     ACTION,

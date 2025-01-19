@@ -5,7 +5,7 @@
 #include "models/Movie.h"
 #include <MyLinkedList.h>
 #include <iostream>
-using namespace std;
+
 
 class BasicFeatures {
 public:

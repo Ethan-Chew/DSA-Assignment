@@ -6,7 +6,7 @@
 #include "models/Movie.h"
 
 #include <iostream>
-using namespace std;
+
 
 Stack::Stack() {
     topNode = nullptr;

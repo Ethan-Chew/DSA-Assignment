@@ -13,34 +13,33 @@
 
 #include "Account.h"
 #include "SortedList.h"
-using namespace std;
 
 // Singleton to store data of Actors and Movies
 class Application {
 private:
     static Application* uniqueInstance;
-    MyDict<int, Actor*> actors;
-    MyDict<int, Movie*> movies;
+    MyDict<int, std::unique_ptr<Actor>> actors;
+    MyDict<int, std::unique_ptr<Movie>> movies;
 
-    MyDict<int, SortedList*> actorsToMovies;
-    MyDict<int, SortedList*> moviesToActors;
+    MyDict<int, std::unique_ptr<SortedList>> actorsToMovies;
+    MyDict<int, std::unique_ptr<SortedList>> moviesToActors;
 
-    MyDict<std::string, Account*> accounts;
+    MyDict<std::string, std::unique_ptr<Account>> accounts;
 
     Application();
 public:
     static Application* getInstance();
 
     // Retrieve Account
-    Account* getAccount(std::string username);
+    Account* getAccount(const std::string &username);
 
     // Add/Remove/Retrieve Actor Objects
-    void addActor(Actor actor);
+    void addActor(std::unique_ptr<Actor> actor);
     bool removeActor(int);
     Actor* getActor(int);
 
     // Add/Remove/Retrieve Movie Objects
-    void addMovie(Movie movie);
+    void addMovie(std::unique_ptr<Movie> movie);
     bool removeMovie(int);
     Movie* getMovie(int);
 

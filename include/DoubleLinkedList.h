@@ -5,7 +5,7 @@
 #pragma once
 #include<string>
 #include<iostream>
-using namespace std;
+
 
 template <typename T>
 class DoubleLinkedList {

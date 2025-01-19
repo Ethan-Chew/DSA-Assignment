@@ -21,8 +21,8 @@ void setupApplication(Application &application) {
     auto *birth = reinterpret_cast<MyList<int>*>((*actorResult)["birth"]);
 
     for (int i = 0; i < ids->get_length(); i++) {
-        Actor actor = Actor(ids->get(i), names->get(i), birth->get(i));
-        application.addActor(actor);
+        std::unique_ptr<Actor> actor = std::make_unique<Actor>(ids->get(i), names->get(i), birth->get(i));
+        application.addActor(std::move(actor));
     }
 
     // Parse the Movies from the CSV into the Application
@@ -39,8 +39,8 @@ void setupApplication(Application &application) {
     auto *years = reinterpret_cast<MyList<int>*>((*movieResult)["year"]);
 
     for (int i = 0; i < movieIds->get_length(); i++) {
-        Movie movie = Movie(movieIds->get(i), titles->get(i), years->get(i), "", Genre::NONE);
-        application.addMovie(movie);
+        std::unique_ptr<Movie> movie = std::make_unique<Movie>(movieIds->get(i), titles->get(i), years->get(i), "", Genre::NONE);
+        application.addMovie(std::move(movie));
     }
 
     // Parse the Actors and Movies relationship from the CSV into the Application
@@ -66,7 +66,7 @@ Account loginUser(Application &application) {
     std::cout << "-----------------" << "\n";
 
     while (true) {
-        std::string username = "", password = "";
+        std::string username, password;
         std::cout << "Username: ";
         std::cin >> username;
         std::cout << "Password: ";

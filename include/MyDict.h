@@ -89,7 +89,7 @@ public:
         }
     }
 
-    void add(const K& key, const V& val) {
+    void add(const K& key, const V val) {
         if (static_cast<double>(count + 1) / buckets.get_length() > LD_FAC) {
             rehash();
         }
@@ -165,11 +165,11 @@ public:
 
     void display() const {
         if (is_empty()) {
-            std::cout << "{ }" << std::"\n";
+            std::cout << "{ }" <<"\n";
             return;
         }
 
-        std::cout << "{" << std::"\n";
+        std::cout << "{" << "\n";
         bool first_item = true;
 
         for (int i = 0; i < buckets.get_length(); i++) {
@@ -178,14 +178,14 @@ public:
 
             while (curr_ptr) {
                 if (!first_item) {
-                    std::cout << "," << std::"\n";
+                    std::cout << "," << "\n";
                 }
                 std::cout << "  " << curr_ptr->key << " : " << curr_ptr->val;
                 first_item = false;
                 curr_ptr = curr_ptr->next.get();
             }
         }
-        std::cout << std::"\n" << "}" << std::"\n";
+        std::cout << "\n" << "}" << "\n";
     }
 
     bool is_empty() const {

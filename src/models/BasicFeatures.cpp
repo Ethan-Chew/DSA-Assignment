@@ -9,7 +9,7 @@
 #include "models/Actor.h"
 #include "models/Movie.h"
 #include "DoubleLinkedList.h"
-using namespace std;
+
 
 // Admin Basic Functions
 // Add new actor

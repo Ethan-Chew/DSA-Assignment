@@ -5,7 +5,7 @@
 #pragma once
 #include <iostream>
 #include "Movie.h"
-using namespace std;
+
 
 class Stack {
 private:
