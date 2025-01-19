@@ -58,7 +58,8 @@ private:
                 continue;
             }
 			if ((chr != ',') || quote) {
-            	token += chr;
+                // treat semicolon as comma
+            	token += (chr == ';' ? ',' : chr);
                 continue;
             }
 
