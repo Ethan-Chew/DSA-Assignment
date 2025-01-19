@@ -72,9 +72,9 @@ int SortedList::get(int index) {
 
 void SortedList::print() {
     for (int i = 0; i < size; i++) {
-        cout << data[i] << " ";
+        std::cout << data[i] << " ";
     }
-    cout << endl;
+    std::cout << "\n";
 }
 bool SortedList::isEmpty() {
     return size == 0;

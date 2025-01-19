@@ -5,7 +5,6 @@
 #include "models/Account.h"
 #include "models/Application.h"
 #include "BasicFeatures.h"
-using namespace std;
 
 void setupApplication(Application &application) {
     // Parse the Actors from the CSV into the Application
@@ -63,25 +62,25 @@ void setupApplication(Application &application) {
 }
 
 Account loginUser(Application &application) {
-    cout << "Amazing Movie App" << endl;
-    cout << "-----------------" << endl;
+    std::cout << "Amazing Movie App" << "\n";
+    std::cout << "-----------------" << "\n";
 
     while (true) {
         string username = "", password = "";
-        cout << "Username: ";
-        cin >> username;
-        cout << "Password: ";
-        cin >> password;
+        std::cout << "Username: ";
+        std::cin >> username;
+        std::cout << "Password: ";
+        std::cin >> password;
 
         Account* account = application.getAccount(username);
         if (account == nullptr) {
-            cout << "No account with username found." << endl;
+            std::cout << "No account with username found." << "\n";
         } else {
             if (account->comparePassword(password)) {
-                cout << "Welcome, " + username + "!" << endl;
+                std::cout << "Welcome, " + username + "!" << "\n";
                 return *account;
             } else {
-                cout << "Incorrect Password." << endl;
+                std::cout << "Incorrect Password." << "\n";
             }
         }
     }
@@ -91,7 +90,7 @@ void displayMenu(Application &application, bool isAdmin) {
     int choice = -1;
     while (choice != 0) {
         if (!isAdmin) {
-            cout <<
+            std::cout <<
                 "Available User Functions\n"
                 "1. Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user\n"
                 "2. Display movies made within the past 3 years (in ascending order of year)\n"
@@ -99,8 +98,8 @@ void displayMenu(Application &application, bool isAdmin) {
                 "4. Display all the actors in a particular movie (in alphabetical order)\n"
                 "5. Display a list of all actors that a particular actor knows.\n"
                 "0. Exit App\n"
-                "Enter Choice: " << endl;
-            cin >> choice;
+                "Enter Choice: " << "\n";
+            std::cin >> choice;
 
             switch (choice) {
                 default: { break; }
@@ -119,15 +118,15 @@ void displayMenu(Application &application, bool isAdmin) {
                 case 5: { break; }
             }
         } else {
-            cout <<
+            std::cout <<
                 "Available Admin Commands\n"
                 "1. Add new actor\n"
                 "2. Add new movie\n"
                 "3. Add an actor to a movie\n"
                 "4. Update actor/movie details.\n"
                 "0. Exit App\n"
-                "Enter Choice: " << endl;
-            cin >> choice;
+                "Enter Choice: " << "\n";
+            std::cin >> choice;
 
             switch (choice) {
                 default: { break; }

@@ -165,11 +165,11 @@ public:
 
     void display() const {
         if (is_empty()) {
-            std::cout << "{ }" << std::endl;
+            std::cout << "{ }" << std::"\n";
             return;
         }
 
-        std::cout << "{" << std::endl;
+        std::cout << "{" << std::"\n";
         bool first_item = true;
 
         for (int i = 0; i < buckets.get_length(); i++) {
@@ -178,14 +178,14 @@ public:
 
             while (curr_ptr) {
                 if (!first_item) {
-                    std::cout << "," << std::endl;
+                    std::cout << "," << std::"\n";
                 }
                 std::cout << "  " << curr_ptr->key << " : " << curr_ptr->val;
                 first_item = false;
                 curr_ptr = curr_ptr->next.get();
             }
         }
-        std::cout << std::endl << "}" << std::endl;
+        std::cout << std::"\n" << "}" << std::"\n";
     }
 
     bool is_empty() const {

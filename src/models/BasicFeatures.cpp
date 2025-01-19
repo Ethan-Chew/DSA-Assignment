@@ -18,13 +18,13 @@ bool BasicFeatures::addNewActor(Application &application) {
         string name;
         int birthYear;
 
-        cout <<
+        std::cout <<
             "Option: 'Add New Actor' Selected.\n"
             "Please enter name: ";
-        getline(cin, name);
+        getline(std::cin, name);
 
-        cout << "\nPlease enter birth year: ";
-        cin >> birthYear;
+        std::cout << "\nPlease enter birth year: ";
+        std::cin >> birthYear;
 
         // TODO: Add Id parser
 
@@ -34,7 +34,7 @@ bool BasicFeatures::addNewActor(Application &application) {
         return true;
     }
     catch(exception &e) {
-        cout << "An error has occurred. Please try again." << endl;
+        std::cout << "An error has occurred. Please try again." << "\n";
         return false;
     }
 }
@@ -46,16 +46,16 @@ bool BasicFeatures::addNewMovie(Application &application) {
         int releaseYear;
         string plot;
 
-        cout <<
+        std::cout <<
             "Option: 'Add New Movie' Selected.\n"
             "Please enter movie title: ";
-        getline(cin, title);
+        getline(std::cin, title);
 
-        cout << "\nPlease enter movie release year: ";
-        cin >> releaseYear;
+        std::cout << "\nPlease enter movie release year: ";
+        std::cin >> releaseYear;
 
-        cout << "\nPlease enter movie plot: ";
-        getline(cin, plot);
+        std::cout << "\nPlease enter movie plot: ";
+        getline(std::cin, plot);
 
         // TODO: Add Id parser and Genre
 
@@ -65,7 +65,7 @@ bool BasicFeatures::addNewMovie(Application &application) {
         return true;
     }
     catch (exception &e) {
-        cout << "An error has occurred. Please try again." << endl;
+        std::cout << "An error has occurred. Please try again." << "\n";
         return false;
     }
 }
@@ -75,16 +75,16 @@ bool BasicFeatures::addActorToMovie(Application &application) {
     int actorId;
     int movieId;
 
-    cout <<
+    std::cout <<
             "Option: 'Add Actor to Movie' Selected.\n"
             "Please enter actor's id: ";
-    cin >> actorId;
+    std::cin >> actorId;
 
-    cout << "\nPlease enter movie id: ";
-    cin >> movieId;
+    std::cout << "\nPlease enter movie id: ";
+    std::cin >> movieId;
 
     if (application.addActorToMovie(actorId, movieId)) {
-        cout << "Actor added successfully!" << endl;
+        std::cout << "Actor added successfully!" << "\n";
         return true;
     }
     return false;
@@ -95,26 +95,26 @@ bool BasicFeatures::updateActorOrMovie(Application &application) {
     int movieActorChoice;
     int actorMovieId;
 
-    cout <<
+    std::cout <<
             "Option: 'Update actor/movie details' Selected.\n"
             "Update (1) Actor or (2) Movie: ";
-    cin >> movieActorChoice;
+    std::cin >> movieActorChoice;
 
     // TODO: Add get actor/movie with Id functionality in application
     if (movieActorChoice == 1) {
-        cout << "\nPlease enter actor id: ";
-        cin >> actorMovieId;
+        std::cout << "\nPlease enter actor id: ";
+        std::cin >> actorMovieId;
 
         application.getActor(actorMovieId);
     }
     else if (movieActorChoice == 2) {
-        cout << "\nPlease enter actor id: ";
-        cin >> actorMovieId;
+        std::cout << "\nPlease enter actor id: ";
+        std::cin >> actorMovieId;
 
         application.getMovie(actorMovieId);
     }
     else {
-        cout << "Invalid Input. Please try again." << endl;
+        std::cout << "Invalid Input. Please try again." << "\n";
         return false;
     }
 }
@@ -124,10 +124,10 @@ bool BasicFeatures::updateActorOrMovie(Application &application) {
 bool displayActors(Application &application) {
     string ageRange;
 
-    cout <<
+    std::cout <<
         "Option: 'Display Actors' Selected.\n"
         "Enter actor age range, seperated by a comma: ";
-    cin >> ageRange;
+    std::cin >> ageRange;
 
     return true;
 }
@@ -142,10 +142,10 @@ bool displayMovies(Application &application) {
 bool displayActorMovies(Application &application) {
     int actorId;
 
-    cout <<
+    std::cout <<
             "Option: 'Display all movies an actor starred in.\n"
             "Enter actor's id: ";
-    cin >> actorId;
+    std::cin >> actorId;
 
     DoubleLinkedList<Movie*>* movies = application.getMovies(actorId);
     if (movies == nullptr) { return  false; }
@@ -162,10 +162,10 @@ void BasicFeatures::displayActorsInMovie(Application& application, int id) {
     actors->sort();
     actors->print();
 
-    cout <<
+    std::cout <<
             "Option: 'Display all the actors in a particular movie.\n"
             "Enter movie id: ";
-    cin >> movieId;
+    std::cin >> movieId;
 
     // TODO: Sort alphabetically
 }

@@ -109,7 +109,7 @@ void DoubleLinkedList<T>::print() {
         tempNode->item->print();
         tempNode = tempNode->next;
     }
-    cout << endl;
+    std::cout << "\n";
 }
 
 // Merge Sort Functionality

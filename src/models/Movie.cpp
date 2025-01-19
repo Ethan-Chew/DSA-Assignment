@@ -33,7 +33,7 @@ void Movie::setGenre(Genre genre) {
     this->genre = genre;
 }
 void Movie::print() {
-    cout << "Movie ID: " << id << " | Title: " << title << " | Plot: " << plot << " | Genre: " << genre << endl;
+    std::cout << "Movie ID: " << id << " | Title: " << title << " | Plot: " << plot << " | Genre: " << genre << "\n";
 }
 
 

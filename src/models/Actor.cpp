@@ -25,7 +25,7 @@ void Actor::setBirthYear(int birthYear) {
     this->birthYear = birthYear;
 }
 void Actor::print() {
-    cout << "Actor ID: " << id << " | Name: " << name << " | Birth Year: " << birthYear << endl;
+    std::cout << "Actor ID: " << id << " | Name: " << name << " | Birth Year: " << birthYear << "\n";
 }
 
 
