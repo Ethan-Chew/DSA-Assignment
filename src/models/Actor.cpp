@@ -34,5 +34,5 @@ void Actor::print() {
 
 // Overload Operator for Comparison
 bool Actor::operator<(const Actor& other) const {
-    return name < other.name;
+    return name[0] < other.name[0];
 }

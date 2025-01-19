@@ -50,9 +50,9 @@ public:
     /// Get Actors who acted in Movie ID
     // const MyDict<int, SortedList *> &getActorsToMoviesRelationship() const;
     SortedList *getActorMovies(int id);
-    DoubleLinkedList<Actor*>* getActors(int);
+    MyLinkedList<Actor*>* getActors(int);
     /// Get Movies acted by Actor ID
     // const MyDict<int, SortedList *> &getMoviesToActorsRelationship() const;
-    DoubleLinkedList<Movie*>* getMovies(int);
+    MyLinkedList<Movie*>* getMovies(int);
     SortedList *getMovieActors(int id);
 };

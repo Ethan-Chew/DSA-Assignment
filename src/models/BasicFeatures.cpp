@@ -8,7 +8,7 @@
 #include "models/Application.h"
 #include "models/Actor.h"
 #include "models/Movie.h"
-#include "DoubleLinkedList.h"
+#include "MyLinkedList.h"
 
 
 // Admin Basic Functions
@@ -147,7 +147,7 @@ bool displayActorMovies(Application &application) {
             "Enter actor's id: ";
     std::cin >> actorId;
 
-    DoubleLinkedList<Movie*>* movies = application.getMovies(actorId);
+    MyLinkedList<Movie*>* movies = application.getMovies(actorId);
     if (movies == nullptr) { return  false; }
 
     // TODO: Sort alphabetically
@@ -158,7 +158,7 @@ bool displayActorMovies(Application &application) {
 // Display all the actors in a particular movie (in alphabetical order)
 void BasicFeatures::displayActorsInMovie(Application& application, const int id) {
     int movieId;
-    DoubleLinkedList<Actor*>* actors = application.getActors(id);
+    MyLinkedList<Actor*>* actors = application.getActors(id);
     actors->sort();
     actors->print();
 

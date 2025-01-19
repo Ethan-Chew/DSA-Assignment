@@ -3,7 +3,6 @@
 //
 
 #pragma once
-#include "DoubleLinkedList.h"
 #include <iostream>
 
 enum Genre {

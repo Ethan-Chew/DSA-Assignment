@@ -162,12 +162,17 @@ void displayMenu(Application &application, bool isAdmin) {
 
 int main()
 {
-    Application* application = Application::getInstance();
-    setupApplication(*application);
-
-    // Login and Main Menu Setup
-    Account account = loginUser(*application);
-    displayMenu(*application, account.isAdministrator());
+    MyLinkedList<std::string> list;
+    list.append("bob");
+    list.append("charlie");
+    list.append("aaaaah");
+    list.sort();
+    // Application* application = Application::getInstance();
+    // setupApplication(*application);
+    //
+    // // Login and Main Menu Setup
+    // Account account = loginUser(*application);
+    // displayMenu(*application, account.isAdministrator());
 
 
     return 0;

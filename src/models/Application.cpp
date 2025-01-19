@@ -3,7 +3,7 @@
 //
 
 #include "models/Application.h"
-#include "DoubleLinkedList.h"
+#include "MyLinkedList.h"
 #include <MyLinkedList.h>
 
 Application* Application::uniqueInstance = nullptr;
@@ -94,23 +94,23 @@ bool Application::removeActorFromMovie(const int actorId, const int movieId) {
 
     return true;
 }
-DoubleLinkedList<Actor*>* Application::getActors(const int movieId) {
+MyLinkedList<Actor*>* Application::getActors(const int movieId) {
     SortedList* actorIds = moviesToActors[movieId].get();
-    auto movieActors = new DoubleLinkedList<Actor*>();
+    auto movieActors = new MyLinkedList<Actor*>();
 
     for (int i = 0; i < actorIds->getLength(); i++) {
         Actor* actor = actors[actorIds->get(i)].get();
-        movieActors->add(actor);
+        movieActors->append(actor);
     }
 
     return movieActors;
 }
-DoubleLinkedList<Movie*>* Application::getMovies(int actorId) {
+MyLinkedList<Movie*>* Application::getMovies(int actorId) {
     SortedList* movieIds = actorsToMovies[actorId].get();
-    auto actorMovies = new DoubleLinkedList<Movie*>();
+    auto actorMovies = new MyLinkedList<Movie*>();
 
     for (int i = 0; i < movieIds->getLength(); i++) {
-        actorMovies->add(movies[movieIds->get(i)].get());
+        actorMovies->append(movies[movieIds->get(i)].get());
     }
 
     return actorMovies;

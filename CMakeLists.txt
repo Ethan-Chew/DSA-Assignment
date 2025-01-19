@@ -12,11 +12,11 @@ add_executable(dsa main.cpp
         src/models/Application.cpp
         src/models/Actor.cpp
         src/models/Movie.cpp
-        src/DoubleLinkedList.cpp
         include/models/Stack.h
         src/models/Stack.cpp
         include/SortedList.h
         src/models/Account.cpp
         src/models/SortedList.cpp
         src/models/BasicFeatures.cpp
-        include/BasicFeatures.h)
+        include/BasicFeatures.h
+        include/MyLinkedList.h)

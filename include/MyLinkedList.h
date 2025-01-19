@@ -11,14 +11,19 @@ private:
     struct Node
     {
         T item;
-        std::unique_ptr<Node> next;
+        Node* next;
         Node(T val) : item(val), next(nullptr) {}
     };
-    std::unique_ptr<Node> firstNode;
+    Node* firstNode;
     int size;
 
+    // Merge Sort Helper Functions
+    Node* split(Node*); // Splits the List into 2 Halves
+    Node* merge(Node*, Node*); // Merges 2 Doubly-Linked Lists into One
+    Node* MergeSort(Node*); // Recursive Merge Sort
 public:
     MyLinkedList();
+    ~MyLinkedList();
     bool append(T item);
     bool insert(int idx, T item);
     void remove(int idx);
@@ -26,23 +31,34 @@ public:
     bool is_empty();
     int get_length();
     void print();
+    void sort();
 };
 
 template<typename T>
-inline MyLinkedList<T>::MyLinkedList() : size(0) {};
+inline MyLinkedList<T>::MyLinkedList() : firstNode(nullptr), size(0) {};
+
+template<typename T>
+MyLinkedList<T>::~MyLinkedList() {
+    while (firstNode != nullptr) {
+        Node* tempNode = firstNode;
+        firstNode = firstNode->next;
+        delete tempNode;
+    }
+}
+
 
 template<typename T>
 bool MyLinkedList<T>::append(T item)
 {
-    auto node = std::make_unique<Node>(item);
+    Node* newNode = new Node(item);
     if (is_empty()) {
-        firstNode = std::move(node);
+        firstNode = newNode;
     } else {
-        Node *cur = firstNode.get();
-        while (cur->next) {
-            cur = cur->next.get();
+        Node* tempNode = firstNode;
+        while (tempNode->next != nullptr) {
+            tempNode = tempNode->next;
         }
-        cur->next = std::move(node);
+        tempNode->next = newNode;
     }
     size++;
 
@@ -50,26 +66,26 @@ bool MyLinkedList<T>::append(T item)
 }
 
 template<typename T>
-bool MyLinkedList<T>::insert(int idx, T item) 
+bool MyLinkedList<T>::insert(int idx, T item)
 {
     if (idx < 0 || idx > size) {
         return false;
     }
-    
-    auto node = std::make_unique<Node>(item);
-    
+
+    Node* newNode = new Node(item);
+
     if (idx == 0) {
-        node->next = std::move(firstNode);
-        firstNode = std::move(node);
+        newNode->next = firstNode;
+        firstNode = newNode;
     } else {
-        Node *cur = firstNode.get();
+        Node* tempNode = firstNode;
         for (int i = 0; i < idx - 1; i++) {
-            cur = cur->next.get();
+            tempNode = tempNode->next;
         }
-        node->next = std::move(cur->next);
-        cur->next = std::move(node);
+        newNode->next = std::move(tempNode->next);
+        tempNode->next = std::move(newNode);
     }
-    
+
     size++;
     return true;
 }
@@ -80,17 +96,17 @@ void MyLinkedList<T>::remove(int idx)
     if (idx < 0 || idx >= size) {
         return;
     }
-    
+
     if (idx == 0) {
-        firstNode = std::move(firstNode->next);
+        firstNode = firstNode->next;
     } else {
-        Node *cur = firstNode.get();
+        Node *cur = firstNode;
         for (int i = 0; i < idx - 1; i++) {
-            cur = cur->next.get();
+            cur = cur->next;
         }
-        cur->next = std::move(cur->next->next);
+        cur->next = cur->next->next;
     }
-    
+
     size--;
 }
 
@@ -100,10 +116,10 @@ T MyLinkedList<T>::get(int idx)
     if (idx < 0 || idx >= size) {
         throw std::out_of_range("Index out of range");
     }
-    
-    Node *cur = firstNode.get();
+
+    Node *cur = firstNode;
     for (int i = 0; i < idx; i++) {
-        cur = cur->next.get();
+        cur = cur->next;
     }
     return cur->item;
 }
@@ -123,12 +139,94 @@ int MyLinkedList<T>::get_length()
 template<typename T>
 void MyLinkedList<T>::print()
 {
-    Node *cur = firstNode.get();
+    Node *cur = firstNode;
     while (cur) {
-        std::cout << cur->item << " ";
-        cur = cur->next.get();
+        cur->item->print();
+        cur = cur->next;
     }
     std::cout << "\n";
+}
+
+// Merge Sort Functionality
+template<typename T>
+typename MyLinkedList<T>::Node* MyLinkedList<T>::split(Node* head) {
+    // Find the Middle of the List by using the Slow and Fast Pointer
+    /// Slow Pointer will reach the middle by the time the Fast Pointer meets the end
+    Node* slow = head;
+    Node* fast = head;
+
+    while (fast->next != nullptr && fast->next->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    // Split the Linked List into Two Halves
+    Node* secondHalf = slow->next;
+    slow->next = nullptr;
+
+    return secondHalf;
+}
+
+template<typename T>
+typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right) {
+    Node* newHead = nullptr;
+    Node* tempNode = nullptr;  // tempNode is now a separate pointer
+
+    // Merge the two sorted lists
+    while (left && right) {
+        if (left->item < right->item) {
+            if (newHead == nullptr) {
+                newHead = left;
+                tempNode = newHead;
+            } else {
+                tempNode->next = left;
+                tempNode = tempNode->next;
+            }
+            left = left->next;
+        } else {
+            if (newHead == nullptr) {
+                newHead = right;
+                tempNode = newHead;
+            } else {
+                tempNode->next = right;
+                tempNode = tempNode->next;
+            }
+            right = right->next;
+        }
+    }
+
+    // Add the remaining elements from left or right (if any)
+    if (left) {
+        tempNode->next = left;
+    }
+    if (right) {
+        tempNode->next = right;
+    }
+
+    return newHead;
+}
+
+template<typename T>
+typename MyLinkedList<T>::Node *MyLinkedList<T>::MergeSort(Node* head) {
+    if (head == nullptr || head->next == nullptr) {
+        return head;
+    }
+
+    // Perform Merge Sort on left and right sides of the array
+    /// Split the LinkedList into two halves
+    Node* secondHalf = this->split(head);
+    /// Perform Merge Sort on Left Half
+    head = MergeSort(head);
+    /// Perform Merge Sort on Right Half
+    secondHalf = MergeSort(secondHalf);
+
+    // Merge the Left and Right Halves together
+    return this->merge(head, secondHalf);
+}
+
+template<typename T>
+void MyLinkedList<T>::sort() {
+    firstNode = MergeSort(firstNode);
 }
 
 #endif
