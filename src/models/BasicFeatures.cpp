@@ -105,13 +105,13 @@ bool BasicFeatures::updateActorOrMovie(Application &application) {
         std::cout << "\nPlease enter actor id: ";
         std::cin >> actorMovieId;
 
-        application.getActor(actorMovieId);
+        Actor* chosenActor = application.getActor(actorMovieId);
     }
     else if (movieActorChoice == 2) {
         std::cout << "\nPlease enter actor id: ";
         std::cin >> actorMovieId;
 
-        application.getMovie(actorMovieId);
+        Movie* chosenMovie = application.getMovie(actorMovieId);
     }
     else {
         std::cout << "Invalid Input. Please try again." << "\n";

@@ -10,7 +10,7 @@
 void setupApplication(Application &application) {
     // Parse the Actors from the CSV into the Application
     DataParser actorParser(
-        "./data/actors.csv",
+        "data/actors.csv",
         HeaderSpec("id", ColumnType::INT),
         HeaderSpec("name", ColumnType::STRING),
         HeaderSpec("birth", ColumnType::INT));
@@ -32,7 +32,7 @@ void setupApplication(Application &application) {
 
     // Parse the Movies from the CSV into the Application
     DataParser movieParser(
-        "./data/movies.csv",
+        "data/movies.csv",
         HeaderSpec("id", ColumnType::INT),
         HeaderSpec("title", ColumnType::STRING),
         HeaderSpec("plot",ColumnType::STRING),
@@ -52,7 +52,7 @@ void setupApplication(Application &application) {
 
     // Parse the Actors and Movies relationship from the CSV into the Application
     DataParser castParser(
-        "./data/cast.csv",
+        "data/cast.csv",
         HeaderSpec("person_id", ColumnType::INT),
         HeaderSpec("movie_id", ColumnType::INT));
 
@@ -93,9 +93,11 @@ Account loginUser(Application &application) {
     }
 }
 
+// Displays main menu and runs commands based on user input
 void displayMenu(Application &application, bool isAdmin) {
     int choice = -1;
     while (choice != 0) {
+        // User Commands
         if (!isAdmin) {
             std::cout <<
                 "Available User Functions\n"
@@ -111,21 +113,35 @@ void displayMenu(Application &application, bool isAdmin) {
             switch (choice) {
                 default: { break; }
 
-                case 1: { break; }
+                // Display actors in age range
+                case 1: {
+                    break;
+                }
 
-                case 2: { break; }
+                // Display movies released in past 3 years
+                case 2: {
+                    break;
+                }
 
-                case 3: { break; }
+                // Display movies actor starred in
+                case 3: {
+                    break;
+                }
 
+                // Display all actors cast in movie
                 case 4: {
                     BasicFeatures::displayActorsInMovie(application, 109830);
                     break;
                 }
 
+                // Display all actors an actor knows
                 case 5: {
                     BasicFeatures::displayKnownActors(application);
+                    break;
                 }
             }
+
+        // Admin Commands
         } else {
             std::cout <<
                 "Available Admin Commands\n"
@@ -140,21 +156,25 @@ void displayMenu(Application &application, bool isAdmin) {
             switch (choice) {
                 default: { break; }
 
+                // Add new actor
                 case 1: {
                     BasicFeatures::addNewActor(application);
                     break;
                 }
 
+                // Add new movie
                 case 2: {
                     BasicFeatures::addNewMovie(application);
                     break;
                 }
 
+                // Add actor to movie
                 case 3: {
                     BasicFeatures::addActorToMovie(application);
                     break;
                 }
 
+                // Update actor/movie details
                 case 4: {
                     BasicFeatures::updateActorOrMovie(application);
                     break;
