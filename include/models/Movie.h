@@ -27,6 +27,7 @@ public:
     int getId();
     std::string getTitle();
     std::string getPlot();
+    int getReleaseYear() const;
     Genre getGenre();
     void setTitle(std::string);
     void setPlot(std::string);

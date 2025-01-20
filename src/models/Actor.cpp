@@ -18,7 +18,7 @@ int Actor::getId() {
 std::string Actor::getName() {
     return name;
 }
-int Actor::getBirthYear() {
+int Actor::getBirthYear() const {
     return birthYear;
 }
 void Actor::setName(std::string name) {

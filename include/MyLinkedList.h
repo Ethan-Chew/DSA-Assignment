@@ -1,8 +1,22 @@
 #ifndef MY_LINKED_LIST_H
 #define MY_LINKED_LIST_H
 
+#include <functional>
 #include <iostream>
-#include <memory>
+#include <optional>
+#include "models/Actor.h"
+#include "models/Movie.h"
+
+enum FilterType {
+    AGE_RANGE,
+    PAST_THREE_YEARS
+};
+
+enum SortType {
+    ALPHABETICALLY,
+    AGE,
+    RELEASE_YEAR
+};
 
 template<typename T>
 class MyLinkedList 
@@ -19,8 +33,19 @@ private:
 
     // Merge Sort Helper Functions
     Node* split(Node*); // Splits the List into 2 Halves
-    Node* merge(Node*, Node*); // Merges 2 Doubly-Linked Lists into One
-    Node* MergeSort(Node*); // Recursive Merge Sort
+    Node* merge(Node*, Node*, SortType); // Merges 2 Doubly-Linked Lists into One
+    Node* MergeSort(Node*, SortType); // Recursive Merge Sort
+
+    // Comparator Lambda Functions
+    std::function<bool(const T&, const T&)> compareTextAlphabetically = [](const T& a, const T& b) { // Compares the Name or Title for Actor and Movie respectively
+        return a < b;
+    };
+    std::function<bool(Actor* const&, Actor* const&)> compareByAge = [](Actor* const& a, Actor* const& b) {
+        return a->getBirthYear() < b->getBirthYear();
+    };
+    std::function<bool(Movie* const&, Movie* const&)> compareByReleaseYear = [](Movie* const& a, Movie* const& b) {
+        return a->getReleaseYear() < b->getReleaseYear();
+    };
 public:
     MyLinkedList();
     ~MyLinkedList();
@@ -31,7 +56,8 @@ public:
     bool is_empty();
     int get_length();
     void print();
-    void sort();
+    void sort(SortType);
+    void filter(MyLinkedList<T>&, FilterType, std::optional<int>, std::optional<int>);
 };
 
 template<typename T>
@@ -168,9 +194,23 @@ typename MyLinkedList<T>::Node* MyLinkedList<T>::split(Node* head) {
 }
 
 template<typename T>
-typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right) {
+typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right, SortType type) {
     Node* newHead = nullptr;
-    Node* tempNode = nullptr;  // tempNode is now a separate pointer
+    Node* tempNode = nullptr;
+
+    // Determine the Comparator to use for the Merge Sort (either Alphabetically, by Age, or by Release Year)
+    // std::function<bool(const T&, const T&)> comparator;
+    // switch (type) {
+    //     case ALPHABETICALLY:
+    //         comparator = compareTextAlphabetically;
+    //         break;
+    //     case AGE:
+    //         comparator = compareByAge;
+    //         break;
+    //     case RELEASE_YEAR:
+    //         comparator = compareByReleaseYear;
+    //         break;
+    // }
 
     // Merge the two sorted lists
     while (left && right) {
@@ -207,7 +247,7 @@ typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right) 
 }
 
 template<typename T>
-typename MyLinkedList<T>::Node *MyLinkedList<T>::MergeSort(Node* head) {
+typename MyLinkedList<T>::Node *MyLinkedList<T>::MergeSort(Node* head, SortType type) {
     if (head == nullptr || head->next == nullptr) {
         return head;
     }
@@ -216,17 +256,57 @@ typename MyLinkedList<T>::Node *MyLinkedList<T>::MergeSort(Node* head) {
     /// Split the LinkedList into two halves
     Node* secondHalf = this->split(head);
     /// Perform Merge Sort on Left Half
-    head = MergeSort(head);
+    head = MergeSort(head, type);
     /// Perform Merge Sort on Right Half
-    secondHalf = MergeSort(secondHalf);
+    secondHalf = MergeSort(secondHalf, type);
 
     // Merge the Left and Right Halves together
-    return this->merge(head, secondHalf);
+    return this->merge(head, secondHalf, type);
 }
 
 template<typename T>
-void MyLinkedList<T>::sort() {
-    firstNode = MergeSort(firstNode);
+void MyLinkedList<T>::sort(SortType type) {
+    // Call the Merge Sort Function
+    firstNode = MergeSort(firstNode, type);
 }
+
+template<typename T>
+void MyLinkedList<T>::filter(MyLinkedList<T>& filteredList, FilterType filterType, std::optional<int> startAge, std::optional<int> endAge) {
+    // Type Check the Objects currently in the array (T)
+    if (filterType == FilterType::AGE_RANGE) {
+        if (!std::is_same_v<T, Actor>) {
+            throw std::invalid_argument("AGE_RANGE filter can only be applied to Actors");
+        }
+        if (!(startAge.has_value() && endAge.has_value())) {
+            throw std::invalid_argument("startAge and endAge must be both non-zero when filtering by AGE_RANGE");
+        }
+    }
+    if (filterType == FilterType::PAST_THREE_YEARS && !std::is_same_v<T, Movie>) {
+        throw std::invalid_argument("PAST_THREE_YEARS filter can only be applied to Movies");
+    }
+
+    // TODO: Can we use STL to get the current year?
+    const int currentYear = 2025;
+
+    // Filter the List
+    Node* currNode = firstNode;
+    while (currNode != nullptr) {
+        switch (filterType) {
+            case FilterType::AGE_RANGE:
+                Actor actor = reinterpret_cast<Actor*>(currNode->item);
+                const int actorCurrentAge = currentYear - actor.getBirthYear();
+                if (actorCurrentAge >= startAge && actorCurrentAge <= endAge) {
+                    filteredList.append(actor);
+                }
+            case FilterType::PAST_THREE_YEARS:
+                Movie movie = reinterpret_cast<Movie*>(currNode->item);
+                if (movie.getReleaseYear() > 3) {
+                    filteredList.append(movie);
+                }
+        }
+        currNode = currNode->next;
+    }
+}
+
 
 #endif

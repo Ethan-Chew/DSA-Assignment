@@ -159,7 +159,7 @@ bool displayActorMovies(Application &application) {
 void BasicFeatures::displayActorsInMovie(Application& application, const int id) {
     int movieId;
     MyLinkedList<Actor*>* actors = application.getActors(id);
-    actors->sort();
+    actors->sort(ALPHABETICALLY);
     actors->print();
 
     std::cout <<

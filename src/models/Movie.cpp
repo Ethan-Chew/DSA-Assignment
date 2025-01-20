@@ -23,6 +23,9 @@ std::string Movie::getPlot() {
 Genre Movie::getGenre() {
     return this->genre;
 }
+int Movie::getReleaseYear() const {
+    return this->releaseYear;
+}
 void Movie::setTitle(std::string title) {
     this->title = title;
 }
