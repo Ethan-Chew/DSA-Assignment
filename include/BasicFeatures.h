@@ -16,6 +16,8 @@ public:
     static bool updateActorOrMovie(Application&);
 
     // User Features
+    static bool displayActors(Application&);
+    static bool displayMovies(Application&);
     static void displayActorsInMovie(Application& application, int id);
     static void displayKnownActors(Application& application);
 };

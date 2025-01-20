@@ -24,6 +24,7 @@ private:
     int releaseYear;
 public:
     Movie(int, std::string, int, std::string, Genre);
+    ~Movie();
     int getId();
     std::string getTitle();
     std::string getPlot();

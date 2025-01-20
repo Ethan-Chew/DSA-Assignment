@@ -31,6 +31,9 @@ bool BasicFeatures::addNewActor(Application &application) {
         std::unique_ptr<Actor> newActor = std::make_unique<Actor>(Actor(0, name, birthYear));
         application.addActor(std::move(newActor));
 
+        std::cout << "\nSuccessfully added new movie: " << std::endl;
+        newActor->print();
+
         return true;
     }
     catch(std::exception &e) {
@@ -57,10 +60,15 @@ bool BasicFeatures::addNewMovie(Application &application) {
         std::cout << "\nPlease enter movie plot: ";
         getline(std::cin, plot);
 
-        // TODO: Add Id parser and Genre
+        // TODO Add Genre when implemented
+
+        // TODO: Add Id parser
 
         std::unique_ptr<Movie> newMovie = std::make_unique<Movie>(Movie(0, title, releaseYear, plot, Genre::NONE));
         application.addMovie(std::move(newMovie));
+
+        std::cout << "\nSuccessfully added new movie: " << std::endl;
+        newMovie->print();
 
         return true;
     }
@@ -106,12 +114,17 @@ bool BasicFeatures::updateActorOrMovie(Application &application) {
         std::cin >> actorMovieId;
 
         Actor* chosenActor = application.getActor(actorMovieId);
+        std::cout << "\nActor chosen: " << std::endl;
+        chosenActor->print();
+
     }
     else if (movieActorChoice == 2) {
         std::cout << "\nPlease enter actor id: ";
         std::cin >> actorMovieId;
 
         Movie* chosenMovie = application.getMovie(actorMovieId);
+        std::cout << "\nMovie chosen: " << std::endl;
+        chosenMovie->print();
     }
     else {
         std::cout << "Invalid Input. Please try again." << "\n";
@@ -121,7 +134,7 @@ bool BasicFeatures::updateActorOrMovie(Application &application) {
 
 // User Basic Functions
 // Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user
-bool displayActors(Application &application) {
+bool BasicFeatures::displayActors(Application &application) {
     std::string ageRange;
 
     std::cout <<
@@ -133,7 +146,7 @@ bool displayActors(Application &application) {
 }
 
 // Display movies made within the past 3 years (in ascending order of year)
-bool displayMovies(Application &application) {
+bool BasicFeatures::displayMovies(Application &application) {
 
     return true;
 }
@@ -173,7 +186,7 @@ void BasicFeatures::displayActorsInMovie(Application& application, const int id)
 // Display a list of all actors that a particular actor knows.
 void BasicFeatures::displayKnownActors(Application &application) {
     // Display Starting Menu
-    std::cout << "=== Option 5: Display list of all actors that a paricular actor knows ===" << std::endl;
+    std::cout << "=== Option 5: Display list of all actors that a particular actor knows ===" << std::endl;
     int actorId;
     std::cout << "Actor ID: ";
     std::cin >> actorId;

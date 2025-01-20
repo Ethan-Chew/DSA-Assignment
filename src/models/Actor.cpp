@@ -31,7 +31,6 @@ void Actor::print() {
     std::cout << "Actor ID: " << id << " | Name: " << name << " | Birth Year: " << birthYear << "\n";
 }
 
-
 // Overload Operator for Comparison
 bool Actor::operator<(const Actor& other) const {
     return name[0] < other.name[0];

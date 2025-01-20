@@ -36,16 +36,22 @@ private:
     Node* merge(Node*, Node*, SortType); // Merges 2 Doubly-Linked Lists into One
     Node* MergeSort(Node*, SortType); // Recursive Merge Sort
 
-    // Comparator Lambda Functions
-    std::function<bool(const T&, const T&)> compareTextAlphabetically = [](const T& a, const T& b) { // Compares the Name or Title for Actor and Movie respectively
-        return a < b;
-    };
-    std::function<bool(Actor* const&, Actor* const&)> compareByAge = [](Actor* const& a, Actor* const& b) {
-        return a->getBirthYear() < b->getBirthYear();
-    };
-    std::function<bool(Movie* const&, Movie* const&)> compareByReleaseYear = [](Movie* const& a, Movie* const& b) {
-        return a->getReleaseYear() < b->getReleaseYear();
-    };
+    // // Comparator Lambda Functions
+    // // Compares the Name or Title for Actor and Movie respectively
+    // std::function<bool(const T&, const T&)> compareTextAlphabetically = [](const T& a, const T& b) {
+    //     return a < b;
+    // };
+    //
+    // // Compares Actor classes by Age attribute
+    // std::function<bool(Actor* const&, Actor* const&)> compareByAge = [](Actor* const& a, Actor* const& b) {
+    //     return a->getBirthYear() < b->getBirthYear();
+    // };
+    //
+    // // Compares Movie classes by ReleaseYear attribute
+    // std::function<bool(Movie* const&, Movie* const&)> compareByReleaseYear = [](Movie* const& a, Movie* const& b) {
+    //     return a->getReleaseYear() < b->getReleaseYear();
+    // };
+
 public:
     MyLinkedList();
     ~MyLinkedList();
@@ -211,6 +217,38 @@ typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right, 
     //         comparator = compareByReleaseYear;
     //         break;
     // }
+
+    // Determine the Comparator to use for the Merge Sort (either Alphabetically, by Age, or by Release Year) using Lambda Functions
+    // Casts void pointers to accept any pointer type, then casts the pointer to the appropriate type
+    std::function<bool(const void*, const void*)> comparator;
+    switch (type) {
+        // Compares the Name or Title for Actor and Movie respectively
+        case ALPHABETICALLY:
+            comparator = [](const void* a, const void* b) {
+                const auto* stringA = static_cast<const std::string*>(a);
+                const auto* stringB = static_cast<const std::string*>(b);
+                return *stringA < *stringB;
+        };
+        break;
+
+        // Compares Actor classes by Age attribute
+        case AGE:
+            comparator = [](const void* a, const void* b) {
+                const auto* actorA = static_cast<const Actor*>(a);
+                const auto* actorB = static_cast<const Actor*>(b);
+                return actorA->getBirthYear() < actorB->getBirthYear();
+        };
+        break;
+
+        // Compares Movie classes by ReleaseYear attribute
+        case RELEASE_YEAR:
+            comparator = [](const void* a, const void* b) {
+                const auto* movieA = static_cast<const Movie*>(a);
+                const auto* movieB = static_cast<const Movie*>(b);
+                return movieA->getReleaseYear() < movieB->getReleaseYear();
+        };
+        break;
+    }
 
     // Merge the two sorted lists
     while (left && right) {

@@ -115,11 +115,13 @@ void displayMenu(Application &application, bool isAdmin) {
 
                 // Display actors in age range
                 case 1: {
+                    BasicFeatures::displayActors(application);
                     break;
                 }
 
                 // Display movies released in past 3 years
                 case 2: {
+                    BasicFeatures::displayMovies(application);
                     break;
                 }
 

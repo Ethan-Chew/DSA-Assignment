@@ -11,6 +11,9 @@ Movie::Movie(int id, std::string title, int releaseYear, std::string plot, Genre
     this->plot = plot;
     this->genre = genre;
 }
+
+Movie::~Movie() {}
+
 int Movie::getId() {
   return this->id;
 }
@@ -38,7 +41,6 @@ void Movie::setGenre(Genre genre) {
 void Movie::print() {
     std::cout << "Movie ID: " << id << " | Title: " << title << " | Plot: " << plot << " | Genre: " << genre << "\n";
 }
-
 
 // Overload Operator for Comparison
 bool Movie::operator<(const Movie& other) const {
