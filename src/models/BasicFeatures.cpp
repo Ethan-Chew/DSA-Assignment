@@ -147,40 +147,45 @@ bool BasicFeatures::displayActors(Application &application) {
 
 // Display movies made within the past 3 years (in ascending order of year)
 bool BasicFeatures::displayMovies(Application &application) {
+    std::cout << "=== Option 2: Display Movies made within the past 3 years ===" << std::endl;
+
+    MyLinkedList<Movie*>* movies = application.getMovies();
 
     return true;
 }
 
 // Display all movies an actor starred in (in alphabetical order)
 bool displayActorMovies(Application &application) {
+    std::cout << "=== Option 3: Display all Movies an Actor starred in ===" << std::endl;
     int actorId;
-
-    std::cout <<
-            "Option: 'Display all movies an actor starred in.\n"
-            "Enter actor's id: ";
+    std::cout << "Actor ID: ";
     std::cin >> actorId;
 
     MyLinkedList<Movie*>* movies = application.getMovies(actorId);
-    if (movies == nullptr) { return  false; }
-
-    // TODO: Sort alphabetically
+    if (movies == nullptr) {
+        std::cout << "No Actor with the ID of " << actorId << " was found!" << std::endl;
+        return false;
+    }
+    movies->sort(ALPHABETICALLY);
+    movies->print();
 
     return true;
 }
 
 // Display all the actors in a particular movie (in alphabetical order)
-void BasicFeatures::displayActorsInMovie(Application& application, const int id) {
+void BasicFeatures::displayActorsInMovie(Application& application) {
+    std::cout << "=== Option 4: Display all the Actors in a Particular Movie ===" << std::endl;
     int movieId;
-    MyLinkedList<Actor*>* actors = application.getActors(id);
-    actors->sort(ALPHABETICALLY);
-    actors->print();
-
-    std::cout <<
-            "Option: 'Display all the actors in a particular movie.\n"
-            "Enter movie id: ";
+    std::cout << "Movie ID: ";
     std::cin >> movieId;
 
-    // TODO: Sort alphabetically
+    MyLinkedList<Actor*>* actors = application.getActors(movieId);
+    if (actors == nullptr) {
+        std::cout << "No Movie with the ID of " << movieId << " was found!" << std::endl;
+        return;
+    }
+    actors->sort(ALPHABETICALLY);
+    actors->print();
 }
 
 // Display a list of all actors that a particular actor knows.

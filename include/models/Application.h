@@ -37,11 +37,13 @@ public:
     void addActor(std::unique_ptr<Actor> actor);
     bool removeActor(int);
     Actor* getActor(int);
+    MyLinkedList<Actor*> getAllActors();
 
     // Add/Remove/Retrieve Movie Objects
     void addMovie(std::unique_ptr<Movie> movie);
     bool removeMovie(int);
     Movie* getMovie(int);
+    MyLinkedList<Movie*> getAllMovies();
 
     // Relationships
     /// Add/Remove Actor ID into Movie ID

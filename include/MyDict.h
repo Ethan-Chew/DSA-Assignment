@@ -3,6 +3,8 @@
 #define MYDICT_H
 #include <iostream>
 #include <memory>
+
+#include "MyLinkedList.h"
 #include "MyList.h"
 
 template<typename T>
@@ -190,6 +192,24 @@ public:
             }
         }
         std::cout << "\n" << "}" << "\n";
+    }
+
+    MyLinkedList<V*>* values() const {
+        MyLinkedList<V*>* vals = new MyLinkedList<V*>;
+
+        // Iterate through every element in the bucket
+        for (int i = 0; i < buckets.get_length(); i++) {
+            const auto& current = buckets.get(i);
+            Node* curr_ptr = current.get();
+
+            // Iterate through nodes with the same ID
+            while (curr_ptr != nullptr) {
+                vals->append(curr_ptr->val.get());
+                curr_ptr = curr_ptr->next.get();
+            }
+        }
+
+        return vals;
     }
 
     bool is_empty() const {

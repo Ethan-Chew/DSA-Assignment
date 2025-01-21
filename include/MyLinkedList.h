@@ -204,20 +204,6 @@ typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right, 
     Node* newHead = nullptr;
     Node* tempNode = nullptr;
 
-    // Determine the Comparator to use for the Merge Sort (either Alphabetically, by Age, or by Release Year)
-    // std::function<bool(const T&, const T&)> comparator;
-    // switch (type) {
-    //     case ALPHABETICALLY:
-    //         comparator = compareTextAlphabetically;
-    //         break;
-    //     case AGE:
-    //         comparator = compareByAge;
-    //         break;
-    //     case RELEASE_YEAR:
-    //         comparator = compareByReleaseYear;
-    //         break;
-    // }
-
     // Determine the Comparator to use for the Merge Sort (either Alphabetically, by Age, or by Release Year) using Lambda Functions
     // Casts void pointers to accept any pointer type, then casts the pointer to the appropriate type
     std::function<bool(const void*, const void*)> comparator;
@@ -225,10 +211,18 @@ typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right, 
         // Compares the Name or Title for Actor and Movie respectively
         case ALPHABETICALLY:
             comparator = [](const void* a, const void* b) {
-                const auto* stringA = static_cast<const std::string*>(a);
-                const auto* stringB = static_cast<const std::string*>(b);
-                return *stringA < *stringB;
-        };
+                if (std::is_same_v<T, Actor*>) {
+                    const auto* actorA = static_cast<const Actor*>(a);
+                    const auto* actorB = static_cast<const Actor*>(b);
+                    return actorA < actorB;
+                }
+                if (std::is_same_v<T, Movie*>) {
+                    const auto* movieA = static_cast<const Movie*>(a);
+                    const auto* movieB = static_cast<const Movie*>(b);
+                    return movieA < movieB;
+                }
+                throw std::invalid_argument("Alphabetical comparison is not supported");
+            };
         break;
 
         // Compares Actor classes by Age attribute
@@ -252,7 +246,7 @@ typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right, 
 
     // Merge the two sorted lists
     while (left && right) {
-        if (left->item < right->item) {
+        if (comparator(left->item, right->item)) {
             if (newHead == nullptr) {
                 newHead = left;
                 tempNode = newHead;
@@ -292,14 +286,14 @@ typename MyLinkedList<T>::Node *MyLinkedList<T>::MergeSort(Node* head, SortType 
 
     // Perform Merge Sort on left and right sides of the array
     /// Split the LinkedList into two halves
-    Node* secondHalf = this->split(head);
+    Node* secondHalf = split(head);
     /// Perform Merge Sort on Left Half
     head = MergeSort(head, type);
     /// Perform Merge Sort on Right Half
     secondHalf = MergeSort(secondHalf, type);
 
     // Merge the Left and Right Halves together
-    return this->merge(head, secondHalf, type);
+    return merge(head, secondHalf, type);
 }
 
 template<typename T>

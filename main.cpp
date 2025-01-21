@@ -132,7 +132,7 @@ void displayMenu(Application &application, bool isAdmin) {
 
                 // Display all actors cast in movie
                 case 4: {
-                    BasicFeatures::displayActorsInMovie(application, 109830);
+                    BasicFeatures::displayActorsInMovie(application);
                     break;
                 }
 

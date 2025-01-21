@@ -55,6 +55,9 @@ Actor* Application::getActor(const int id) {
 
     return nullptr;
 }
+MyLinkedList<Actor*> Application::getAllActors() {
+    MyLinkedList<Actor*> allActors = actors.values();
+}
 
 Movie* Application::getMovie(const int id) {
     if (movies[id] != nullptr) {
@@ -96,6 +99,7 @@ bool Application::removeActorFromMovie(const int actorId, const int movieId) {
 }
 MyLinkedList<Actor*>* Application::getActors(const int movieId) {
     SortedList* actorIds = moviesToActors[movieId].get();
+    if (actorIds == nullptr) { return nullptr; }
     auto movieActors = new MyLinkedList<Actor*>();
 
     for (int i = 0; i < actorIds->getLength(); i++) {
@@ -107,6 +111,7 @@ MyLinkedList<Actor*>* Application::getActors(const int movieId) {
 }
 MyLinkedList<Movie*>* Application::getMovies(int actorId) {
     SortedList* movieIds = actorsToMovies[actorId].get();
+    if (movieIds == nullptr) { return nullptr; }
     auto actorMovies = new MyLinkedList<Movie*>();
 
     for (int i = 0; i < movieIds->getLength(); i++) {
@@ -116,7 +121,6 @@ MyLinkedList<Movie*>* Application::getMovies(int actorId) {
     return actorMovies;
 }
 SortedList* Application::getActorMovies(int id) {
-
     return actorsToMovies[id].get();
 }
 SortedList* Application::getMovieActors(int id) {
