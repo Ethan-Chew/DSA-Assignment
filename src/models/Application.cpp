@@ -55,8 +55,13 @@ Actor* Application::getActor(const int id) {
 
     return nullptr;
 }
-MyLinkedList<Actor*> Application::getAllActors() {
-    // MyLinkedList<Actor*> allActors = actors.values();
+
+MyLinkedList<Actor*>* Application::getAllActors() {
+    return actors.values();
+}
+
+MyLinkedList<Movie*>* Application::getAllMovies() {
+    return movies.values();
 }
 
 Movie* Application::getMovie(const int id) {

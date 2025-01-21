@@ -37,24 +37,22 @@ public:
     void addActor(std::unique_ptr<Actor> actor);
     bool removeActor(int);
     Actor* getActor(int);
-    MyLinkedList<Actor*> getAllActors();
+    MyLinkedList<Actor*>* getAllActors();
 
     // Add/Remove/Retrieve Movie Objects
     void addMovie(std::unique_ptr<Movie> movie);
     bool removeMovie(int);
     Movie* getMovie(int);
-    MyLinkedList<Movie*> getAllMovies();
+    MyLinkedList<Movie*>* getAllMovies();
 
     // Relationships
     /// Add/Remove Actor ID into Movie ID
     bool addActorToMovie(int, int);
     bool removeActorFromMovie(int, int);
     /// Get Actors who acted in Movie ID
-    // const MyDict<int, SortedList *> &getActorsToMoviesRelationship() const;
     SortedList *getActorMovies(int id);
     MyLinkedList<Actor*>* getActors(int);
     /// Get Movies acted by Actor ID
-    // const MyDict<int, SortedList *> &getMoviesToActorsRelationship() const;
     MyLinkedList<Movie*>* getMovies(int);
     SortedList *getMovieActors(int id);
 };

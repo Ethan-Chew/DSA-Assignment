@@ -7,11 +7,6 @@
 #include "models/Actor.h"
 #include "models/Movie.h"
 
-enum FilterType {
-    AGE_RANGE,
-    PAST_THREE_YEARS
-};
-
 enum SortType {
     ALPHABETICALLY,
     AGE,
@@ -35,23 +30,6 @@ private:
     Node* split(Node*); // Splits the List into 2 Halves
     Node* merge(Node*, Node*, SortType); // Merges 2 Doubly-Linked Lists into One
     Node* MergeSort(Node*, SortType); // Recursive Merge Sort
-
-    // // Comparator Lambda Functions
-    // // Compares the Name or Title for Actor and Movie respectively
-    // std::function<bool(const T&, const T&)> compareTextAlphabetically = [](const T& a, const T& b) {
-    //     return a < b;
-    // };
-    //
-    // // Compares Actor classes by Age attribute
-    // std::function<bool(Actor* const&, Actor* const&)> compareByAge = [](Actor* const& a, Actor* const& b) {
-    //     return a->getBirthYear() < b->getBirthYear();
-    // };
-    //
-    // // Compares Movie classes by ReleaseYear attribute
-    // std::function<bool(Movie* const&, Movie* const&)> compareByReleaseYear = [](Movie* const& a, Movie* const& b) {
-    //     return a->getReleaseYear() < b->getReleaseYear();
-    // };
-
 public:
     MyLinkedList();
     ~MyLinkedList();
@@ -63,7 +41,6 @@ public:
     int get_length();
     void print();
     void sort(SortType);
-    void filter(MyLinkedList<T>&, FilterType, std::optional<int>, std::optional<int>);
 };
 
 template<typename T>
@@ -301,46 +278,5 @@ void MyLinkedList<T>::sort(SortType type) {
     // Call the Merge Sort Function
     firstNode = MergeSort(firstNode, type);
 }
-
-template<typename T>
-void MyLinkedList<T>::filter(MyLinkedList<T>& filteredList, FilterType filterType, std::optional<int> startAge, std::optional<int> endAge) {
-    // // Type Check the Objects currently in the array (T)
-    // if (filterType == FilterType::AGE_RANGE) {
-    //     if (!std::is_same_v<T, Actor>) {
-    //         throw std::invalid_argument("AGE_RANGE filter can only be applied to Actors");
-    //     }
-    //     if (!(startAge.has_value() && endAge.has_value())) {
-    //         throw std::invalid_argument("startAge and endAge must be both non-zero when filtering by AGE_RANGE");
-    //     }
-    // }
-    // if (filterType == FilterType::PAST_THREE_YEARS && !std::is_same_v<T, Movie>) {
-    //     throw std::invalid_argument("PAST_THREE_YEARS filter can only be applied to Movies");
-    // }
-    //
-    // // TODO: Can we use STL to get the current year?
-    // const int currentYear = 2025;
-    //
-    // // Filter the List
-    // Node* currNode = firstNode;
-    // while (currNode != nullptr) {
-    //     switch (filterType) {
-    //         case FilterType::AGE_RANGE:
-    //             Actor* actor = reinterpret_cast<Actor*>(currNode->item);
-    //             const int actorCurrentAge = currentYear - actor->getBirthYear();
-    //             if (actorCurrentAge >= startAge && actorCurrentAge <= endAge) {
-    //                 filteredList.append(actor);
-    //             }
-    //         break;
-    //         case FilterType::PAST_THREE_YEARS:
-    //             Movie* movie = reinterpret_cast<Movie*>(currNode->item);
-    //             if (movie->getReleaseYear() > 3) {
-    //                 filteredList.append(movie);
-    //             }
-    //         break;
-    //     }
-    //     currNode = currNode->next;
-    // }
-}
-
 
 #endif

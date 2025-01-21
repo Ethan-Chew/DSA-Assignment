@@ -130,17 +130,42 @@ bool BasicFeatures::updateActorOrMovie(Application &application) {
         std::cout << "Invalid Input. Please try again." << "\n";
         return false;
     }
+    return true;
 }
 
 // User Basic Functions
 // Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user
 bool BasicFeatures::displayActors(Application &application) {
-    std::string ageRange;
+    std::cout << "=== Option 1: Display (in ascending order of age) the Actors with age between x and y (inclusive) ===" << std::endl;
 
-    std::cout <<
-        "Option: 'Display Actors' Selected.\n"
-        "Enter actor age range, seperated by a comma: ";
-    std::cin >> ageRange;
+    int startAge, endAge;
+    // Get User Input, and Validate
+    while (true) {
+        std::cout << "Starting Age: ";
+        std::cin >> startAge;
+        std::cout << "Ending Age: ";
+        std::cin >> endAge;
+
+        if (startAge <= 0 || endAge <= 0) {
+            std::cout<< "The Starting and Ending Age must be greater than 0" << std::endl;
+        } else { break; }
+    }
+
+    MyLinkedList<Actor*>* actors = application.getAllActors();
+    auto* filteredActors = new MyLinkedList<Actor*>();
+
+    // Filter the LinkedList and only preserve Actors between the age range
+    const int currentYear = 2025; // TODO: Use STL to get current year
+    for (int i = 0; i < actors->get_length(); i++) {
+        Actor* actor = actors->get(i);
+        int actorCurrentAge = currentYear - actor->getBirthYear();
+        if (actorCurrentAge >= startAge && actorCurrentAge <= endAge) {
+            filteredActors->append(actor);
+        }
+    }
+
+    filteredActors->sort(AGE);
+    filteredActors->print();
 
     return true;
 }
@@ -149,7 +174,25 @@ bool BasicFeatures::displayActors(Application &application) {
 bool BasicFeatures::displayMovies(Application &application) {
     std::cout << "=== Option 2: Display Movies made within the past 3 years ===" << std::endl;
 
-    // MyLinkedList<Movie*>* movies = application.getMovies();
+    MyLinkedList<Movie*>* movies = application.getAllMovies();
+    auto* filteredMovies = new MyLinkedList<Movie*>();
+
+    // Filter the LinkedList and only preserve Movies that were made in the past 3 years
+    const int currentYear = 2025; // TODO: Use STL to get current year
+    for (int i = 0; i < movies->get_length(); i++) {
+        Movie* movie = movies->get(i);
+        if ((currentYear - movie->getReleaseYear()) <= 3) {
+            filteredMovies->append(movie);
+        }
+    }
+
+    filteredMovies->sort(RELEASE_YEAR);
+
+    if (filteredMovies->get_length() == 0) {
+        std::cout << "There are no Movies in the past 3 years" << std::endl;
+    }
+
+    filteredMovies->print();
 
     return true;
 }

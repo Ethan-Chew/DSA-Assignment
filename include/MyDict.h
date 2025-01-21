@@ -194,12 +194,12 @@ public:
         std::cout << "\n" << "}" << "\n";
     }
 
-    MyLinkedList<V*>* values() const {
-        MyLinkedList<V*>* vals = new MyLinkedList<V*>;
+    auto *values() const {
+        auto* vals = new MyLinkedList<std::remove_reference_t<decltype(*std::declval<V>())>*>();
 
         // Iterate through every element in the bucket
         for (int i = 0; i < buckets.get_length(); i++) {
-            const auto& current = buckets.get(i);
+            const auto& current = buckets.get(i); // Returns the unique_ptr<Node>
             Node* curr_ptr = current.get();
 
             // Iterate through nodes with the same ID
