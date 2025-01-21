@@ -8,6 +8,11 @@
 
 Application* Application::uniqueInstance = nullptr;
 Application::Application() {
+    // Set max Actor and Movie Id values to aid Actor/Movie creation
+    maxActorId = 0;
+    maxMovieId = 0;
+
+    // Create Demo Accounts
     accounts.add("user1", std::make_unique<Account>(Account("user1", "password1", false)));
     accounts.add("user2", std::make_unique<Account>(Account("user2", "password2", false)));
     accounts.add("user3", std::make_unique<Account>(Account("user3", "password3", false)));
@@ -23,8 +28,18 @@ Application* Application::getInstance() {
     return uniqueInstance;
 }
 
+// Getter for Account
 Account* Application::getAccount(const std::string &username) {
     return accounts[username].get();
+}
+
+// Getters for max Actor/Movie Id
+int Application::getMaxActorId() {
+    return maxActorId;
+}
+
+int Application::getMaxMovieId() {
+    return maxMovieId;
 }
 
 // Setters for Actor and Movie
@@ -34,8 +49,13 @@ void Application::addActor(std::unique_ptr<Actor> actor) {
     actors.add(id, std::move(actor));
 
     // Add Actor to the Actor-to-Movie Relationship
-    if (actorsToMovies[id].get() == nullptr) {
+    if (actorsToMovies[id] == nullptr) {
         actorsToMovies[id] = std::make_unique<SortedList>(SortedList());
+    }
+
+    // Update maxActorId value to prevent collision
+    if (id > maxActorId) {
+        maxActorId = id;
     }
 }
 
@@ -45,8 +65,13 @@ void Application::addMovie(std::unique_ptr<Movie> movie) {
     movies.add(id, std::move(movie));
 
     // Add Movie to Movie-to-Actor Relationship
-    if (moviesToActors[id].get() == nullptr) {
+    if (moviesToActors[id] == nullptr) {
         moviesToActors[id] = std::make_unique<SortedList>(SortedList());
+    }
+
+    // Update maxMovieId value to prevent collision
+    if (id > maxMovieId) {
+        maxMovieId = id;
     }
 }
 

@@ -17,21 +17,36 @@
 // Singleton to store data of Actors and Movies
 class Application {
 private:
+    // Constructor
+    Application();
+
+    // Gets maximum value of Actor and Movie Ids to automatically assign an empty Id Key on creation
+    int maxActorId;
+    int maxMovieId;
+
+    // Singleton Checker
     static Application* uniqueInstance;
+
+    // Dictionary of Actors/Movies
     MyDict<int, std::unique_ptr<Actor>> actors;
     MyDict<int, std::unique_ptr<Movie>> movies;
 
+    // Dictionary containing Actor-Movie and Movie-Actor Relationships
     MyDict<int, std::unique_ptr<SortedList>> actorsToMovies;
     MyDict<int, std::unique_ptr<SortedList>> moviesToActors;
 
+    // Dictionary of all registered accounts
     MyDict<std::string, std::unique_ptr<Account>> accounts;
-
-    Application();
 public:
+    // Get instance of Application
     static Application* getInstance();
 
     // Retrieve Account
     Account* getAccount(const std::string &username);
+
+    // Retrieve max ID values of Actor and Movie
+    int getMaxActorId();
+    int getMaxMovieId();
 
     // Add/Remove/Retrieve Actor Objects
     void addActor(std::unique_ptr<Actor> actor);
@@ -46,13 +61,15 @@ public:
     MyLinkedList<Movie*>* getAllMovies();
 
     // Relationships
-    /// Add/Remove Actor ID into Movie ID
+    // Add/Remove Actor ID into Movie ID
     bool addActorToMovie(int, int);
     bool removeActorFromMovie(int, int);
-    /// Get Actors who acted in Movie ID
+
+    // Get Actors who acted in Movie ID
     SortedList *getActorMovies(int id);
     MyLinkedList<Actor*>* getActors(int);
-    /// Get Movies acted by Actor ID
+
+    // Get Movies acted by Actor ID
     MyLinkedList<Movie*>* getMovies(int);
     SortedList *getMovieActors(int id);
 };
