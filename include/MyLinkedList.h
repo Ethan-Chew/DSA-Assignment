@@ -304,40 +304,42 @@ void MyLinkedList<T>::sort(SortType type) {
 
 template<typename T>
 void MyLinkedList<T>::filter(MyLinkedList<T>& filteredList, FilterType filterType, std::optional<int> startAge, std::optional<int> endAge) {
-    // Type Check the Objects currently in the array (T)
-    if (filterType == FilterType::AGE_RANGE) {
-        if (!std::is_same_v<T, Actor>) {
-            throw std::invalid_argument("AGE_RANGE filter can only be applied to Actors");
-        }
-        if (!(startAge.has_value() && endAge.has_value())) {
-            throw std::invalid_argument("startAge and endAge must be both non-zero when filtering by AGE_RANGE");
-        }
-    }
-    if (filterType == FilterType::PAST_THREE_YEARS && !std::is_same_v<T, Movie>) {
-        throw std::invalid_argument("PAST_THREE_YEARS filter can only be applied to Movies");
-    }
-
-    // TODO: Can we use STL to get the current year?
-    const int currentYear = 2025;
-
-    // Filter the List
-    Node* currNode = firstNode;
-    while (currNode != nullptr) {
-        switch (filterType) {
-            case FilterType::AGE_RANGE:
-                Actor actor = reinterpret_cast<Actor*>(currNode->item);
-                const int actorCurrentAge = currentYear - actor.getBirthYear();
-                if (actorCurrentAge >= startAge && actorCurrentAge <= endAge) {
-                    filteredList.append(actor);
-                }
-            case FilterType::PAST_THREE_YEARS:
-                Movie movie = reinterpret_cast<Movie*>(currNode->item);
-                if (movie.getReleaseYear() > 3) {
-                    filteredList.append(movie);
-                }
-        }
-        currNode = currNode->next;
-    }
+    // // Type Check the Objects currently in the array (T)
+    // if (filterType == FilterType::AGE_RANGE) {
+    //     if (!std::is_same_v<T, Actor>) {
+    //         throw std::invalid_argument("AGE_RANGE filter can only be applied to Actors");
+    //     }
+    //     if (!(startAge.has_value() && endAge.has_value())) {
+    //         throw std::invalid_argument("startAge and endAge must be both non-zero when filtering by AGE_RANGE");
+    //     }
+    // }
+    // if (filterType == FilterType::PAST_THREE_YEARS && !std::is_same_v<T, Movie>) {
+    //     throw std::invalid_argument("PAST_THREE_YEARS filter can only be applied to Movies");
+    // }
+    //
+    // // TODO: Can we use STL to get the current year?
+    // const int currentYear = 2025;
+    //
+    // // Filter the List
+    // Node* currNode = firstNode;
+    // while (currNode != nullptr) {
+    //     switch (filterType) {
+    //         case FilterType::AGE_RANGE:
+    //             Actor* actor = reinterpret_cast<Actor*>(currNode->item);
+    //             const int actorCurrentAge = currentYear - actor->getBirthYear();
+    //             if (actorCurrentAge >= startAge && actorCurrentAge <= endAge) {
+    //                 filteredList.append(actor);
+    //             }
+    //         break;
+    //         case FilterType::PAST_THREE_YEARS:
+    //             Movie* movie = reinterpret_cast<Movie*>(currNode->item);
+    //             if (movie->getReleaseYear() > 3) {
+    //                 filteredList.append(movie);
+    //             }
+    //         break;
+    //     }
+    //     currNode = currNode->next;
+    // }
 }
 
 

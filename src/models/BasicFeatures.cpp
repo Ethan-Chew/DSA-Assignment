@@ -149,7 +149,7 @@ bool BasicFeatures::displayActors(Application &application) {
 bool BasicFeatures::displayMovies(Application &application) {
     std::cout << "=== Option 2: Display Movies made within the past 3 years ===" << std::endl;
 
-    MyLinkedList<Movie*>* movies = application.getMovies();
+    // MyLinkedList<Movie*>* movies = application.getMovies();
 
     return true;
 }
