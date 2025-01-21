@@ -15,6 +15,7 @@ Application::Application() {
     accounts.add("admin2", std::make_unique<Account>(Account("admin2", "password5", true)));
     accounts.add("admin3", std::make_unique<Account>(Account("admin3", "password6", true)));
 }
+
 Application* Application::getInstance() {
     if (uniqueInstance == nullptr) {
         uniqueInstance = new Application();
@@ -28,15 +29,25 @@ Account* Application::getAccount(const std::string &username) {
 
 // Setters for Actor and Movie
 void Application::addActor(std::unique_ptr<Actor> actor) {
-    int id = actor->getId();
     // reminder: actors dict will OWN the pointer
+    int id = actor->getId();
     actors.add(id, std::move(actor));
+
+    // Add Actor to the Actor-to-Movie Relationship
+    if (actorsToMovies[id].get() == nullptr) {
+        actorsToMovies[id] = std::make_unique<SortedList>(SortedList());
+    }
 }
 
 void Application::addMovie(std::unique_ptr<Movie> movie) {
     // reminder: movies dict will OWN the pointer
     int id = movie->getId();
     movies.add(id, std::move(movie));
+
+    // Add Movie to Movie-to-Actor Relationship
+    if (moviesToActors[id].get() == nullptr) {
+        moviesToActors[id] = std::make_unique<SortedList>(SortedList());
+    }
 }
 
 bool Application::removeActor(const int id) {
@@ -52,7 +63,6 @@ Actor* Application::getActor(const int id) {
     if (actors[id] != nullptr) {
         return actors[id].get();
     }
-
     return nullptr;
 }
 
@@ -68,7 +78,6 @@ Movie* Application::getMovie(const int id) {
     if (movies[id] != nullptr) {
         return movies[id].get();
     }
-
     return nullptr;
 }
 
@@ -102,6 +111,7 @@ bool Application::removeActorFromMovie(const int actorId, const int movieId) {
 
     return true;
 }
+
 MyLinkedList<Actor*>* Application::getActors(const int movieId) {
     SortedList* actorIds = moviesToActors[movieId].get();
     if (actorIds == nullptr) { return nullptr; }
@@ -114,6 +124,7 @@ MyLinkedList<Actor*>* Application::getActors(const int movieId) {
 
     return movieActors;
 }
+
 MyLinkedList<Movie*>* Application::getMovies(int actorId) {
     SortedList* movieIds = actorsToMovies[actorId].get();
     if (movieIds == nullptr) { return nullptr; }
@@ -125,9 +136,11 @@ MyLinkedList<Movie*>* Application::getMovies(int actorId) {
 
     return actorMovies;
 }
+
 SortedList* Application::getActorMovies(int id) {
     return actorsToMovies[id].get();
 }
+
 SortedList* Application::getMovieActors(int id) {
     return moviesToActors[id].get();
 }
