@@ -214,12 +214,12 @@ typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right, 
                 if (std::is_same_v<T, Actor*>) {
                     const auto* actorA = static_cast<const Actor*>(a);
                     const auto* actorB = static_cast<const Actor*>(b);
-                    return actorA < actorB;
+                    return actorA->getName().compare(actorB->getName()) < 0;
                 }
                 if (std::is_same_v<T, Movie*>) {
                     const auto* movieA = static_cast<const Movie*>(a);
                     const auto* movieB = static_cast<const Movie*>(b);
-                    return movieA < movieB;
+                    return movieA->getTitle().compare(movieB->getTitle()) < 0;
                 }
                 throw std::invalid_argument("Alphabetical comparison is not supported");
             };

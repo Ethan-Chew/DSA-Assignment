@@ -15,7 +15,7 @@ Actor::~Actor() {}
 int Actor::getId() {
     return id;
 }
-std::string Actor::getName() {
+std::string Actor::getName() const {
     return name;
 }
 int Actor::getBirthYear() const {

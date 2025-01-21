@@ -17,7 +17,7 @@ Movie::~Movie() {}
 int Movie::getId() {
   return this->id;
 }
-std::string Movie::getTitle() {
+std::string Movie::getTitle() const {
     return this->title;
 }
 std::string Movie::getPlot() {
