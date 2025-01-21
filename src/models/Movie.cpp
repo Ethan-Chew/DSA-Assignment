@@ -12,23 +12,31 @@ Movie::Movie(int id, std::string title, int releaseYear, std::string plot, Genre
     this->genre = genre;
 }
 
+// Constructor
 Movie::~Movie() {}
 
+// Getters
 int Movie::getId() {
-  return this->id;
+    return this->id;
 }
+
 std::string Movie::getTitle() const {
     return this->title;
 }
+
 std::string Movie::getPlot() {
     return this->plot;
 }
+
 Genre Movie::getGenre() {
     return this->genre;
 }
+
 int Movie::getReleaseYear() const {
     return this->releaseYear;
 }
+
+// Setters
 void Movie::setTitle(std::string title) {
     this->title = title;
 }
@@ -38,8 +46,14 @@ void Movie::setPlot(std::string plot) {
 void Movie::setGenre(Genre genre) {
     this->genre = genre;
 }
+
+void Movie::setReleaseYear(int releaseYear) {
+    this->releaseYear = releaseYear;
+}
+
+// Movie Functions
 void Movie::print() {
-    std::cout << "Movie ID: " << id << " | Title: " << title << " | Plot: " << plot << " | Genre: " << genre << "\n";
+    std::cout << "Movie ID: " << id << " | Title: " << title << " | Release Year: " << releaseYear << " | Plot: " << plot << " | Genre: " << genre << "\n";
 }
 
 // Overload Operator for Comparison

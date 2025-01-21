@@ -22,17 +22,26 @@ private:
     std::string plot;
     Genre genre;
     int releaseYear;
+
 public:
+    // Constructor and Destructor
     Movie(int, std::string, int, std::string, Genre);
     ~Movie();
+
+    // Getters
     int getId();
     std::string getTitle() const;
     std::string getPlot();
     int getReleaseYear() const;
     Genre getGenre();
+
+    // Setters
     void setTitle(std::string);
     void setPlot(std::string);
     void setGenre(Genre);
+    void setReleaseYear(int);
+
+    // Movie Functions
     void print();
 
     // Overload Comparison Operator

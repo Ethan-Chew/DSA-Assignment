@@ -59,18 +59,20 @@ void BasicFeatures::addNewMovie(Application &application) {
         Genre genre = NONE;
 
         std::cout << "Please enter movie title: ";
+        std::cin.ignore();
         getline(std::cin, title);
 
         std::cout << "\nPlease enter movie release year: ";
         std::cin >> releaseYear;
 
         std::cout << "\nPlease enter movie plot: ";
+        std::cin.ignore();
         getline(std::cin, plot);
 
         // TODO: Add Genre when implemented
 
         // Create new Movie Object with Unique Pointer for memory safety, then move into Dictionary
-        std::unique_ptr<Movie> newMovie = std::make_unique<Movie>(Movie(, title, releaseYear, plot, genre));
+        std::unique_ptr<Movie> newMovie = std::make_unique<Movie>(Movie(id, title, releaseYear, plot, genre));
         application.addMovie(std::move(newMovie));
 
         // Get data from Movies Dictionary as the pointer has been moved there
@@ -116,29 +118,83 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
         std::cout << "Update (1) Actor or (2) Movie: ";
         std::cin >> movieActorChoice;
 
-        // TODO: Add get actor/movie with Id functionality in application
+        // Update Actor
         if (movieActorChoice == 1) {
-            std::cout << "\nPlease enter actor id: ";
+            std::cout << "\nPlease enter Actor ID: ";
             std::cin >> actorMovieId;
 
             Actor* chosenActor = application.getActor(actorMovieId);
             std::cout << "\nActor chosen: " << std::endl;
             chosenActor->print();
 
+            // Get relevant data to create Actor Object
+            std::string name;
+            std::string birthYear;
 
+            std::cout << "Please enter updated Actor name \n (';' to skip): ";
+            std::cin.ignore();
+            getline(std::cin, name);
+
+            if (name != ";") {
+                chosenActor->setName(name);
+            }
+
+            std::cout << "\nPlease enter updated birth year \n (';' to skip): ";
+            std::cin >> birthYear;
+
+            if (birthYear != ";") {
+                chosenActor->setBirthYear(std::stoi(birthYear));
+            }
+
+            std::cout << "\nSuccessfully updated Actor information: " << std::endl;
+            application.getActor(actorMovieId)->print();
         }
+
+        // Update Movie
         else if (movieActorChoice == 2) {
-            std::cout << "\nPlease enter actor id: ";
+            std::cout << "\nPlease enter Movie ID: ";
             std::cin >> actorMovieId;
 
             Movie* chosenMovie = application.getMovie(actorMovieId);
             std::cout << "\nMovie chosen: " << std::endl;
             chosenMovie->print();
 
-            // TODO: Add Genre
+            // Get relevant data to create Movie Object
+            std::string title;
+            std::string releaseYear;
+            std::string plot;
+            Genre genre = NONE;
+
+            std::cout << "Please enter updated movie title \n (';' to skip): ";
+            std::cin.ignore();
+            getline(std::cin, title);
+
+            if (title != ";") {
+                chosenMovie->setTitle(title);
+            }
+
+            std::cout << "\nPlease enter updated movie release year \n (';' to skip): ";
+            std::cin >> releaseYear;
+
+            if (releaseYear != ";") {
+                chosenMovie->setReleaseYear(std::stoi(releaseYear));;
+            }
+
+            std::cout << "\nPlease enter updated movie plot \n (';' to skip): ";
+            std::cin.ignore();
+            getline(std::cin, plot);
+
+            if (plot != ";") {
+                chosenMovie->setPlot(plot);
+            }
+
+            // TODO: Add Genre when implemented
+
+            std::cout << "\nSuccessfully updated Movie information: " << std::endl;
+            application.getMovie(actorMovieId)->print();
         }
         else {
-            std::cout << "Invalid Input. Please try again." << std::endl;
+            std::cout << "Invalid Option. Please choose either (1) Actor or (2) Movie." << std::endl;
         }
     }
     catch (std::exception &e) {
