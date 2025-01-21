@@ -15,12 +15,15 @@ void setupApplication(Application &application) {
         HeaderSpec("name", ColumnType::STRING),
         HeaderSpec("birth", ColumnType::INT));
 
+    // Retrieve the result
     auto actorResult = actorParser.ParseData();
 
+    // Get each Column from CSV
     auto *ids = reinterpret_cast<MyList<int>*>((*actorResult)["id"]);
     auto *names = reinterpret_cast<MyList<std::string>*>((*actorResult)["name"]);
     auto *birth = reinterpret_cast<MyList<int>*>((*actorResult)["birth"]);
 
+    // Create Actors and add to Dictionary
     for (int i = 0; i < ids->get_length(); i++) {
         int id = ids->get(i);
         std::string name = names->get(i);
@@ -38,13 +41,16 @@ void setupApplication(Application &application) {
         HeaderSpec("plot",ColumnType::STRING),
         HeaderSpec("year", ColumnType::INT));
 
+    // Retrieve the result
     auto movieResult = movieParser.ParseData();
 
+    // Get each Column from CSV
     auto *movieIds = reinterpret_cast<MyList<int>*>((*movieResult)["id"]);
     auto *titles = reinterpret_cast<MyList<std::string>*>((*movieResult)["title"]);
     auto *plots = reinterpret_cast<MyList<std::string>*>((*movieResult)["plot"]);
     auto *years = reinterpret_cast<MyList<int>*>((*movieResult)["year"]);
 
+    // Create Movie Objects and add to Dictionary
     for (int i = 0; i < movieIds->get_length(); i++) {
         std::unique_ptr<Movie> movie = std::make_unique<Movie>(movieIds->get(i), titles->get(i), years->get(i), plots->get(i), Genre::NONE);
         application.addMovie(std::move(movie));
@@ -56,22 +62,25 @@ void setupApplication(Application &application) {
         HeaderSpec("person_id", ColumnType::INT),
         HeaderSpec("movie_id", ColumnType::INT));
 
-    /// Retrieve the result
+    // Retrieve the result
     auto castResult = castParser.ParseData();
 
-    /// Get each Column from the CSV
+    // Get each Column from the CSV
     auto *castPersonIds = reinterpret_cast<MyList<int>*>((*castResult)["person_id"]);
     auto *castMovieIds = reinterpret_cast<MyList<int>*>((*castResult)["movie_id"]);
 
+    // Create and update Actor-Movie Relationships
     for (int i = 0; i < castPersonIds->get_length(); i++) {
         application.addActorToMovie(castPersonIds->get(i), castMovieIds->get(i));
     }
 }
 
+// Login user to User/Admin Accounts
 Account loginUser(Application &application) {
     std::cout << "Amazing Movie App" << "\n";
     std::cout << "-----------------" << "\n";
 
+    // Login System
     while (true) {
         std::string username, password;
         std::cout << "Username: ";
@@ -79,6 +88,7 @@ Account loginUser(Application &application) {
         std::cout << "Password: ";
         std::cin >> password;
 
+        // Check if login details are valid
         Account* account = application.getAccount(username);
         if (account == nullptr) {
             std::cout << "No account with username found." << "\n";
@@ -86,9 +96,8 @@ Account loginUser(Application &application) {
             if (account->comparePassword(password)) {
                 std::cout << "Welcome, " + username + "!" << "\n";
                 return *account;
-            } else {
-                std::cout << "Incorrect Password." << "\n";
             }
+            std::cout << "Incorrect Password." << "\n";
         }
     }
 }
@@ -127,6 +136,7 @@ void displayMenu(Application &application, bool isAdmin) {
 
                 // Display movies actor starred in
                 case 3: {
+                    BasicFeatures::displayActorMovies(application);
                     break;
                 }
 
@@ -151,6 +161,7 @@ void displayMenu(Application &application, bool isAdmin) {
                 "2. Add new movie\n"
                 "3. Add an actor to a movie\n"
                 "4. Update actor/movie details.\n"
+                "5. Display entire database\n"
                 "0. Exit App\n"
                 "Enter Choice: " << "\n";
             std::cin >> choice;
@@ -179,6 +190,11 @@ void displayMenu(Application &application, bool isAdmin) {
                 // Update actor/movie details
                 case 4: {
                     BasicFeatures::updateActorOrMovie(application);
+                    break;
+                }
+
+                case 5: {
+                    BasicFeatures::printAll(application);
                     break;
                 }
             }

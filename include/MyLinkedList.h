@@ -55,14 +55,14 @@ MyLinkedList<T>::~MyLinkedList() {
     }
 }
 
-
 template<typename T>
 bool MyLinkedList<T>::append(T item)
 {
     Node* newNode = new Node(item);
     if (is_empty()) {
         firstNode = newNode;
-    } else {
+    }
+    else {
         Node* tempNode = firstNode;
         while (tempNode->next != nullptr) {
             tempNode = tempNode->next;
@@ -86,7 +86,8 @@ bool MyLinkedList<T>::insert(int idx, T item)
     if (idx == 0) {
         newNode->next = firstNode;
         firstNode = newNode;
-    } else {
+    }
+    else {
         Node* tempNode = firstNode;
         for (int i = 0; i < idx - 1; i++) {
             tempNode = tempNode->next;
@@ -108,14 +109,14 @@ void MyLinkedList<T>::remove(int idx)
 
     if (idx == 0) {
         firstNode = firstNode->next;
-    } else {
+    }
+    else {
         Node *cur = firstNode;
         for (int i = 0; i < idx - 1; i++) {
             cur = cur->next;
         }
         cur->next = cur->next->next;
     }
-
     size--;
 }
 
@@ -191,12 +192,12 @@ typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right, 
                 if (std::is_same_v<T, Actor*>) {
                     const auto* actorA = static_cast<const Actor*>(a);
                     const auto* actorB = static_cast<const Actor*>(b);
-                    return actorA->getName().compare(actorB->getName()) < 0;
+                    return actorA->getName().compare(actorB->getName()) < 0; //.compare returns an integer value, so we compare the value to return bool
                 }
                 if (std::is_same_v<T, Movie*>) {
                     const auto* movieA = static_cast<const Movie*>(a);
                     const auto* movieB = static_cast<const Movie*>(b);
-                    return movieA->getTitle().compare(movieB->getTitle()) < 0;
+                    return movieA->getTitle().compare(movieB->getTitle()) < 0; //.compare returns an integer value, so we compare the value to return bool
                 }
                 throw std::invalid_argument("Alphabetical comparison is not supported");
             };

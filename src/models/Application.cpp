@@ -126,6 +126,7 @@ bool Application::addActorToMovie(const int actorId, const int movieId) {
 
     return true;
 }
+
 bool Application::removeActorFromMovie(const int actorId, const int movieId) {
     // not using std::move as we don't need ownership, we just need to modify
     SortedList* actorMovieIds = actorsToMovies[actorId].get();
@@ -169,6 +170,7 @@ SortedList* Application::getActorMovies(int id) {
 SortedList* Application::getMovieActors(int id) {
     return moviesToActors[id].get();
 }
+
 // const MyDict<int, SortedList*>& Application::getActorsToMoviesRelationship() const {
 //     return actorsToMovies;
 // }

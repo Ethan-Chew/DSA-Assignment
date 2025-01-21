@@ -4,6 +4,7 @@
 
 #include "models/Movie.h"
 
+// Constructor and Destructor
 Movie::Movie(int id, std::string title, int releaseYear, std::string plot, Genre genre) {
     this->id = id;
     this->title = title;
@@ -12,7 +13,6 @@ Movie::Movie(int id, std::string title, int releaseYear, std::string plot, Genre
     this->genre = genre;
 }
 
-// Constructor
 Movie::~Movie() {}
 
 // Getters

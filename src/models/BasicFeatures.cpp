@@ -15,6 +15,7 @@
 // Add new actor
 void BasicFeatures::addNewActor(Application &application) {
     try {
+        // Display Menu
         std::cout << "=== Option 1: Add New Actor ===" << std::endl;
 
         // Set Actor ID to be 1 more than the highest value currently in the database
@@ -39,6 +40,7 @@ void BasicFeatures::addNewActor(Application &application) {
         std::cout << "\nSuccessfully added new actor: " << std::endl;
         application.getActor(id)->print();
     }
+    // Error Handling for bad inputs
     catch(std::exception &e) {
         std::cout << "An error has occurred. Please try again." << "\n";
     }
@@ -47,6 +49,7 @@ void BasicFeatures::addNewActor(Application &application) {
 // Add new movie
 void BasicFeatures::addNewMovie(Application &application) {
     try {
+        // Display Meny
         std::cout << "=== Option 2: Add New Movie ===" << std::endl;
 
         // Set Movie ID to be 1 more than the highest value currently in the database
@@ -79,6 +82,7 @@ void BasicFeatures::addNewMovie(Application &application) {
         std::cout << "\nSuccessfully added new movie: " << std::endl;
         application.getMovie(id)->print();
     }
+    // Error Handling for bad inputs
     catch (std::exception &e) {
         std::cout << "An error has occurred with exception: " << e.what() << std::endl;
     }
@@ -87,6 +91,7 @@ void BasicFeatures::addNewMovie(Application &application) {
 // Add an actor to a movie
 void BasicFeatures::addActorToMovie(Application &application) {
     try {
+        // Display Menu
         std::cout << "=== Option 3: Add Actor to Movie ===" << std::endl;
         int actorId;
         int movieId;
@@ -103,6 +108,7 @@ void BasicFeatures::addActorToMovie(Application &application) {
 
         // TODO: Exception handling for incorrect Ids
     }
+    // Error Handling for bad inputs
     catch (std::exception &e) {
         std::cout << "An error has occurred with exception: " << e.what() << std::endl;
     }
@@ -111,7 +117,9 @@ void BasicFeatures::addActorToMovie(Application &application) {
 // Update actor/movie details
 void BasicFeatures::updateActorOrMovie(Application &application) {
     try {
+        // Display Menu
         std::cout << "=== Option 4: Update actor/movie details ===" << std::endl;
+
         int movieActorChoice;
         int actorMovieId;
 
@@ -123,6 +131,7 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
             std::cout << "\nPlease enter Actor ID: ";
             std::cin >> actorMovieId;
 
+            // Show chosen actor
             Actor* chosenActor = application.getActor(actorMovieId);
             std::cout << "\nActor chosen: " << std::endl;
             chosenActor->print();
@@ -135,6 +144,7 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
             std::cin.ignore();
             getline(std::cin, name);
 
+            // Skip updating name if user enters ";"
             if (name != ";") {
                 chosenActor->setName(name);
             }
@@ -142,8 +152,9 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
             std::cout << "\nPlease enter updated birth year \n (';' to skip): ";
             std::cin >> birthYear;
 
+            // Skip updating birth year if user enters ";"
             if (birthYear != ";") {
-                chosenActor->setBirthYear(std::stoi(birthYear));
+                chosenActor->setBirthYear(std::stoi(birthYear)); // Use stoi to convert string to int
             }
 
             std::cout << "\nSuccessfully updated Actor information: " << std::endl;
@@ -155,6 +166,7 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
             std::cout << "\nPlease enter Movie ID: ";
             std::cin >> actorMovieId;
 
+            // Show chosen movie
             Movie* chosenMovie = application.getMovie(actorMovieId);
             std::cout << "\nMovie chosen: " << std::endl;
             chosenMovie->print();
@@ -169,6 +181,7 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
             std::cin.ignore();
             getline(std::cin, title);
 
+            // Skip updating title if user enters ";"
             if (title != ";") {
                 chosenMovie->setTitle(title);
             }
@@ -176,14 +189,16 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
             std::cout << "\nPlease enter updated movie release year \n (';' to skip): ";
             std::cin >> releaseYear;
 
+            // Skip updating release year if user enters ";"
             if (releaseYear != ";") {
-                chosenMovie->setReleaseYear(std::stoi(releaseYear));;
+                chosenMovie->setReleaseYear(std::stoi(releaseYear));  // Use stoi to convert string to int
             }
 
             std::cout << "\nPlease enter updated movie plot \n (';' to skip): ";
             std::cin.ignore();
             getline(std::cin, plot);
 
+            // Skip updating plot if user enters ";"
             if (plot != ";") {
                 chosenMovie->setPlot(plot);
             }
@@ -193,10 +208,13 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
             std::cout << "\nSuccessfully updated Movie information: " << std::endl;
             application.getMovie(actorMovieId)->print();
         }
+
+        // Invalid Choice
         else {
             std::cout << "Invalid Option. Please choose either (1) Actor or (2) Movie." << std::endl;
         }
     }
+    // Error Handling for bad inputs
     catch (std::exception &e) {
         std::cout << "Invalid Input Entered. Please Try Again." << std::endl;
     }
@@ -228,7 +246,6 @@ void BasicFeatures::printAll(Application &application) {
         application.getMovies(actorId)->print();
     }
 }
-
 
 // User Basic Functions
 // Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user
@@ -262,9 +279,11 @@ void BasicFeatures::displayActors(Application &application) {
             }
         }
 
+        // Sort and Print
         filteredActors->sort(AGE);
         filteredActors->print();
     }
+    // Error Handling for bad inputs
     catch (std::exception &e) {
         std::cout << "An error has occurred with exception: " << e.what() << std::endl;
     }
@@ -291,9 +310,9 @@ void BasicFeatures::displayMovies(Application &application) {
         if (filteredMovies->get_length() == 0) {
             std::cout << "There are no Movies in the past 3 years" << std::endl;
         }
-
         filteredMovies->print();
     }
+    // Error Handling for bad inputs
     catch (std::exception &e) {
         std::cout << "An error has occurred with exception: " << e.what() << std::endl;
     }
@@ -303,10 +322,12 @@ void BasicFeatures::displayMovies(Application &application) {
 void BasicFeatures::displayActorMovies(Application &application) {
     try {
         std::cout << "=== Option 3: Display all Movies an Actor starred in ===" << std::endl;
+
         int actorId;
         std::cout << "Actor ID: ";
         std::cin >> actorId;
 
+        // Get and sort Movies
         MyLinkedList<Movie*>* movies = application.getMovies(actorId);
         if (movies == nullptr) {
             std::cout << "No Actor with the ID of " << actorId << " was found!" << std::endl;
@@ -315,6 +336,7 @@ void BasicFeatures::displayActorMovies(Application &application) {
         movies->sort(ALPHABETICALLY);
         movies->print();
     }
+    // Error Handling for bad inputs
     catch (std::exception &e) {
         std::cout << "Invalid Actor ID provided. Please try again." << std::endl;
     }
@@ -324,10 +346,12 @@ void BasicFeatures::displayActorMovies(Application &application) {
 void BasicFeatures::displayActorsInMovie(Application& application) {
     try {
         std::cout << "=== Option 4: Display all the Actors in a Particular Movie ===" << std::endl;
+
         int movieId;
         std::cout << "Movie ID: ";
         std::cin >> movieId;
 
+        // Get and sort Actors
         MyLinkedList<Actor*>* actors = application.getActors(movieId);
         if (actors == nullptr) {
             std::cout << "No Movie with the ID of " << movieId << " was found!" << std::endl;
@@ -336,6 +360,7 @@ void BasicFeatures::displayActorsInMovie(Application& application) {
         actors->sort(ALPHABETICALLY);
         actors->print();
     }
+    // Error Handling for bad inputs
     catch (std::exception &e) {
         std::cout << "Invalid Movie ID provided. Please try again." << std::endl;
     }
@@ -346,6 +371,7 @@ void BasicFeatures::displayKnownActors(Application &application) {
     try {
         // Display Starting Menu
         std::cout << "=== Option 5: Display list of all actors that a particular actor knows ===" << std::endl;
+
         int actorId;
         std::cout << "Actor ID: ";
         std::cin >> actorId;
@@ -374,6 +400,8 @@ void BasicFeatures::displayKnownActors(Application &application) {
                 std::cout << "Actor has not acted in any movies." << std::endl;
                 return;
             }
+
+            // Loop through all Movies to search for Actors
             for (int i = 0; i < movies->getLength(); i++) {
                 int movieId = movies->get(i);
 
@@ -400,7 +428,9 @@ void BasicFeatures::displayKnownActors(Application &application) {
                     nextDepthCount++; // Increment 1 to the number of nodes in the next depth
                 }
             }
-            if (currentDepthCount == 0) { // Only proceed to the next level when all nodes in the current level has been processed
+
+            // Only proceed to the next level when all nodes in the current level has been processed
+            if (currentDepthCount == 0) {
                 depth++;
                 currentDepthCount = nextDepthCount; // Move to next level
                 nextDepthCount = 0; // Reset the count for next level
@@ -413,7 +443,6 @@ void BasicFeatures::displayKnownActors(Application &application) {
             Actor* actor = application.getActor(firstLevel->get(i));
             actor->print();
         }
-
         std::cout << std::endl; // Print Empty Line
 
         // Display the Second Level Actors
@@ -422,9 +451,9 @@ void BasicFeatures::displayKnownActors(Application &application) {
             Actor* actor = application.getActor(secondLevel->get(i));
             actor->print();
         }
-
         std::cout << std::endl; // Print Empty Line
     }
+    // Error Handling for bad inputs
     catch (std::exception &e) {
         std::cout << "Invalid Actor ID provided. Please try again." << std::endl;
     }
