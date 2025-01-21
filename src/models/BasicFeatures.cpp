@@ -4,6 +4,8 @@
 
 #include "../include/BasicFeatures.h"
 #include <iostream>
+#include <limits>
+
 #include "MyDict.h"
 #include "models/Application.h"
 #include "models/Actor.h"
@@ -25,12 +27,26 @@ void BasicFeatures::addNewActor(Application &application) {
         std::string name;
         int birthYear;
         
-        std::cout << "Please enter name: ";
-        std::cin.ignore();
-        getline(std::cin, name);
+        while (true) {
+            std::cout << "Please enter name: ";
+            std::cin.ignore();
+            getline(std::cin, name);
 
-        std::cout << "\nPlease enter birth year: ";
-        std::cin >> birthYear;
+            // Validate the Name Input
+            if (name.empty()) {
+                std::cout << "Your name cannot be empty. Please enter a valid name." << std::endl;
+            } else { break; }
+        }
+
+        while (true) {
+            std::cout << "\nPlease enter Birth Year: ";
+            if (std::cin >> birthYear) { break; }
+
+            // Validate Birth Year
+            std::cout << "Invalid Birth Year! Please enter a valid year." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        }
 
         // Create new Actor Object with Unique Pointer for memory safety, then move into Dictionary
         std::unique_ptr<Actor> newActor = std::make_unique<Actor>(Actor(id, name, birthYear));
@@ -61,18 +77,69 @@ void BasicFeatures::addNewMovie(Application &application) {
         std::string plot;
         Genre genre = NONE;
 
-        std::cout << "Please enter movie title: ";
-        std::cin.ignore();
-        getline(std::cin, title);
+        while (true) {
+            std::cout << "Please enter movie title: ";
+            std::cin.ignore();
+            getline(std::cin, title);
 
-        std::cout << "\nPlease enter movie release year: ";
-        std::cin >> releaseYear;
+            // Validate the Name Input
+            if (title.empty()) {
+                std::cout << "The Movie Title cannot be empty! Please enter a valid Movie Title." << std::endl;
+            } else { break; }
+        }
 
-        std::cout << "\nPlease enter movie plot: ";
-        std::cin.ignore();
-        getline(std::cin, plot);
+        while (true) {
+            std::cout << "\nPlease enter movie release year: ";
+            if (std::cin >> releaseYear) { break; }
 
-        // TODO: Add Genre when implemented
+            // Validate Birth Year
+            std::cout << "Invalid Birth Year! Please enter a valid year." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        }
+
+        while (true) {
+            std::cout << "\nPlease enter movie plot: ";
+            std::cin.ignore();
+            getline(std::cin, plot);
+
+            // Validate the Movie Plot Input
+            if (title.empty()) {
+                std::cout << "The Movie Plot cannot be empty! Please enter a valid Movie Plot." << std::endl;
+            } else { break; }
+        }
+
+        // Display Genres
+        std::string genres[] = { "Action", "Science Fiction", "Horror", "Thriller", "Romance", "Fantasy" };
+        for (int i = 0; i < genres->length(); i++) {
+            std::cout << "[" << i+1 << "] " << genres[i] << std::endl;
+        }
+
+        int genreId;
+        while (true) {
+            std::cout << "\nSelect a Genre (from 1 to 6): ";
+            if (std::cin >> genreId && genreId >= 1 && genreId <= 6) { break; }
+
+            // Validate Birth Year
+            std::cout << "Invalid Genre ID! Genre ID has to be a number and within the range." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        }
+        switch (genreId) {
+            case 1:
+                genre = ACTION;
+            case 2:
+                genre = SCIFI;
+            case 3:
+                genre = HORROR;
+            case 4:
+                genre = THRILLER;
+            case 5:
+                genre = ROMANCE;
+            case 6:
+                genre = FANTASY;
+            default: genre = NONE;
+        }
 
         // Create new Movie Object with Unique Pointer for memory safety, then move into Dictionary
         std::unique_ptr<Movie> newMovie = std::make_unique<Movie>(Movie(id, title, releaseYear, plot, genre));
