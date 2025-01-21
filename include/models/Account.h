@@ -13,6 +13,7 @@ private:
     bool isAdmin;
 public:
     Account(std::string, std::string, bool);
+    Account();
     std::string getUsername();
     bool comparePassword(std::string);
     bool isAdministrator();

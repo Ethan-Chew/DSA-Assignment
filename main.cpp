@@ -103,7 +103,7 @@ Account loginUser(Application &application) {
 }
 
 // Displays main menu and runs commands based on user input
-void displayMenu(Application &application, bool isAdmin) {
+bool displayMenu(Application &application, bool isAdmin) {
     int choice = -1;
     while (choice != 0) {
         // User Commands
@@ -115,7 +115,7 @@ void displayMenu(Application &application, bool isAdmin) {
                 "3. Display all movies an actor starred in (in alphabetical order)\n"
                 "4. Display all the actors in a particular movie (in alphabetical order)\n"
                 "5. Display a list of all actors that a particular actor knows.\n"
-                "0. Exit App\n"
+                "0. Log Out\n"
                 "Enter Choice: " << "\n";
             std::cin >> choice;
 
@@ -162,7 +162,7 @@ void displayMenu(Application &application, bool isAdmin) {
                 "3. Add an actor to a movie\n"
                 "4. Update actor/movie details.\n"
                 "5. Display entire database\n"
-                "0. Exit App\n"
+                "0. Log Out\n"
                 "Enter Choice: " << "\n";
             std::cin >> choice;
 
@@ -200,6 +200,12 @@ void displayMenu(Application &application, bool isAdmin) {
             }
         }
     }
+
+    // Exit app
+    std::string exit;
+    std::cout << "Exit App? (y/n)";
+    std::cin >> exit;
+    return (exit == "y");
 }
 
 int main()
@@ -207,9 +213,14 @@ int main()
     Application* application = Application::getInstance();
     setupApplication(*application);
 
+    Account account;
+    bool exitApplication = false;
+
     // Login and Main Menu Setup
-    Account account = loginUser(*application);
-    displayMenu(*application, account.isAdministrator());
+    while (!exitApplication) {
+        account = loginUser(*application);
+        exitApplication = displayMenu(*application, account.isAdministrator()); // Allows user to quit app with input
+    }
 
     return 0;
 }

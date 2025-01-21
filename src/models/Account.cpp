@@ -4,20 +4,29 @@
 
 #include "models/Account.h"
 
+// Constructor
 Account::Account(std::string usrname, std::string pwd, bool usrIsAdmin) {
     username = usrname;
     password = pwd;
     isAdmin = usrIsAdmin;
 }
+
+// Default Constructor
+Account::Account() {}
+
+// Retrieve Username
 std::string Account::getUsername() {
     return username;
 }
+
+// Account Functions
 bool Account::comparePassword(std::string pwd) {
     if (password == pwd) {
         return true;
     }
     return false;
 }
+
 bool Account::isAdministrator() {
     return isAdmin;
 }
