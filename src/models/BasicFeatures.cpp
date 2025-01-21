@@ -30,7 +30,6 @@ void BasicFeatures::addNewActor(Application &application) {
         getline(std::cin, name);
 
         std::cout << "\nPlease enter birth year: ";
-        std::cin >> birthYear;
 
         // Create new Actor Object with Unique Pointer for memory safety, then move into Dictionary
         std::unique_ptr<Actor> newActor = std::make_unique<Actor>(Actor(id, name, birthYear));
@@ -42,7 +41,7 @@ void BasicFeatures::addNewActor(Application &application) {
     }
     // Error Handling for bad inputs
     catch(std::exception &e) {
-        std::cout << "An error has occurred. Please try again." << "\n";
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
 
@@ -84,7 +83,7 @@ void BasicFeatures::addNewMovie(Application &application) {
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {
-        std::cout << "An error has occurred with exception: " << e.what() << std::endl;
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
 
@@ -110,7 +109,7 @@ void BasicFeatures::addActorToMovie(Application &application) {
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {
-        std::cout << "An error has occurred with exception: " << e.what() << std::endl;
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
 
@@ -140,7 +139,7 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
             std::string name;
             std::string birthYear;
 
-            std::cout << "Please enter updated Actor name \n (';' to skip): ";
+            std::cout << "Please enter updated Actor name (';' to skip): ";
             std::cin.ignore();
             getline(std::cin, name);
 
@@ -149,7 +148,7 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
                 chosenActor->setName(name);
             }
 
-            std::cout << "\nPlease enter updated birth year \n (';' to skip): ";
+            std::cout << "\nPlease enter updated birth year (';' to skip): ";
             std::cin >> birthYear;
 
             // Skip updating birth year if user enters ";"
@@ -177,7 +176,7 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
             std::string plot;
             Genre genre = NONE;
 
-            std::cout << "Please enter updated movie title \n (';' to skip): ";
+            std::cout << "Please enter updated movie title (';' to skip): ";
             std::cin.ignore();
             getline(std::cin, title);
 
@@ -186,7 +185,7 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
                 chosenMovie->setTitle(title);
             }
 
-            std::cout << "\nPlease enter updated movie release year \n (';' to skip): ";
+            std::cout << "\nPlease enter updated movie release year (';' to skip): ";
             std::cin >> releaseYear;
 
             // Skip updating release year if user enters ";"
@@ -194,7 +193,7 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
                 chosenMovie->setReleaseYear(std::stoi(releaseYear));  // Use stoi to convert string to int
             }
 
-            std::cout << "\nPlease enter updated movie plot \n (';' to skip): ";
+            std::cout << "\nPlease enter updated movie plot (';' to skip): ";
             std::cin.ignore();
             getline(std::cin, plot);
 
@@ -216,34 +215,39 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {
-        std::cout << "Invalid Input Entered. Please Try Again." << std::endl;
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
 
 // Additional Feature for Admin to view entire Database
 void BasicFeatures::printAll(Application &application) {
-    std::cout << "\nPrinting all dictionary\n";
+    try {
+        std::cout << "=== Option 5: Printing database ===" << std::endl;
 
-    std::cout << "\nActors\n";
-    MyLinkedList<Actor*>* actors = application.getAllActors();
-    actors->print();
+        std::cout << "=== Actors ===" << std::endl;
+        MyLinkedList<Actor*>* actors = application.getAllActors();
+        actors->print();
 
-    std::cout << "\nMovies\n";
-    MyLinkedList<Movie*>* movies = application.getAllMovies();
-    movies->print();
+        std::cout << "=== Movies ===" << std::endl;
+        MyLinkedList<Movie*>* movies = application.getAllMovies();
+        movies->print();
 
-    std::cout << "\nGets actors casted in a movie\n";
-    for (int i = 0; i < movies->get_length(); i++) {
-        int movieId = movies->get(i)->getId();
-        movies->get(i)->print();
-        application.getActors(movieId)->print();
+        std::cout << "=== Movie Cast of each movie ===" << std::endl;
+        for (int i = 0; i < movies->get_length(); i++) {
+            int movieId = movies->get(i)->getId();
+            movies->get(i)->print();
+            application.getActors(movieId)->print();
+        }
+
+        std::cout << "=== Movies each actor was casted in ===" << std::endl;
+        for (int i = 0; i < actors->get_length(); i++) {
+            int actorId = actors->get(i)->getId();
+            actors->get(i)->print();
+            application.getMovies(actorId)->print();
+        }
     }
-
-    std::cout << "\nGets movies actors acted in\n";
-    for (int i = 0; i < actors->get_length(); i++) {
-        int actorId = actors->get(i)->getId();
-        actors->get(i)->print();
-        application.getMovies(actorId)->print();
+    catch (std::exception &e) {
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
 
@@ -285,7 +289,7 @@ void BasicFeatures::displayActors(Application &application) {
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {
-        std::cout << "An error has occurred with exception: " << e.what() << std::endl;
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
 
@@ -314,7 +318,7 @@ void BasicFeatures::displayMovies(Application &application) {
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {
-        std::cout << "An error has occurred with exception: " << e.what() << std::endl;
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
 
@@ -338,7 +342,7 @@ void BasicFeatures::displayActorMovies(Application &application) {
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {
-        std::cout << "Invalid Actor ID provided. Please try again." << std::endl;
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
 
@@ -362,7 +366,7 @@ void BasicFeatures::displayActorsInMovie(Application& application) {
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {
-        std::cout << "Invalid Movie ID provided. Please try again." << std::endl;
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
 
@@ -455,6 +459,6 @@ void BasicFeatures::displayKnownActors(Application &application) {
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {
-        std::cout << "Invalid Actor ID provided. Please try again." << std::endl;
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
