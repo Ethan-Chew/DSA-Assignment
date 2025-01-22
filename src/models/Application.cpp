@@ -30,7 +30,7 @@ Application* Application::getInstance() {
 
 // Getter for Account
 Account* Application::getAccount(const std::string &username) {
-    return accounts[username].get();
+    return accounts.safe_get(username)->get();
 }
 
 // Getters for max Actor/Movie Id
@@ -85,7 +85,7 @@ bool Application::removeMovie(const int id) {
 
 // Getters for Actor and Movie
 Actor* Application::getActor(const int id) {
-    if (actors[id] != nullptr) {
+    if (actors.safe_get(id) != nullptr) {
         return actors[id].get();
     }
     return nullptr;
@@ -100,7 +100,7 @@ MyLinkedList<Movie*>* Application::getAllMovies() {
 }
 
 Movie* Application::getMovie(const int id) {
-    if (movies[id] != nullptr) {
+    if (movies.safe_get(id) != nullptr) {
         return movies[id].get();
     }
     return nullptr;
@@ -108,6 +108,11 @@ Movie* Application::getMovie(const int id) {
 
 // Relationships
 bool Application::addActorToMovie(const int actorId, const int movieId) {
+    // Check if actor or movie objects exists before creating relationship
+    if (actors.safe_get(actorId) == nullptr || movies.safe_get(movieId) == nullptr) {
+        return false;
+    }
+
     // Add Actor to the Actor-to-Movie Relationship
     SortedList *actorMovieIds = actorsToMovies[actorId].get();
     if (actorMovieIds == nullptr) {
@@ -128,6 +133,11 @@ bool Application::addActorToMovie(const int actorId, const int movieId) {
 }
 
 bool Application::removeActorFromMovie(const int actorId, const int movieId) {
+    // Check if actor or movie objects exists before deleting relationship
+    if (actors.safe_get(actorId) == nullptr || movies.safe_get(movieId) == nullptr) {
+        return false;
+    }
+
     // not using std::move as we don't need ownership, we just need to modify
     SortedList* actorMovieIds = actorsToMovies[actorId].get();
     actorMovieIds->remove(movieId);
