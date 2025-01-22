@@ -37,7 +37,7 @@ void Actor::setBirthYear(int birthYear) {
 
 // Actor Functions
 void Actor::print() {
-    std::cout << "Actor ID: " << id << " | Name: " << name << " | Birth Year: " << birthYear << "\n";
+    std::cout << "Actor ID: " << id << " | Name: " << name << " | Birth Year: " << birthYear <<  " | Rating: " << getRating() << "\n";
 }
 
 // Overload Operator for Comparison
