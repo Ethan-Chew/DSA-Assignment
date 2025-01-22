@@ -40,7 +40,7 @@ void BasicFeatures::addNewActor(Application &application) {
 
         while (true) {
             std::cout << "\nPlease enter Birth Year: ";
-            if (std::cin >> birthYear) { break; }
+            if (std::cin >> birthYear && birthYear > 1900 && birthYear < 2026) { break; }
 
             // Validate Birth Year
             std::cout << "Invalid Birth Year! Please enter a valid year." << std::endl;
@@ -90,10 +90,10 @@ void BasicFeatures::addNewMovie(Application &application) {
 
         while (true) {
             std::cout << "\nPlease enter movie release year: ";
-            if (std::cin >> releaseYear) { break; }
+            if (std::cin >> releaseYear && releaseYear > 1900 && releaseYear < 2026) { break; }
 
-            // Validate Birth Year
-            std::cout << "Invalid Birth Year! Please enter a valid year." << std::endl;
+            // Validate Release Year
+            std::cout << "Invalid Release Year! Please enter a valid year." << std::endl;
             std::cin.clear(); // Clear the error flag
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
         }
@@ -120,7 +120,7 @@ void BasicFeatures::addNewMovie(Application &application) {
             std::cout << "\nSelect a Genre (from 1 to 6): ";
             if (std::cin >> genreId && genreId >= 1 && genreId <= 6) { break; }
 
-            // Validate Birth Year
+            // Validate Genre
             std::cout << "Invalid Genre ID! Genre ID has to be a number and within the range." << std::endl;
             std::cin.clear(); // Clear the error flag
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
@@ -160,20 +160,35 @@ void BasicFeatures::addActorToMovie(Application &application) {
     try {
         // Display Menu
         std::cout << "=== Option 3: Add Actor to Movie ===" << std::endl;
+
         int actorId;
+        while (true) {
+            std::cout << "Please enter Actor ID: ";
+            if (std::cin >> actorId) { break; }
+
+            // Validate ActorID
+            std::cout << "Invalid Actor ID! Please enter a valid ID." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        }
+
         int movieId;
+        while (true) {
+            std::cout << "\nPlease enter Movie ID: ";
+            if (std::cin >> movieId) { break; }
 
-        std::cout << "Please enter Actor ID: ";
-        std::cin >> actorId;
-
-        std::cout << "\nPlease enter Movie ID: ";
-        std::cin >> movieId;
+            // Validate MovieID
+            std::cout << "Invalid Movie ID! Please enter a valid ID." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        }
 
         if (application.addActorToMovie(actorId, movieId)) {
             std::cout << "Actor added successfully!" << std::endl;
         }
-
-        // TODO: Exception handling for incorrect Ids
+        else {
+            std::cout << "Please enter valid Actor and Movie IDs." << std::endl;
+        }
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {
@@ -207,21 +222,44 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
             std::string name;
             std::string birthYear;
 
-            std::cout << "Please enter updated Actor name (';' to skip): ";
-            std::cin.ignore();
-            getline(std::cin, name);
+            while (true) {
+                std::cout << "Please enter updated Actor name (';' to skip): ";
+                std::cin.ignore();
+                getline(std::cin, name);
 
-            // Skip updating name if user enters ";"
-            if (name != ";") {
-                chosenActor->setName(name);
+                // Validate the Name Input
+                if (name.empty()) {
+                    std::cout << "Your name cannot be empty. Please enter a valid name." << std::endl;
+                }
+                else {
+                    // Skip updating name if user enters ";"
+                    if (name != ";") {
+                        chosenActor->setName(name);
+                    }
+                    break;
+                }
             }
 
-            std::cout << "\nPlease enter updated birth year (';' to skip): ";
-            std::cin >> birthYear;
+            while (true) {
+                std::cout << "\nPlease enter updated birth year (';' to skip): ";
+                std::cin >> birthYear;
 
-            // Skip updating birth year if user enters ";"
-            if (birthYear != ";") {
-                chosenActor->setBirthYear(std::stoi(birthYear)); // Use stoi to convert string to int
+                // Skip updating birth year if user enters ";"
+                if (!birthYear.empty() && birthYear == ";") { break; }
+
+                // Prevent crashes if input was not int
+                try {
+                    // Validate Birth Year and Update if valid
+                    if (!birthYear.empty() && std::stoi(birthYear) > 1900 && std::stoi(birthYear) < 2026) {
+                        chosenActor->setBirthYear(std::stoi(birthYear)); // Use stoi to convert string to int
+                        break;
+                    }
+                } catch (std::exception &e) {}
+
+                // Validate Birth Year
+                std::cout << "Invalid Birth Year! Please enter a valid year." << std::endl;
+                std::cin.clear(); // Clear the error flag
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
             }
 
             std::cout << "\nSuccessfully updated Actor information: " << std::endl;
@@ -240,37 +278,111 @@ void BasicFeatures::updateActorOrMovie(Application &application) {
 
             // Get relevant data to create Movie Object
             std::string title;
+            while (true) {
+                std::cout << "Please enter updated movie title (';' to skip): ";
+                std::cin.ignore();
+                getline(std::cin, title);
+
+                // Validate the Movie Title Input
+                if (title.empty()) {
+                    std::cout << "The Movie Title cannot be empty! Please enter a valid Movie Plot." << std::endl;
+                }
+                else {
+                    // Skip updating title if user enters ";"
+                    if (title != ";") {
+                        chosenMovie->setTitle(title);
+                    }
+                    break;
+                }
+            }
+
             std::string releaseYear;
+
+            while (true) {
+                std::cout << "\nPlease enter updated movie release year (';' to skip): ";
+                std::cin >> releaseYear;
+
+                // Skip updating release year if user enters ";"
+                if (!releaseYear.empty() && releaseYear == ";") { break; }
+
+                // Prevent crashes if input was not int
+                try {
+                    // Validate Release Year and Update if valid
+                    if (!releaseYear.empty() && std::stoi(releaseYear) > 1900 && std::stoi(releaseYear) < 2026) {
+                        chosenMovie->setReleaseYear(std::stoi(releaseYear));  // Use stoi to convert string to int
+                        break;
+                    }
+                } catch (std::exception &e) {}
+
+                // Validate Release Year
+                std::cout << "Invalid Release Year! Please enter a valid year." << std::endl;
+                std::cin.clear(); // Clear the error flag
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+            }
+
             std::string plot;
-            Genre genre = NONE;
+            while (true) {
+                std::cout << "\nPlease enter updated movie plot (';' to skip): ";
+                std::cin.ignore();
+                getline(std::cin, plot);
 
-            std::cout << "Please enter updated movie title (';' to skip): ";
-            std::cin.ignore();
-            getline(std::cin, title);
-
-            // Skip updating title if user enters ";"
-            if (title != ";") {
-                chosenMovie->setTitle(title);
+                // Validate the Movie Plot Input
+                if (plot.empty()) {
+                    std::cout << "The Movie Plot cannot be empty! Please enter a valid Movie Plot." << std::endl;
+                }
+                else {
+                    // Skip updating plot if user enters ";"
+                    if (plot != ";") {
+                        chosenMovie->setPlot(plot);
+                    }
+                    break;
+                }
             }
 
-            std::cout << "\nPlease enter updated movie release year (';' to skip): ";
-            std::cin >> releaseYear;
-
-            // Skip updating release year if user enters ";"
-            if (releaseYear != ";") {
-                chosenMovie->setReleaseYear(std::stoi(releaseYear));  // Use stoi to convert string to int
+            // Display Genres
+            std::string genres[] = { "Action", "Science Fiction", "Horror", "Thriller", "Romance", "Fantasy" };
+            for (int i = 0; i < genres->length(); i++) {
+                std::cout << "[" << i+1 << "] " << genres[i] << std::endl;
             }
 
-            std::cout << "\nPlease enter updated movie plot (';' to skip): ";
-            std::cin.ignore();
-            getline(std::cin, plot);
+            std::string genreId;
+            while (true) {
+                std::cout << "\nSelect a Genre (from 1 to 6) (';' to skip)";
+                std::cin >> genreId;
 
-            // Skip updating plot if user enters ";"
-            if (plot != ";") {
-                chosenMovie->setPlot(plot);
+                // Skip updating genre if user enters ";"
+                if (!genreId.empty() && genreId == ";") {
+                    break;
+                }
+
+                // Prevent crashes if input was not int
+                try {
+                    // Check genreId for validity
+                    if (std::stoi(genreId) >= 1 && std::stoi(genreId) <= 6) {
+                        switch (std::stoi(genreId)) {
+                            case 1:
+                                chosenMovie->setGenre(ACTION);
+                            case 2:
+                                chosenMovie->setGenre(SCIFI);
+                            case 3:
+                                chosenMovie->setGenre(HORROR);
+                            case 4:
+                                chosenMovie->setGenre(THRILLER);
+                            case 5:
+                                chosenMovie->setGenre(ROMANCE);
+                            case 6:
+                                chosenMovie->setGenre(FANTASY);
+                            default:
+                                chosenMovie->setGenre(NONE);
+                        }
+                    }
+                } catch (std::exception &e) {}
+
+                // Validate Genre
+                std::cout << "Invalid Genre ID! Genre ID has to be a number or ';' and within the range." << std::endl;
+                std::cin.clear(); // Clear the error flag
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
             }
-
-            // TODO: Add Genre when implemented
 
             std::cout << "\nSuccessfully updated Movie information: " << std::endl;
             application.getMovie(actorMovieId)->print();
@@ -329,13 +441,29 @@ void BasicFeatures::displayActors(Application &application) {
         // Get User Input, and Validate
         while (true) {
             std::cout << "Starting Age: ";
-            std::cin >> startAge;
-            std::cout << "Ending Age: ";
-            std::cin >> endAge;
+            if (std::cin >> startAge) {
+                std::cout << "Ending Age: ";
+                if (std::cin >> endAge) {
+                    // Validate logical age ranges
+                    if (startAge > 0 && endAge > 0) {
+                        if (endAge > startAge) { break; }
+                        std::cout<< "The Ending Age must be greater than the Starting Age" << std::endl;
+                    }
+                    else {
+                        std::cout<< "The Starting and Ending Age must be greater than 0" << std::endl;
+                    }
+                }
+                else {
+                    std::cout<< "The Starting and Ending Age must be an integer" << std::endl;
+                }
+            }
+            else {
+                std::cout<< "The Starting and Ending Age must be an integer" << std::endl;
+            }
 
-            if (startAge <= 0 || endAge <= 0) {
-                std::cout<< "The Starting and Ending Age must be greater than 0" << std::endl;
-            } else { break; }
+            // Checks failed
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
         }
 
         MyLinkedList<Actor*>* actors = application.getAllActors();
@@ -396,8 +524,15 @@ void BasicFeatures::displayActorMovies(Application &application) {
         std::cout << "=== Option 3: Display all Movies an Actor starred in ===" << std::endl;
 
         int actorId;
-        std::cout << "Actor ID: ";
-        std::cin >> actorId;
+        while (true) {
+            std::cout << "Please enter Actor ID: ";
+            if (std::cin >> actorId) { break; }
+
+            // Validate ActorID
+            std::cout << "Invalid Actor ID! Please enter a valid ID." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        }
 
         // Get and sort Movies
         MyLinkedList<Movie*>* movies = application.getMovies(actorId);
@@ -420,8 +555,15 @@ void BasicFeatures::displayActorsInMovie(Application& application) {
         std::cout << "=== Option 4: Display all the Actors in a Particular Movie ===" << std::endl;
 
         int movieId;
-        std::cout << "Movie ID: ";
-        std::cin >> movieId;
+        while (true) {
+            std::cout << "\nPlease enter Movie ID: ";
+            if (std::cin >> movieId) { break; }
+
+            // Validate MovieID
+            std::cout << "Invalid Movie ID! Please enter a valid ID." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        }
 
         // Get and sort Actors
         MyLinkedList<Actor*>* actors = application.getActors(movieId);

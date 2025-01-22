@@ -30,7 +30,7 @@ Application* Application::getInstance() {
 
 // Getter for Account
 Account* Application::getAccount(const std::string &username) {
-    return accounts.safe_get(username)->get();
+    return (accounts.safe_get(username) != nullptr) ? accounts[username].get() : nullptr;
 }
 
 // Getters for max Actor/Movie Id
