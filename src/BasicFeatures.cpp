@@ -125,20 +125,20 @@ void BasicFeatures::addNewMovie(Application &application) {
             std::cin.clear(); // Clear the error flag
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
         }
-        switch (genreId) {
-            case 1:
-                genre = ACTION;
-            case 2:
-                genre = SCIFI;
-            case 3:
-                genre = HORROR;
-            case 4:
-                genre = THRILLER;
-            case 5:
-                genre = ROMANCE;
-            case 6:
-                genre = FANTASY;
-            default: genre = NONE;
+        if (genreId == 1) {
+            genre = ACTION;
+        } else if (genreId == 2) {
+            genre = SCIFI;
+        } else if (genreId == 3) {
+            genre = HORROR;
+        } else if (genreId == 4) {
+            genre = THRILLER;
+        } else if (genreId == 5) {
+            genre = ROMANCE;
+        } else if (genreId == 6) {
+            genre = FANTASY;
+        } else {
+            genre = NONE;
         }
 
         // Create new Movie Object with Unique Pointer for memory safety, then move into Dictionary
