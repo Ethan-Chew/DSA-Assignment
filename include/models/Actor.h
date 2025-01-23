@@ -5,13 +5,14 @@
 #pragma once
 #include <iostream>
 
+#include "Rateable.h"
 
-class Actor {
+
+class Actor: public Rateable {
 private:
     int id;
     std::string name;
     int birthYear;
-
 public:
     // Constructor and Destructor
     Actor(int, std::string, int);

@@ -5,6 +5,8 @@
 #pragma once
 #include <iostream>
 
+#include "Rateable.h"
+
 enum Genre {
     ACTION,
     SCIFI,
@@ -15,14 +17,13 @@ enum Genre {
     NONE,
 };
 
-class Movie {
+class Movie: public Rateable {
 private:
     int id;
     std::string title;
     std::string plot;
     Genre genre;
     int releaseYear;
-
 public:
     // Constructor and Destructor
     Movie(int, std::string, int, std::string, Genre);
