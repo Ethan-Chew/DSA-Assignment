@@ -118,7 +118,9 @@ bool displayMenu(Application &application, bool isAdmin) {
                 "4. Display all the actors in a particular movie (in alphabetical order)\n"
                 "5. Display a list of all actors that a particular actor knows.\n"
                 "6. Display, Sort, and Rate a list of all Movies\n"
-                "7. Display, Sort, and Rate a list of all Actors\n"                "0. Log Out\n"
+                "7. Display, Sort, and Rate a list of all Actors\n"
+                "8 (Adv). Find Distance Between Two Actors\n"
+                "0. Log Out\n"
                 "Enter Choice: " << "\n";
             std::cin >> choice;
 
@@ -164,6 +166,12 @@ bool displayMenu(Application &application, bool isAdmin) {
                 // Display and Sort Actors
                 case 7: {
                     AdvancedFeatures::displayAndSortActors(application);
+                    break;
+                }
+
+                // Find Distance Between Two Actors
+                case 8: {
+                    AdvancedFeatures::findDistanceBetweenActors(application);
                     break;
                 }
             }

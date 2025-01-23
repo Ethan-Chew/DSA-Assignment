@@ -9,4 +9,5 @@ class AdvancedFeatures {
     public:
     static void displayAndSortMovies(Application&);
     static void displayAndSortActors(Application&);
+    static void findDistanceBetweenActors(Application&);
 };
