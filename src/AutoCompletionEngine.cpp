@@ -4,6 +4,8 @@
 #include "models/Application.h"
 #include "PtrQueue.h"
 
+#include "AutoCompletionEngine.h"
+
 enum StringType {
     MOVIE,
     ACTOR,
@@ -33,14 +35,14 @@ public:
         // populate valid list
         switch (type) {
             case MOVIE: {
-                auto *movies = app.getAllMoviesList();
+                auto *movies = app.getAllMovies();
                 for (const Movie *i : *movies) {
                     valid.append(i->getTitle());
                 }
                 break;
             }
             case ACTOR:
-                auto *actors = app.getAllActorsList();
+                auto *actors = app.getAllActors();
                 for (const Actor *i : *actors) {
                     valid.append(i->getName());
                 }

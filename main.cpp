@@ -1,6 +1,7 @@
 #include <cassert>
 #include <iostream>
 #include "DataParser.h"
+#include "AutoCompletionEngine.h"
 #include "models/Actor.h"
 #include "models/Movie.h"
 #include "models/Account.h"
@@ -115,6 +116,7 @@ bool displayMenu(Application &application, bool isAdmin) {
                 "3. Display all movies an actor starred in (in alphabetical order)\n"
                 "4. Display all the actors in a particular movie (in alphabetical order)\n"
                 "5. Display a list of all actors that a particular actor knows.\n"
+                "6. Test autocomplete"
                 "0. Log Out\n"
                 "Enter Choice: " << "\n";
             std::cin >> choice;
@@ -150,6 +152,15 @@ bool displayMenu(Application &application, bool isAdmin) {
                 case 5: {
                     BasicFeatures::displayKnownActors(application);
                     break;
+                }
+                case 6: {
+                    AutoCompletionEngine AutoComplete = AutoCompletionEngine(application, MOVIE);
+                    std::string prompt;
+                    std::string response;
+
+                    std::cout << "Enter Prompt: ";
+                    std::cin >> prompt;
+                    std::cout << AutoComplete.GetInput(prompt);
                 }
             }
 
