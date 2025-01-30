@@ -75,5 +75,4 @@ public:
     // Get Movies acted by Actor ID
     MyLinkedList<Movie*>* getMovies(int);
     SortedList *getMovieActors(int id);
-
 };
