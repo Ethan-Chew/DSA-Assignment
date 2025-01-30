@@ -69,6 +69,9 @@ public:
     SortedList *getActorMovies(int id);
     MyLinkedList<Actor*>* getActors(int);
 
+
+    MyList<Actor*> getAllActorsList()
+    MyList<Movie*> getAllMoviesList()   
     // Get Movies acted by Actor ID
     MyLinkedList<Movie*>* getMovies(int);
     SortedList *getMovieActors(int id);

@@ -25,10 +25,20 @@ class DataParser {
 private:
     int headerCount = 0;
     std::ifstream file;
+    // mapping of offset to header name, useful for knowing which header stores what
     MyDict<int, std::string> headerOffsets;
+    // mapping of header name to type, again useful for knowing what datatype to reinterpret/cast as
     MyDict<std::string, ColumnType> headerTypes;
+    // insanely ugly, but this boils down to a unique_ptr with a custom function passed as the destructor
+    // think: 
+    //  data = MyDict<Tk, Tv> 
+    //  dtor = void foo(data) { ... free data ... }
+    // imperative that the unique_ptr has the destructor as the unique_ptr ownership will be forwarded to caller
+    // to allow DataParser to be safely destructed
+    // std::function is just the type used by C++ to indicate that something is a function
+    // std::function<Tr(MyDict<Tk, Tv>*)> where r=return, k=key and v=val, Dict is a ptr because unique_ptr does store the pointer internally
     std::unique_ptr<MyDict<std::string, void*>, std::function<void(MyDict<std::string, void*>*)>> result;
- // shared in class for init
+    // shared in class for init
 
     void ParseHeader() {
          // base case
@@ -140,12 +150,13 @@ public:
                 // nested templating is too complex, and all pointers can be stored as a void* (64 bit address)
                 // and reinterpreted back to what it should be based on the header type mapping
                 // quite hacky, please don't touch, this works well and that's all you must know
-                if ((*result)[currentColumn] == nullptr) {
+                // the benefit is that the output can easily be accessed via result[header] reinterpreted
+                if ((*result)[currentColumn] == nullptr) { // if there's no header mapping, we make one
                     switch (headerTypes[currentColumn]) {
                         case ColumnType::INT:
                             tempInt = new MyList<int>();
                             tempInt->append(std::stoi(tokens[currentOffset]));
-                            (*result)[currentColumn] = reinterpret_cast<void *>(tempInt);
+                            (*result)[currentColumn] = reinterpret_cast<void *>(tempInt); // reinterpret into void* so it can be regarded as the same type as the dict Tk
                             break;
                         case ColumnType::DOUBLE:
                             tempDouble = new MyList<double>();
@@ -177,5 +188,9 @@ public:
         // imperative to give ownership to caller
         // to prevent class destructor from deleting data or double freeing
         return std::move(result);
+    }
+
+    void SaveFile(std::unique_ptr<MyDict<std::string, void*>, std::function<void(MyDict<std::string, void*>*)>>) {
+
     }
 };

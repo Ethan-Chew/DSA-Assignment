@@ -1,11 +1,5 @@
 #pragma once
-#include "MyDict.h"
 #include "models/Application.h"
-#include "models/Actor.h"
-#include "models/Movie.h"
-#include <MyLinkedList.h>
-#include <iostream>
-
 
 class BasicFeatures {
 public:
