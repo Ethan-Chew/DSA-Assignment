@@ -121,6 +121,7 @@ bool displayMenu(Application &application, bool isAdmin) {
                 "6. Display, Sort, and Rate a list of all Movies\n"
                 "7. Display, Sort, and Rate a list of all Actors\n"
                 "8 (Adv). Find Distance Between Two Actors\n"
+                "9. Test autocomplete"
                 "0. Log Out\n"
                 "Enter Choice: " << "\n";
             std::cin >> choice;
@@ -174,11 +175,22 @@ bool displayMenu(Application &application, bool isAdmin) {
                 case 8: {
                     AdvancedFeatures::findDistanceBetweenActors(application);
                     break;
+
+                    case 9: {
+                        AutoCompletionEngine AutoComplete = AutoCompletionEngine(application, MOVIE);
+                        std::string prompt;
+                        std::string response;
+
+                        AutoComplete.GetInput(prompt);
+                        // std::cout << "Enter Prompt: ";
+                        // std::cin >> prompt;
+                        // std::cout << ;
+                    }
                 }
             }
-
+        }
         // Admin Commands
-        } else {
+        else {
             std::cout <<
                 "Available Admin Commands\n"
                 "1. Add new actor\n"

@@ -24,8 +24,7 @@ add_executable(
         src/models/Application.cpp
 
         include/BasicFeatures.h
-        include/MyLinkedList.h
-        include/PtrQueue.h
+        src/BasicFeatures.cpp
         include/AdvancedFeatures.h
         src/AdvancedFeatures.cpp
         include/models/Rateable.h
