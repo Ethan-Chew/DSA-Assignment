@@ -8,16 +8,21 @@ file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 include_directories(include)
 include_directories(src)
 
-add_executable(dsa main.cpp
-        src/models/Application.cpp
+add_executable(
+        dsa main.cpp
+        include/models/Stack.h
+        include/SortedList.h
+        include/MyLinkedList.h
+        include/PtrQueue.h
+
+        src/models/Stack.cpp
+        src/models/SortedList.cpp
+
+        src/models/Account.cpp
         src/models/Actor.cpp
         src/models/Movie.cpp
-        include/models/Stack.h
-        src/models/Stack.cpp
-        include/SortedList.h
-        src/models/Account.cpp
-        src/models/SortedList.cpp
-        src/models/BasicFeatures.cpp
+        src/models/Application.cpp
+
         include/BasicFeatures.h
         include/MyLinkedList.h
         include/PtrQueue.h
