@@ -95,6 +95,28 @@ MyLinkedList<Actor*>* Application::getAllActors() {
     return actors.values();
 }
 
+MyList<Actor*> Application::getAllActorsList() {
+    MyLinkedList<Actor*>* tmp = actors.values();
+    MyList<Actor*> result;
+    
+    for (int i = 0; i < tmp->get_length(); i++) {
+        result.append(tmp->get(i));
+    }
+    
+    return result;
+}
+
+MyList<Movie*> Application::getAllMoviesList() {
+    MyLinkedList<Movie*>* tmp = movies.values();
+    MyList<Movie*> result;
+    
+    for (int i = 0; i < tmp->get_length(); i++) {
+        result.append(tmp->get(i));
+    }
+    
+    return result;
+}
+
 MyLinkedList<Movie*>* Application::getAllMovies() {
     return movies.values();
 }

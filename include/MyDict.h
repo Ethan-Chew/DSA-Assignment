@@ -194,6 +194,40 @@ public:
         std::cout << "\n" << "}" << "\n";
     }
 
+    template <typename Container>
+    Container *keys() const {
+        Container container = new Container();
+
+        for (int i = 0; i < buckets.get_length(); i++) {
+            const std::unique_ptr<Node> &cur = buckets.get(i);
+            Node *cur_ptr = cur.get();
+
+            while (cur_ptr != nullptr) {
+                container.append(cur_ptr->key.get());
+                cur_ptr = cur_ptr->next.get();
+            }
+        }
+
+        return container;
+    }
+
+    template <typename Container>
+    Container *values() const {
+        Container container = new Container();
+
+        for (int i = 0; i < buckets.get_length(); i++) {
+            const std::unique_ptr<Node> &cur = buckets.get(i);
+            Node *cur_ptr = cur.get();
+
+            while (cur_ptr != nullptr) {
+                container.append(cur_ptr->val.get());
+                cur_ptr = cur_ptr->next.get();
+            }
+        }
+
+        return container;
+    }
+
     auto *values() const {
         auto* vals = new MyLinkedList<std::remove_reference_t<decltype(*std::declval<V>())>*>();
 

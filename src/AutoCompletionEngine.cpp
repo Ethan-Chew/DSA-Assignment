@@ -20,6 +20,8 @@ private:
         int windowSize = static_cast<int>(buf.length());
 
         for (const std::string &opt : valid) {
+            // first do a length check to avoid OOB reads
+            // then check if substr matches
             if (opt.length() >= windowSize && opt.substr(0, windowSize) == buf) {
                 matches.enqueue(opt);
             }
