@@ -37,15 +37,15 @@ public:
         // populate valid list
         switch (type) {
             case MOVIE: {
-                auto *movies = app.getAllMovies();
-                for (const Movie *i : *movies) {
+                auto movies = app.getAllMoviesList();
+                for (const Movie *i : movies) {
                     valid.append(i->getTitle());
                 }
                 break;
             }
             case ACTOR:
-                auto *actors = app.getAllActors();
-                for (const Actor *i : *actors) {
+                auto actors = app.getAllActorsList();
+                for (const Actor *i : actors) {
                     valid.append(i->getName());
                 }
                 break;
