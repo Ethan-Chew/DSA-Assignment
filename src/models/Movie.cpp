@@ -53,7 +53,7 @@ void Movie::setReleaseYear(int releaseYear) {
 
 // Movie Functions
 void Movie::print() {
-    std::cout << "Movie ID: " << id << " | Title: " << title << " | Release Year: " << releaseYear << " | Plot: " << plot << " | Genre: " << genre << "\n";
+    std::cout << "Movie ID: " << id << " | Title: " << title << " | Release Year: " << releaseYear << " | Plot: " << plot << " | Genre: " << genre << " | Rating: " << getRating() << "\n";
 }
 
 // Overload Operator for Comparison

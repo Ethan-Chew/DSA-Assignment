@@ -10,7 +10,8 @@
 enum SortType {
     ALPHABETICALLY,
     AGE,
-    RELEASE_YEAR
+    RELEASE_YEAR,
+    RATING
 };
 
 template<typename T>
@@ -219,6 +220,19 @@ typename MyLinkedList<T>::Node* MyLinkedList<T>::merge(Node* left, Node* right, 
                 const auto* movieB = static_cast<const Movie*>(b);
                 return movieA->getReleaseYear() < movieB->getReleaseYear();
         };
+        break;
+
+        // Compares Movie/Actor classes by their rating
+        case RATING:
+            comparator = [](const void* a, const void* b) {
+                const auto* objA = static_cast<const Rateable*>(a);
+                const auto* objB = static_cast<const Rateable*>(b);
+
+                if (!objA || !objB) {
+                    throw std::invalid_argument("Comparison by Rating requires Rateable objects");
+                }
+                return objA->getRating() > objB->getRating();
+            };
         break;
     }
 

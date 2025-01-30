@@ -20,4 +20,8 @@ add_executable(dsa main.cpp
         src/models/BasicFeatures.cpp
         include/BasicFeatures.h
         include/MyLinkedList.h
-        include/PtrQueue.h)
+        include/PtrQueue.h
+        include/AdvancedFeatures.h
+        src/AdvancedFeatures.cpp
+        include/models/Rateable.h
+        src/models/Rateable.cpp)

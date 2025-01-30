@@ -143,6 +143,21 @@ public:
         return ref;
     }
 
+    // Used when key may not exist to prevent memory error
+    V* safe_get(const K& key) {
+        size_t idx = hash(key);
+        auto& current = buckets.get(idx);
+        Node* curr_ptr = current.get();
+
+        while (curr_ptr) {
+            if (curr_ptr->key == key) {
+                return &curr_ptr->val;
+            }
+            curr_ptr = curr_ptr->next.get();
+        }
+        return nullptr;
+    }
+
     bool remove(const K& key) {
         size_t idx = hash(key);
         auto& bucket = buckets.get(idx);
