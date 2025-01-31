@@ -466,22 +466,28 @@ void BasicFeatures::displayActors(Application &application) {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
         }
 
-        MyLinkedList<Actor*>* actors = application.getAllActors();
-        auto* filteredActors = new MyLinkedList<Actor*>();
+        MyList<Actor*> actors = application.getAllActorsList();
+        auto *filtered = new MyList<Actor*>();
 
-        // Filter the LinkedList and only preserve Actors between the age range
-        const int currentYear = 2025; // TODO: Use STL to get current year
-        for (int i = 0; i < actors->get_length(); i++) {
-            Actor* actor = actors->get(i);
-            int actorCurrentAge = currentYear - actor->getBirthYear();
-            if (actorCurrentAge >= startAge && actorCurrentAge <= endAge) {
-                filteredActors->append(actor);
-            }
+        const int thisYear = 2025;
+        for (const Actor* actor : actors) {
+            int age = thisYear - actor->getBirthYear();
+            if (age >= startAge && age <= endAge) filtered->append(const_cast<Actor *>(actor));
         }
 
         // Sort and Print
-        filteredActors->sort(AGE);
-        filteredActors->print();
+        filtered->sort([thisYear](const Actor* a, const Actor* b) {
+            int ageA = abs(thisYear - a->getBirthYear());
+            int ageB = abs(thisYear - b->getBirthYear());
+            return ageA > ageB;});
+
+        // todo: print
+        for (const Actor* actor : *filtered) {
+            std::cout
+                << actor->getName()
+                << "\n";
+        }
+        std::cout << std::endl;
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {
