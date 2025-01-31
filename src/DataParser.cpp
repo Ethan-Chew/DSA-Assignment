@@ -3,7 +3,6 @@
 #include <fstream>
 #include <memory>
 #include <functional>
-#include <xmmintrin.h>
 
 #include "DataParser.h"
 
@@ -52,38 +51,6 @@ private:
         headerTypes[first.name] = first.type;
         (*result)[first.name] = nullptr;
         ParseHeader(others...);
-    }
-
-    inline int fastStoi(const char* str, size_t len) {
-#if defined(__ARM_NEON)
-        if (len >= 8) {
-        uint8x8_t num = vld1_u8((uint8_t*)str);
-        uint8x8_t ascii_zero = vdup_n_u8('0');
-        uint8x8_t digits = vsub_u8(num, ascii_zero);
-
-        // Convert to integer using NEON multiply-accumulate
-        uint16x8_t weights = {10000000, 1000000, 100000, 10000, 1000, 100, 10, 1};
-        uint16x8_t result = vmulq_u16(vmovl_u8(digits), weights);
-        return vaddvq_u16(result);
-    }
-#elif defined(__SSE__)
-        if (len >= 8) {
-        __m128i num = _mm_loadl_epi64((__m128i*)str);
-        __m128i ascii_zero = _mm_set1_epi8('0');
-        __m128i digits = _mm_sub_epi8(num, ascii_zero);
-
-        // Convert to integer using SSE multiply-accumulate
-        const __m128i weights = _mm_setr_epi16(10000000, 1000000, 100000, 10000, 1000, 100, 10, 1);
-        __m128i result = _mm_madd_epi16(_mm_unpacklo_epi8(digits, _mm_setzero_si128()), weights);
-        return _mm_cvtsi128_si32(result);
-    }
-#endif
-        // Fallback for short numbers or no SIMD
-        int result = 0;
-        for (size_t i = 0; i < len; i++) {
-            result = result * 10 + (str[i] - '0');
-        }
-        return result;
     }
 
     // splits a line into tokens
@@ -197,7 +164,7 @@ public:
                     switch (headerTypes[currentColumn]) {
                         case ColumnType::INT:
                             tempInt = new MyList<int>();
-                            tempInt->append(fastStoi(tokens[currentOffset].c_str(), tokens[currentOffset].length()));
+                            tempInt->append(std::stoi(tokens[currentOffset]));
                             (*result)[currentColumn] = reinterpret_cast<void *>(tempInt); // reinterpret into void* so it can be regarded as the same type as the dict Tk
                             break;
                         case ColumnType::DOUBLE:
