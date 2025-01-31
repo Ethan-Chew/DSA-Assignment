@@ -15,7 +15,7 @@ enum SortType {
 };
 
 template<typename T>
-class MyList 
+class MyList
 {
 private:
     std::unique_ptr<T[]> data;
@@ -25,7 +25,7 @@ private:
     void resize() {
         int new_capacity = (capacity == 0) ? 1 : capacity * 2;
         auto new_data = std::make_unique<T[]>(new_capacity);
-        
+
         for (int i = 0; i < size; i++) {
             new_data[i] = std::move(data[i]);
         }
@@ -34,7 +34,6 @@ private:
         capacity = new_capacity;
     }
 
-    // template<typename Comparator>
     void quickSort(int low, int high, std::function<bool(const void*, const void*)>& compare) {
         if (low < high) {
             int pivot = partition(low, high, compare);
@@ -43,13 +42,12 @@ private:
         }
     }
 
-    // template<typename Comparator>
     int partition(int low, int high, std::function<bool(const void*, const void*)>& compare) {
         T pivot = data[high];
         int i = low - 1;
 
         for (int j = low; j < high; j++) {
-            if (compare(data[j], pivot)) {
+            if (compare(&data[j], &pivot)) {
                 i++;
                 T temp = std::move(data[i]);
                 data[i] = std::move(data[j]);

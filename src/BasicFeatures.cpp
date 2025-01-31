@@ -65,7 +65,7 @@ void BasicFeatures::addNewActor(Application &application) {
 // Add new movie
 void BasicFeatures::addNewMovie(Application &application) {
     try {
-        // Display Meny
+        // Display Menu
         std::cout << "=== Option 2: Add New Movie ===" << std::endl;
 
         // Set Movie ID to be 1 more than the highest value currently in the database
@@ -543,6 +543,10 @@ void BasicFeatures::displayActorMovies(Application &application) {
             std::cout << "No Actor with the ID of " << actorId << " was found!" << std::endl;
             return;
         }
+        if (movies->get_length() == 0) {
+            std::cout << "Actor has not acted in any movie!" << std::endl;
+            return;
+        }
         movies->sort(ALPHABETICALLY);
         movies->print();
     }
@@ -572,6 +576,10 @@ void BasicFeatures::displayActorsInMovie(Application& application) {
         MyList<Actor*>* actors = application.getActors(movieId);
         if (actors == nullptr) {
             std::cout << "No Movie with the ID of " << movieId << " was found!" << std::endl;
+            return;
+        }
+        if (actors->get_length() == 0) {
+            std::cout << "Movie does not have any actors!" << std::endl;
             return;
         }
         actors->sort(ALPHABETICALLY);

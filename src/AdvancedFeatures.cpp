@@ -43,7 +43,7 @@ void AdvancedFeatures::displayAndSortMovies(Application& application) {
     if (selectedFilter == 1) {
         sortType = ALPHABETICALLY;
     } else if (selectedFilter == 2) {
-        sortType = AGE;
+        sortType = RELEASE_YEAR;
     } else {
         sortType = RATING;
     }
