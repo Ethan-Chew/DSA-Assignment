@@ -22,7 +22,7 @@ void handleRate(Rateable* obj) {
 }
 
 void AdvancedFeatures::displayAndSortMovies(Application& application) {
-    std::cout << "Option 6: Display and Sort a list of all Actors" << std::endl;
+    std::cout << "Option 6: Display and Sort a list of all Movies" << std::endl;
 
     std::cout << "Filtering Options" << std::endl;
     std::cout << "[1] Alphabetically" << std::endl;
@@ -48,7 +48,7 @@ void AdvancedFeatures::displayAndSortMovies(Application& application) {
         sortType = RATING;
     }
 
-    MyLinkedList<Movie*>* movies = application.getAllMovies();
+    MyList<Movie*>* movies = application.getAllMovies();
     movies->sort(sortType);
     movies->print();
 
@@ -82,7 +82,7 @@ void AdvancedFeatures::displayAndSortMovies(Application& application) {
 }
 
 void AdvancedFeatures::displayAndSortActors(Application& application) {
-    std::cout << "=== Option 7: Display and Sort a list of all Movies ===" << std::endl;
+    std::cout << "=== Option 7: Display and Sort a list of all Actors ===" << std::endl;
 
     std::cout << "Filtering Options" << std::endl;
     std::cout << "[1] Alphabetically" << std::endl;
@@ -108,7 +108,7 @@ void AdvancedFeatures::displayAndSortActors(Application& application) {
         sortType = RATING;
     }
 
-    MyLinkedList<Actor*>* actors = application.getAllActors();
+    MyList<Actor*>* actors = application.getAllActors();
     actors->sort(sortType);
     actors->print();
 
@@ -175,6 +175,7 @@ void AdvancedFeatures::findDistanceBetweenActors(Application& application) {
     // Run BFS and find the distance between the two Actors
     if (actor1Id == actor2Id) {
         std::cout << "Distance: 0 | Actors are the same." << std::endl;
+        return;
     }
 
     bool didFind = false;

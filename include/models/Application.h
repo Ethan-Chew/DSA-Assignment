@@ -9,10 +9,10 @@
 #include "Movie.h"
 
 #include <iostream>
-#include <MyLinkedList.h>
 
 #include "Account.h"
 #include "SortedList.h"
+#include "MyList.h"
 
 // Singleton to store data of Actors and Movies
 class Application {
@@ -52,13 +52,13 @@ public:
     void addActor(std::unique_ptr<Actor> actor);
     bool removeActor(int);
     Actor* getActor(int);
-    MyLinkedList<Actor*>* getAllActors();
+    MyList<Actor*>* getAllActors();
 
     // Add/Remove/Retrieve Movie Objects
     void addMovie(std::unique_ptr<Movie> movie);
     bool removeMovie(int);
     Movie* getMovie(int);
-    MyLinkedList<Movie*>* getAllMovies();
+    MyList<Movie*>* getAllMovies();
 
     // Relationships
     // Add/Remove Actor ID into Movie ID
@@ -67,12 +67,12 @@ public:
 
     // Get Actors who acted in Movie ID
     SortedList *getActorMovies(int id);
-    MyLinkedList<Actor*>* getActors(int);
+    MyList<Actor*>* getActors(int);
 
 
     MyList<Actor*> getAllActorsList();
     MyList<Movie*> getAllMoviesList();
     // Get Movies acted by Actor ID
-    MyLinkedList<Movie*>* getMovies(int);
+    MyList<Movie*>* getMovies(int);
     SortedList *getMovieActors(int id);
 };

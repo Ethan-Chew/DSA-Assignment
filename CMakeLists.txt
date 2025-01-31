@@ -12,7 +12,6 @@ add_executable(
         dsa main.cpp
         include/models/Stack.h
         include/SortedList.h
-        include/MyLinkedList.h
         include/PtrQueue.h
 
         src/models/Stack.cpp

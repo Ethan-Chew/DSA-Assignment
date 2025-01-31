@@ -10,7 +10,7 @@
 #include "models/Application.h"
 #include "models/Actor.h"
 #include "models/Movie.h"
-#include "MyLinkedList.h"
+#include "MyList.h"
 #include "PtrQueue.h"
 
 // Admin Basic Functions
@@ -405,11 +405,11 @@ void BasicFeatures::printAll(Application &application) {
         std::cout << "=== Option 5: Printing database ===" << std::endl;
 
         std::cout << "=== Actors ===" << std::endl;
-        MyLinkedList<Actor*>* actors = application.getAllActors();
+        MyList<Actor*>* actors = application.getAllActors();
         actors->print();
 
         std::cout << "=== Movies ===" << std::endl;
-        MyLinkedList<Movie*>* movies = application.getAllMovies();
+        MyList<Movie*>* movies = application.getAllMovies();
         movies->print();
 
         std::cout << "=== Movie Cast of each movie ===" << std::endl;
@@ -466,7 +466,7 @@ void BasicFeatures::displayActors(Application &application) {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
         }
 
-        MyLinkedList<Actor*> *actorz = application.getAllActors();
+        MyList<Actor*> *actorz = application.getAllActors();
         auto *filtered = new MyList<Actor*>();
         const int thisYear = 2025;
 
@@ -476,10 +476,7 @@ void BasicFeatures::displayActors(Application &application) {
         }
 
         // Sort and Print
-        filtered->sort([thisYear](const Actor* a, const Actor* b) {
-            int ageA = abs(thisYear - a->getBirthYear());
-            int ageB = abs(thisYear - b->getBirthYear());
-            return ageA > ageB;});
+        filtered->sort(AGE);
 
         // todo: print
         for (const Actor* actor : *filtered) {
@@ -500,8 +497,8 @@ void BasicFeatures::displayMovies(Application &application) {
     try {
         std::cout << "=== Option 2: Display Movies made within the past 3 years ===" << std::endl;
 
-        MyLinkedList<Movie*>* movies = application.getAllMovies();
-        auto* filteredMovies = new MyLinkedList<Movie*>();
+        MyList<Movie*>* movies = application.getAllMovies();
+        auto* filteredMovies = new MyList<Movie*>();
 
         // Filter the LinkedList and only preserve Movies that were made in the past 3 years
         const int currentYear = 2025; // TODO: Use STL to get current year
@@ -541,7 +538,7 @@ void BasicFeatures::displayActorMovies(Application &application) {
         }
 
         // Get and sort Movies
-        MyLinkedList<Movie*>* movies = application.getMovies(actorId);
+        MyList<Movie*>* movies = application.getMovies(actorId);
         if (movies == nullptr) {
             std::cout << "No Actor with the ID of " << actorId << " was found!" << std::endl;
             return;
@@ -572,7 +569,7 @@ void BasicFeatures::displayActorsInMovie(Application& application) {
         }
 
         // Get and sort Actors
-        MyLinkedList<Actor*>* actors = application.getActors(movieId);
+        MyList<Actor*>* actors = application.getActors(movieId);
         if (actors == nullptr) {
             std::cout << "No Movie with the ID of " << movieId << " was found!" << std::endl;
             return;

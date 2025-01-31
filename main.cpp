@@ -136,7 +136,7 @@ bool displayMenu(Application &application, bool isAdmin) {
                 "8 (Adv). Find Distance Between Two Actors\n"
                 "9. Test autocomplete"
                 "0. Log Out\n"
-                "Enter Choice: " << "\n";
+                "Enter Choice: ";
             std::cin >> choice;
 
             switch (choice) {
@@ -195,9 +195,6 @@ bool displayMenu(Application &application, bool isAdmin) {
                         std::string response;
 
                         AutoComplete.GetInput(prompt);
-                        // std::cout << "Enter Prompt: ";
-                        // std::cin >> prompt;
-                        // std::cout << ;
                     }
                 }
             }
@@ -212,7 +209,7 @@ bool displayMenu(Application &application, bool isAdmin) {
                 "4. Update actor/movie details.\n"
                 "5. Display entire database\n"
                 "0. Log Out\n"
-                "Enter Choice: " << "\n";
+                "Enter Choice: ";
             std::cin >> choice;
 
             switch (choice) {

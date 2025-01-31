@@ -3,8 +3,16 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <memory>
 #include <type_traits>
+#include <models/Actor.h>
+#include <models/Movie.h>
+
+enum SortType {
+    ALPHABETICALLY,
+    AGE,
+    RELEASE_YEAR,
+    RATING
+};
 
 template<typename T>
 class MyList 
@@ -26,8 +34,8 @@ private:
         capacity = new_capacity;
     }
 
-    template<typename Comparator>
-    void quickSort(int low, int high, Comparator& compare) {
+    // template<typename Comparator>
+    void quickSort(int low, int high, std::function<bool(const void*, const void*)>& compare) {
         if (low < high) {
             int pivot = partition(low, high, compare);
             quickSort(low, pivot - 1, compare);
@@ -35,8 +43,8 @@ private:
         }
     }
 
-    template<typename Comparator>
-    int partition(int low, int high, Comparator& compare) {
+    // template<typename Comparator>
+    int partition(int low, int high, std::function<bool(const void*, const void*)>& compare) {
         T pivot = data[high];
         int i = low - 1;
 
@@ -113,6 +121,8 @@ public:
         for (int i = 0; i < size; i++) {
             if constexpr (std::is_integral_v<T> || std::is_floating_point_v<T>) {
                 std::cout << data[i] << " ";
+            } else if constexpr (std::is_same_v<T, Actor*> || std::is_same_v<T, Movie*>) {
+                data[i]->print();
             } else {
                 std::cout << std::string(data[i]) << " ";
             }
@@ -149,9 +159,61 @@ public:
         return capacity;
     }
 
-    template<typename Comparator = std::less<T>>
-    void sort(Comparator compare = Comparator()) {
-        quickSort(0, size - 1, compare);
+    void sort(SortType type) {
+        // Determine the Comparator to use for the Quick Sort (either Alphabetically, by Age, or by Release Year) using Lambda Functions
+        // Casts void pointers to accept any pointer type, then casts the pointer to the appropriate type
+        std::function<bool(const void*, const void*)> comparator;
+        switch (type) {
+            // Compares the Name or Title for Actor and Movie respectively
+            case ALPHABETICALLY:
+                comparator = [](const void* a, const void* b) {
+                    if (std::is_same_v<T, Actor*>) {
+                        const auto* actorA = static_cast<const Actor*>(a);
+                        const auto* actorB = static_cast<const Actor*>(b);
+                        return actorA->getName().compare(actorB->getName()) < 0; //.compare returns an integer value, so we compare the value to return bool
+                    }
+                    if (std::is_same_v<T, Movie*>) {
+                        const auto* movieA = static_cast<const Movie*>(a);
+                        const auto* movieB = static_cast<const Movie*>(b);
+                        return movieA->getTitle().compare(movieB->getTitle()) < 0; //.compare returns an integer value, so we compare the value to return bool
+                    }
+                    throw std::invalid_argument("Alphabetical comparison is not supported");
+                };
+            break;
+
+            // Compares Actor classes by Age attribute
+            case AGE:
+                comparator = [](const void* a, const void* b) {
+                    const auto* actorA = static_cast<const Actor*>(a);
+                    const auto* actorB = static_cast<const Actor*>(b);
+                    return actorA->getBirthYear() < actorB->getBirthYear();
+            };
+            break;
+
+            // Compares Movie classes by ReleaseYear attribute
+            case RELEASE_YEAR:
+                comparator = [](const void* a, const void* b) {
+                    const auto* movieA = static_cast<const Movie*>(a);
+                    const auto* movieB = static_cast<const Movie*>(b);
+                    return movieA->getReleaseYear() < movieB->getReleaseYear();
+            };
+            break;
+
+            // Compares Movie/Actor classes by their rating
+            case RATING:
+                comparator = [](const void* a, const void* b) {
+                    const auto* objA = static_cast<const Rateable*>(a);
+                    const auto* objB = static_cast<const Rateable*>(b);
+
+                    if (!objA || !objB) {
+                        throw std::invalid_argument("Comparison by Rating requires Rateable objects");
+                    }
+                    return objA->getRating() > objB->getRating();
+                };
+            break;
+        }
+
+        quickSort(0, size - 1, comparator);
     }
 
     // support for ranged iterator

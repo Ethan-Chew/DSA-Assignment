@@ -4,7 +4,6 @@
 #include <iostream>
 #include <memory>
 
-#include "MyLinkedList.h"
 #include "MyList.h"
 
 template<typename T>
@@ -244,7 +243,7 @@ public:
     }
 
     auto *values() const {
-        auto* vals = new MyLinkedList<std::remove_reference_t<decltype(*std::declval<V>())>*>();
+        auto* vals = new MyList<std::remove_reference_t<decltype(*std::declval<V>())>*>();
 
         // Iterate through every element in the bucket
         for (int i = 0; i < buckets.get_length(); i++) {

@@ -3,8 +3,7 @@
 //
 
 #include "models/Application.h"
-#include "MyLinkedList.h"
-#include <MyLinkedList.h>
+#include "MyList.h"
 
 Application* Application::uniqueInstance = nullptr;
 Application::Application() {
@@ -91,12 +90,12 @@ Actor* Application::getActor(const int id) {
     return nullptr;
 }
 
-MyLinkedList<Actor*>* Application::getAllActors() {
+MyList<Actor*>* Application::getAllActors() {
     return actors.values();
 }
 
 MyList<Actor*> Application::getAllActorsList() {
-    MyLinkedList<Actor*>* tmp = actors.values();
+    MyList<Actor*>* tmp = actors.values();
     MyList<Actor*> result;
     
     for (int i = 0; i < tmp->get_length(); i++) {
@@ -107,7 +106,7 @@ MyList<Actor*> Application::getAllActorsList() {
 }
 
 MyList<Movie*> Application::getAllMoviesList() {
-    MyLinkedList<Movie*>* tmp = movies.values();
+    MyList<Movie*>* tmp = movies.values();
     MyList<Movie*> result;
     
     for (int i = 0; i < tmp->get_length(); i++) {
@@ -117,7 +116,7 @@ MyList<Movie*> Application::getAllMoviesList() {
     return result;
 }
 
-MyLinkedList<Movie*>* Application::getAllMovies() {
+MyList<Movie*>* Application::getAllMovies() {
     return movies.values();
 }
 
@@ -170,10 +169,10 @@ bool Application::removeActorFromMovie(const int actorId, const int movieId) {
     return true;
 }
 
-MyLinkedList<Actor*>* Application::getActors(const int movieId) {
+MyList<Actor*>* Application::getActors(const int movieId) {
     SortedList* actorIds = moviesToActors[movieId].get();
     if (actorIds == nullptr) { return nullptr; }
-    auto movieActors = new MyLinkedList<Actor*>();
+    auto movieActors = new MyList<Actor*>();
 
     for (int i = 0; i < actorIds->getLength(); i++) {
         Actor* actor = actors[actorIds->get(i)].get();
@@ -183,10 +182,10 @@ MyLinkedList<Actor*>* Application::getActors(const int movieId) {
     return movieActors;
 }
 
-MyLinkedList<Movie*>* Application::getMovies(int actorId) {
+MyList<Movie*>* Application::getMovies(int actorId) {
     SortedList* movieIds = actorsToMovies[actorId].get();
     if (movieIds == nullptr) { return nullptr; }
-    auto actorMovies = new MyLinkedList<Movie*>();
+    auto actorMovies = new MyList<Movie*>();
 
     for (int i = 0; i < movieIds->getLength(); i++) {
         actorMovies->append(movies[movieIds->get(i)].get());
@@ -202,10 +201,3 @@ SortedList* Application::getActorMovies(int id) {
 SortedList* Application::getMovieActors(int id) {
     return moviesToActors[id].get();
 }
-
-// const MyDict<int, SortedList*>& Application::getActorsToMoviesRelationship() const {
-//     return actorsToMovies;
-// }
-// const MyDict<int, SortedList *> &Application::getMoviesToActorsRelationship() const {
-//     return moviesToActors;
-// }
