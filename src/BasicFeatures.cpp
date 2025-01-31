@@ -466,11 +466,11 @@ void BasicFeatures::displayActors(Application &application) {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
         }
 
-        MyList<Actor*> actors = application.getAllActorsList();
+        MyLinkedList<Actor*> *actorz = application.getAllActors();
         auto *filtered = new MyList<Actor*>();
-
         const int thisYear = 2025;
-        for (const Actor* actor : actors) {
+
+        for (const Actor* actor : *actorz) {
             int age = thisYear - actor->getBirthYear();
             if (age >= startAge && age <= endAge) filtered->append(const_cast<Actor *>(actor));
         }

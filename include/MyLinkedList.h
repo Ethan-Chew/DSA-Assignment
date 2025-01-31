@@ -32,6 +32,26 @@ private:
     Node* merge(Node*, Node*, SortType); // Merges 2 Doubly-Linked Lists into One
     Node* MergeSort(Node*, SortType); // Recursive Merge Sort
 public:
+    class Iterator {
+        Node* current;
+    public:
+        Iterator(Node* node) : current(node) {}
+
+        T& operator*() { return current->item; }
+
+        Iterator& operator++() {
+            current = current->next;
+            return *this;
+        }
+
+        bool operator!=(const Iterator& other) const {
+            return current != other.current;
+        }
+    };
+
+    Iterator begin() { return Iterator(firstNode); }
+    Iterator end() { return Iterator(nullptr); }
+
     MyLinkedList();
     ~MyLinkedList();
     bool append(T item);
