@@ -10,8 +10,10 @@
 #include "models/Application.h"
 #include "BasicFeatures.h"
 
+
 void setupApplication(Application &application) {
     // Parse the Actors from the CSV into the Application
+    auto t1 = std::chrono::high_resolution_clock::now();
     DataParser actorParser(
         "data/actors.csv",
         HeaderSpec("id", ColumnType::INT),
@@ -20,7 +22,9 @@ void setupApplication(Application &application) {
 
     // Retrieve the result
     auto actorResult = actorParser.ParseData();
-
+    auto t2 = std::chrono::high_resolution_clock::now();
+    auto ms_int = duration_cast<std::chrono::milliseconds>(t2 - t1);
+    std::cout << "parsed actors in " << ms_int.count() << " ms" << std::endl;
     // Get each Column from CSV
     auto *ids = reinterpret_cast<MyList<int>*>((*actorResult)["id"]);
     auto *names = reinterpret_cast<MyList<std::string>*>((*actorResult)["name"]);
@@ -37,6 +41,7 @@ void setupApplication(Application &application) {
     }
 
     // Parse the Movies from the CSV into the Application
+    t1 = std::chrono::high_resolution_clock::now();
     DataParser movieParser(
         "data/movies.csv",
         HeaderSpec("id", ColumnType::INT),
@@ -46,6 +51,9 @@ void setupApplication(Application &application) {
 
     // Retrieve the result
     auto movieResult = movieParser.ParseData();
+    t2 = std::chrono::high_resolution_clock::now();
+    ms_int = duration_cast<std::chrono::milliseconds>(t2 - t1);
+    std::cout << "parsed movies in " << ms_int.count() << " ms" << std::endl;
 
     // Get each Column from CSV
     auto *movieIds = reinterpret_cast<MyList<int>*>((*movieResult)["id"]);
@@ -60,6 +68,7 @@ void setupApplication(Application &application) {
     }
 
     // Parse the Actors and Movies relationship from the CSV into the Application
+    t1 = std::chrono::high_resolution_clock::now();
     DataParser castParser(
         "data/cast.csv",
         HeaderSpec("person_id", ColumnType::INT),
@@ -67,6 +76,10 @@ void setupApplication(Application &application) {
 
     // Retrieve the result
     auto castResult = castParser.ParseData();
+
+    t2 = std::chrono::high_resolution_clock::now();
+    ms_int = duration_cast<std::chrono::milliseconds>(t2 - t1);
+    std::cout << "parsed cast  in " << ms_int.count() << " ms" << std::endl;
 
     // Get each Column from the CSV
     auto *castPersonIds = reinterpret_cast<MyList<int>*>((*castResult)["person_id"]);

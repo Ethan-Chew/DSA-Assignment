@@ -3,6 +3,7 @@
 #include <fstream>
 #include <memory>
 #include <functional>
+#include <xmmintrin.h>
 
 #include "DataParser.h"
 
@@ -53,31 +54,69 @@ private:
         ParseHeader(others...);
     }
 
+    inline int fastStoi(const char* str, size_t len) {
+#if defined(__ARM_NEON)
+        if (len >= 8) {
+        uint8x8_t num = vld1_u8((uint8_t*)str);
+        uint8x8_t ascii_zero = vdup_n_u8('0');
+        uint8x8_t digits = vsub_u8(num, ascii_zero);
+
+        // Convert to integer using NEON multiply-accumulate
+        uint16x8_t weights = {10000000, 1000000, 100000, 10000, 1000, 100, 10, 1};
+        uint16x8_t result = vmulq_u16(vmovl_u8(digits), weights);
+        return vaddvq_u16(result);
+    }
+#elif defined(__SSE__)
+        if (len >= 8) {
+        __m128i num = _mm_loadl_epi64((__m128i*)str);
+        __m128i ascii_zero = _mm_set1_epi8('0');
+        __m128i digits = _mm_sub_epi8(num, ascii_zero);
+
+        // Convert to integer using SSE multiply-accumulate
+        const __m128i weights = _mm_setr_epi16(10000000, 1000000, 100000, 10000, 1000, 100, 10, 1);
+        __m128i result = _mm_madd_epi16(_mm_unpacklo_epi8(digits, _mm_setzero_si128()), weights);
+        return _mm_cvtsi128_si32(result);
+    }
+#endif
+        // Fallback for short numbers or no SIMD
+        int result = 0;
+        for (size_t i = 0; i < len; i++) {
+            result = result * 10 + (str[i] - '0');
+        }
+        return result;
+    }
+
     // splits a line into tokens
     // basically line.split(',') but quote aware
     MyList<std::string> TokeniseLine(const std::string &buf) {
    		MyList<std::string> tokens;
         std::string token;
-		bool quote = false;
+        const size_t len = buf.length();
+        // preallocate worst case memory use
+        token.reserve(len);
 
-        for (const char &chr : buf) {
-         	if (chr == '\"') {
-         	    // if a quote is found i just ignore everything till the quote ends
-         	    // this cleanly handles cases such as "foo,bar",baz
-                quote = !quote;
+        for (size_t i = 0; i < len; i++) {
+            const char chr = buf[i];
+            if (chr == '\"') {
+                i++;
+                while (i < len && buf[i] != '\"') {
+                    token += buf[i];
+                    i++;
+                }
                 continue;
             }
-			if ((chr != ',') || quote) {
+
+            if (chr != ',') {
                 // treat semicolon as comma
-            	token += (chr == ';' ? ',' : chr);
+                token += (chr == ';' ? ',' : chr);
                 continue;
             }
 
-            tokens.append(token);
-			token = "";
+            tokens.append(std::move(token));
+            token.clear();
         }
         // last token
-        !token.empty() ? tokens.append(token) : void();
+        !token.empty() ? tokens.append(std::move(token)) : void();
         return tokens;
     }
 
@@ -143,6 +182,9 @@ public:
         while (!file.eof()) {
             std::getline(file, buffer);
             MyList<std::string> tokens = TokeniseLine(buffer);
+
+            // discard malformed inputs
+            if (tokens.get_length() != headerCount) continue;
             for (int currentOffset = 0; currentOffset < tokens.get_length(); currentOffset++) {
                 currentColumn = headerOffsets[currentOffset];
 
@@ -155,7 +197,7 @@ public:
                     switch (headerTypes[currentColumn]) {
                         case ColumnType::INT:
                             tempInt = new MyList<int>();
-                            tempInt->append(std::stoi(tokens[currentOffset]));
+                            tempInt->append(fastStoi(tokens[currentOffset].c_str(), tokens[currentOffset].length()));
                             (*result)[currentColumn] = reinterpret_cast<void *>(tempInt); // reinterpret into void* so it can be regarded as the same type as the dict Tk
                             break;
                         case ColumnType::DOUBLE:
