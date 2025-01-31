@@ -26,6 +26,36 @@ private:
         capacity = new_capacity;
     }
 
+    template<typename Comparator>
+    void quickSort(int low, int high, Comparator& compare) {
+        if (low < high) {
+            int pivot = partition(low, high, compare);
+            quickSort(low, pivot - 1, compare);
+            quickSort(pivot + 1, high, compare);
+        }
+    }
+
+    template<typename Comparator>
+    int partition(int low, int high, Comparator& compare) {
+        T pivot = data[high];
+        int i = low - 1;
+
+        for (int j = low; j < high; j++) {
+            if (compare(data[j], pivot)) {
+                i++;
+                T temp = std::move(data[i]);
+                data[i] = std::move(data[j]);
+                data[j] = std::move(temp);
+            }
+        }
+
+        T temp = std::move(data[i + 1]);
+        data[i + 1] = std::move(data[high]);
+        data[high] = std::move(temp);
+
+        return i + 1;
+    }
+
 public:
     MyList() : data(std::make_unique<T[]>(1)), size(0), capacity(1) {};
 
@@ -121,15 +151,7 @@ public:
 
     template<typename Comparator = std::less<T>>
     void sort(Comparator compare = Comparator()) {
-        for (int i = 0; i < size - 1; i++) {
-            for (int j = 0; j < size - i - 1; j++) {
-                if (compare(data[j], data[j + 1])) {
-                    T temp = std::move(data[j]);
-                    data[j] = std::move(data[j + 1]);
-                    data[j + 1] = std::move(temp);
-                }
-            }
-        }
+        quickSort(0, size - 1, compare);
     }
 
     // support for ranged iterator
