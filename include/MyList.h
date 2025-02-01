@@ -47,7 +47,7 @@ private:
         int i = low - 1;
 
         for (int j = low; j < high; j++) {
-            if (compare(&data[j], &pivot)) {
+            if (compare(data[j], pivot)) {
                 i++;
                 T temp = std::move(data[i]);
                 data[i] = std::move(data[j]);
