@@ -14,7 +14,12 @@
 #include "PtrQueue.h"
 
 // Admin Basic Functions
-// Add new actor
+/*
+ * Add a New Actor
+ *
+ * Retrieves input for various fields (Name and Birth Year) to create a new actor object,
+ * then saves it into the Application
+ */
 void BasicFeatures::addNewActor(Application &application) {
     try {
         // Display Menu
@@ -62,7 +67,12 @@ void BasicFeatures::addNewActor(Application &application) {
     }
 }
 
-// Add new movie
+/*
+ * Adds a New Movie
+ *
+ * Retrieves input for various fields (Release Year, Plot and Genre) to create a new movie object,
+ * then saves it into the Application
+ * */
 void BasicFeatures::addNewMovie(Application &application) {
     try {
         // Display Menu
@@ -155,7 +165,11 @@ void BasicFeatures::addNewMovie(Application &application) {
     }
 }
 
-// Add an actor to a movie
+/*
+ * Adds existing Actor to an existing Movie
+ *
+ * Retrieves input about the Actor ID and Movie ID, then modifies the relationship between them
+ * */
 void BasicFeatures::addActorToMovie(Application &application) {
     try {
         // Display Menu
@@ -196,7 +210,11 @@ void BasicFeatures::addActorToMovie(Application &application) {
     }
 }
 
-// Update actor/movie details
+/*
+ * Updates either the details of the Actor or the Movie
+ *
+ * Asks the user if they would like to update an Actor or Movie, then proceeds to take input of new field values
+ * */
 void BasicFeatures::updateActorOrMovie(Application &application) {
     try {
         // Display Menu

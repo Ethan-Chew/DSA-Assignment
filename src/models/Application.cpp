@@ -94,28 +94,6 @@ MyList<Actor*>* Application::getAllActors() {
     return actors.values();
 }
 
-MyList<Actor*> Application::getAllActorsList() {
-    MyList<Actor*>* tmp = actors.values();
-    MyList<Actor*> result;
-    
-    for (int i = 0; i < tmp->get_length(); i++) {
-        result.append(tmp->get(i));
-    }
-    
-    return result;
-}
-
-MyList<Movie*> Application::getAllMoviesList() {
-    MyList<Movie*>* tmp = movies.values();
-    MyList<Movie*> result;
-    
-    for (int i = 0; i < tmp->get_length(); i++) {
-        result.append(tmp->get(i));
-    }
-    
-    return result;
-}
-
 MyList<Movie*>* Application::getAllMovies() {
     return movies.values();
 }

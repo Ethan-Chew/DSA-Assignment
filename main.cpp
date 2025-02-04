@@ -10,12 +10,16 @@
 #include "models/Application.h"
 #include "BasicFeatures.h"
 
-
+/*
+ * setupApplication() uses our DataParser to parse the data from the CSV and stores it in the Application Singleton
+ * input: Reference to the Application Singleton
+ * output: none, data is saved directly to the Application
+ */
 void setupApplication(Application &application) {
     // Parse the Actors from the CSV into the Application
     auto t1 = std::chrono::high_resolution_clock::now();
     DataParser actorParser(
-        "data/actors.csv",
+        "data/demo/actors.csv",
         HeaderSpec("id", ColumnType::INT),
         HeaderSpec("name", ColumnType::STRING),
         HeaderSpec("birth", ColumnType::INT));
@@ -43,7 +47,7 @@ void setupApplication(Application &application) {
     // Parse the Movies from the CSV into the Application
     t1 = std::chrono::high_resolution_clock::now();
     DataParser movieParser(
-        "data/movies.csv",
+        "data/demo/movies.csv",
         HeaderSpec("id", ColumnType::INT),
         HeaderSpec("title", ColumnType::STRING),
         HeaderSpec("plot",ColumnType::STRING),
@@ -70,7 +74,7 @@ void setupApplication(Application &application) {
     // Parse the Actors and Movies relationship from the CSV into the Application
     t1 = std::chrono::high_resolution_clock::now();
     DataParser castParser(
-        "data/cast.csv",
+        "data/demo/cast.csv",
         HeaderSpec("person_id", ColumnType::INT),
         HeaderSpec("movie_id", ColumnType::INT));
 
@@ -91,7 +95,13 @@ void setupApplication(Application &application) {
     }
 }
 
-// Login user to User/Admin Accounts
+/*
+ * loginUser() takes in the user's username and the associated password, only ends when a valid user (username and password)
+ * is determined
+ *
+ * input: Reference to the Application Singleton
+ * output: none, logged-in user is saved directly to Application
+ */
 Account loginUser(Application &application) {
     std::cout << "Amazing Movie App" << "\n";
     std::cout << "-----------------" << "\n";

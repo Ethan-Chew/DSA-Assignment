@@ -1,6 +1,7 @@
 #ifndef MYLIST_H
 #define MYLIST_H
 
+#include <functional>
 #include <iostream>
 #include <stdexcept>
 #include <type_traits>

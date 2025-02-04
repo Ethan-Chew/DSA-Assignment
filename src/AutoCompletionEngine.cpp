@@ -39,14 +39,14 @@ public:
         // Populate the 'valid' list with either Movie Titles or Actor Names
         switch (type) {
             case MOVIE: {
-                auto movies = app.getAllMoviesList();
+                auto movies = std::move(*app.getAllMovies());
                 for (const Movie *i : movies) {
                     valid.append(i->getTitle());
                 }
                 break;
             }
             case ACTOR:
-                auto actors = app.getAllActorsList();
+                auto actors = std::move(*app.getAllActors());
                 for (const Actor *i : actors) {
                     valid.append(i->getName());
                 }
