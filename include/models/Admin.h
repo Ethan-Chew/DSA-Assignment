@@ -7,5 +7,12 @@
 class Admin: public Account {
 public:
     Admin(std::string, std::string);
-    virtual bool isUserAdmin() const override;
+    bool isUserAdmin() const override;
+
+    // Admin Features (Basic)
+    void addNewActor();
+    void addNewMovie();
+    void addActorToMovie();
+    void updateActorOrMovie();
+    void printAll();
 };

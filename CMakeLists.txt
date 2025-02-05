@@ -22,10 +22,6 @@ add_executable(
         src/models/Movie.cpp
         src/models/Application.cpp
 
-        include/BasicFeatures.h
-        src/BasicFeatures.cpp
-        include/AdvancedFeatures.h
-        src/AdvancedFeatures.cpp
         include/models/Rateable.h
         src/models/Rateable.cpp
         src/models/User.cpp

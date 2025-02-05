@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <type_traits>
+#include <memory>
 #include <models/Actor.h>
 #include <models/Movie.h>
 

@@ -1,14 +1,12 @@
 #include <cassert>
 #include <iostream>
 
-#include "AdvancedFeatures.h"
 #include "DataParser.h"
 #include "AutoCompletionEngine.h"
 #include "models/Actor.h"
 #include "models/Movie.h"
 #include "models/Account.h"
 #include "models/Application.h"
-#include "BasicFeatures.h"
 #include "models/Admin.h"
 #include "models/User.h"
 
@@ -153,37 +151,37 @@ bool displayMenu(Application &application, Account* account) {
 
                 // Add new actor
                 case 1: {
-                    BasicFeatures::addNewActor(application);
+                    adminAccount->addNewActor();
                     break;
                 }
 
                 // Add new movie
                 case 2: {
-                    BasicFeatures::addNewMovie(application);
+                    adminAccount->addNewMovie();
                     break;
                 }
 
                 // Add actor to movie
                 case 3: {
-                    BasicFeatures::addActorToMovie(application);
+                    adminAccount->addActorToMovie();
                     break;
                 }
 
                 // Update actor/movie details
                 case 4: {
-                    BasicFeatures::updateActorOrMovie(application);
+                    adminAccount->updateActorOrMovie();
                     break;
                 }
 
                 case 5: {
-                    BasicFeatures::printAll(application);
+                    adminAccount->printAll();
                     break;
                 }
             }
         }
         // User Commands
         else {
-            User* adminAccount = dynamic_cast<User*>(account);
+            User* userAccount = dynamic_cast<User*>(account);
             std::cout <<
                 "Available User Functions\n"
                 "1. Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user\n"
@@ -204,58 +202,57 @@ bool displayMenu(Application &application, Account* account) {
 
                 // Display actors in age range
                 case 1: {
-                    BasicFeatures::displayActors(application);
+                    userAccount->displayActors();
                     break;
                 }
 
                 // Display movies released in past 3 years
                 case 2: {
-                    BasicFeatures::displayMovies(application);
+                    userAccount->displayMovies();
                     break;
                 }
 
                 // Display movies actor starred in
                 case 3: {
-                    BasicFeatures::displayActorMovies(application);
+                    userAccount->displayActorMovies();
                     break;
                 }
 
                 // Display all actors cast in movie
                 case 4: {
-                    BasicFeatures::displayActorsInMovie(application);
+                    userAccount->displayActorsInMovie();
                     break;
                 }
 
                 // Display all actors an actor knows
                 case 5: {
-                    BasicFeatures::displayKnownActors(application);
+                    userAccount->displayKnownActors();
                     break;
                 }
 
                 // Display and Sort Movies
                 case 6: {
-                    AdvancedFeatures::displayAndSortMovies(application);
+                    userAccount->displayAndSortMovies();
                     break;
                 }
 
                 // Display and Sort Actors
                 case 7: {
-                    AdvancedFeatures::displayAndSortActors(application);
+                    userAccount->displayAndSortActors();
                     break;
                 }
 
                 // Find Distance Between Two Actors
                 case 8: {
-                    AdvancedFeatures::findDistanceBetweenActors(application);
+                    userAccount->findDistanceBetweenActors();
                     break;
+                }
+                case 9: {
+                    AutoCompletionEngine AutoComplete = AutoCompletionEngine(application, MOVIE);
+                    std::string prompt;
+                    std::string response;
 
-                    case 9: {
-                        AutoCompletionEngine AutoComplete = AutoCompletionEngine(application, MOVIE);
-                        std::string prompt;
-                        std::string response;
-
-                        AutoComplete.GetInput(prompt);
-                    }
+                    AutoComplete.GetInput(prompt);
                 }
             }
         }

@@ -7,5 +7,17 @@
 class User: public Account {
 public:
     User(std::string, std::string);
-    virtual bool isUserAdmin() const override;
+    bool isUserAdmin() const override;
+
+    // User Features (Basic)
+    void displayActors();
+    void displayMovies();
+    void displayActorMovies();
+    void displayActorsInMovie();
+    void displayKnownActors();
+
+    // User Features (Advanced)
+    void displayAndSortMovies();
+    void displayAndSortActors();
+    void findDistanceBetweenActors();
 };
