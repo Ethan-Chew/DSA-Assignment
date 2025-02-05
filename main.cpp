@@ -33,13 +33,11 @@ void setupApplication(Application &application) {
     auto *ids = reinterpret_cast<MyList<int>*>((*actorResult)["id"]);
     auto *names = reinterpret_cast<MyList<std::string>*>((*actorResult)["name"]);
     auto *birth = reinterpret_cast<MyList<int>*>((*actorResult)["birth"]);
-
     // Create Actors and add to Dictionary
     for (int i = 0; i < ids->get_length(); i++) {
         int id = ids->get(i);
         std::string name = names->get(i);
         int birthYear = birth->get(i);
-
         std::unique_ptr<Actor> actor(new Actor(id, name, birthYear));
         application.addActor(std::move(actor));
     }
@@ -191,8 +189,8 @@ bool displayMenu(Application &application, Account* account) {
                 "5. Display a list of all actors that a particular actor knows.\n"
                 "6. Display, Sort, and Rate a list of all Movies\n"
                 "7. Display, Sort, and Rate a list of all Actors\n"
-                "8 (Adv). Find Distance Between Two Actors\n"
-                "9. Test autocomplete\n"
+                "8. (Adv). Find Distance Between Two Actors\n"
+                "9. (Adv). Test autocomplete\n"
                 "0. Log Out\n"
                 "Enter Choice: ";
             std::cin >> choice;
@@ -247,12 +245,16 @@ bool displayMenu(Application &application, Account* account) {
                     userAccount->findDistanceBetweenActors();
                     break;
                 }
+
                 case 9: {
                     AutoCompletionEngine AutoComplete = AutoCompletionEngine(application, MOVIE);
                     std::string prompt;
                     std::string response;
 
-                    AutoComplete.GetInput(prompt);
+                    std::cout << "Enter Prompt: ";
+                    std::cin >> prompt;
+                    std::string res = AutoComplete.GetInput(prompt);
+                    application.getMovieByName(res)->print();
                 }
             }
         }

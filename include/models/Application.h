@@ -35,6 +35,10 @@ private:
     MyDict<int, std::unique_ptr<SortedList>> actorsToMovies;
     MyDict<int, std::unique_ptr<SortedList>> moviesToActors;
 
+    // Dictionary that helps match Name to Pointer of Actor/Movie Object
+    MyDict<std::string, int> actorNames;
+    MyDict<std::string, int> movieNames;
+
     // Dictionary of all registered accounts
     MyDict<std::string, std::unique_ptr<Account>> accounts;
 public:
@@ -52,12 +56,14 @@ public:
     void addActor(std::unique_ptr<Actor> actor);
     bool removeActor(int);
     Actor* getActor(int);
+    Actor* getActorByName(std::string);
     MyList<Actor*>* getAllActors();
 
     // Add/Remove/Retrieve Movie Objects
     void addMovie(std::unique_ptr<Movie> movie);
     bool removeMovie(int);
     Movie* getMovie(int);
+    Movie* getMovieByName(std::string);
     MyList<Movie*>* getAllMovies();
 
     // Relationships

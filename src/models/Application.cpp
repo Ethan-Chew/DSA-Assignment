@@ -47,6 +47,7 @@ int Application::getMaxMovieId() {
 void Application::addActor(std::unique_ptr<Actor> actor) {
     // reminder: actors dict will OWN the pointer
     int id = actor->getId();
+    actorNames.add(actor->getName(), id); // Parse Name-Id storage relation before moving object, else reference gets deleted
     actors.add(id, std::move(actor));
 
     // Add Actor to the Actor-to-Movie Relationship
@@ -63,6 +64,7 @@ void Application::addActor(std::unique_ptr<Actor> actor) {
 void Application::addMovie(std::unique_ptr<Movie> movie) {
     // reminder: movies dict will OWN the pointer
     int id = movie->getId();
+    movieNames.add(movie->getTitle(), id); // Parse Name-Id storage relation before moving object, else reference gets deleted
     movies.add(id, std::move(movie));
 
     // Add Movie to Movie-to-Actor Relationship
@@ -84,10 +86,32 @@ bool Application::removeMovie(const int id) {
     return movies.remove(id);
 }
 
-// Getters for Actor and Movie
+// Getters for Actor and Movie by Id
 Actor* Application::getActor(const int id) {
     if (actors.safe_get(id) != nullptr) {
         return actors[id].get();
+    }
+    return nullptr;
+}
+
+Movie* Application::getMovie(const int id) {
+    if (movies.safe_get(id) != nullptr) {
+        return movies[id].get();
+    }
+    return nullptr;
+}
+
+// Getters for Actor and Movie by name
+Actor* Application::getActorByName(const std::string name) {
+    if (actorNames.safe_get(name) != nullptr) {
+        return actors[actorNames[name]].get();
+    }
+    return nullptr;
+}
+
+Movie* Application::getMovieByName(const std::string name) {
+    if (movieNames.safe_get(name) != nullptr) {
+        return movies[movieNames[name]].get();
     }
     return nullptr;
 }
@@ -98,13 +122,6 @@ MyList<Actor*>* Application::getAllActors() {
 
 MyList<Movie*>* Application::getAllMovies() {
     return movies.values();
-}
-
-Movie* Application::getMovie(const int id) {
-    if (movies.safe_get(id) != nullptr) {
-        return movies[id].get();
-    }
-    return nullptr;
 }
 
 // Relationships

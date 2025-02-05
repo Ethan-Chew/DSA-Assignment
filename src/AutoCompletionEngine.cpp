@@ -43,18 +43,18 @@ private:
 
 public:
     // Initializes the autocomplete engine based on whether it's handling movies or actors.
-    AutoCompletionEngine(Application &app, StringType type) {
+    AutoCompletionEngine(Application &application, StringType type) {
         // Populate the 'valid' list with either Movie Titles or Actor Names
         switch (type) {
             case MOVIE: {
-                auto movies = std::move(*app.getAllMovies());
+                auto movies = std::move(*application.getAllMovies());
                 for (const Movie *i : movies) {
                     valid.append(i->getTitle());
                 }
                 break;
             }
             case ACTOR:
-                auto actors = std::move(*app.getAllActors());
+                auto actors = std::move(*application.getAllActors());
                 for (const Actor *i : actors) {
                     valid.append(i->getName());
                 }
