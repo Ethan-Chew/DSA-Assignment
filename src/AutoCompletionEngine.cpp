@@ -1,97 +1,95 @@
 #include <iostream>
 #include <limits>
+#include <utility>
 #include "MyList.h"
 #include "models/Application.h"
 #include "PtrQueue.h"
 
 #include "AutoCompletionEngine.h"
 
+// Used to initialise autocomplete for either actors or movies
 enum StringType {
-    MOVIE,
     ACTOR,
+    MOVIE,
 };
 
 class AutoCompletionEngine {
 private:
-    std::string buf; // Stores user input
-    MyList<std::string> valid; // Valid autocomplete options
+    std::string userInput; // Stores the current user input
+    MyList<std::string> suggestionList; // List of valid autocomplete suggestions
 
-    // Converts entire string to lowercase
-    std::string toLower(const std::string &s) {
-        std::string lower = s;
-        std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
-        return lower;
+    // Helper function to convert a string to lowercase for case-insensitive matching
+    std::string toLower(const std::string &input) {
+        std::string result = input;
+        std::transform(result.begin(), result.end(), result.begin(), ::tolower);
+        return result;
     }
 
-    // Find all possible autocomplete suggestions from valid that match the current user input.
-    MyList<std::string> GetMatches() {
+    // Finds all autocomplete suggestions that contain the user input as a substring (case-insensitive)
+    MyList<std::string> findMatchingSuggestions() {
         MyList<std::string> matches;
-        // Retrieves the length of the user's input (buf)
-        int windowSize = static_cast<int>(buf.length());
+        const std::string lowerInput = toLower(userInput); // Convert input to lowercase once for efficiency
 
-        // Loop through all possible autocomplete suggestions and find those starting with the user's input
-        for (const std::string &opt : valid) {
-            // Ensure that the Movie Name is longer than the Input to avoid index Out of Bound error
-            // Convert everything to lowercase so that substrings will match
-            // then if buf is a substring of opt, it is enqueued as a suggestion.
-            if (opt.length() >= windowSize && toLower(opt).find(toLower(buf)) != std::string::npos) {
-                matches.append(opt);
+        for (const std::string &option : suggestionList) {
+            // Use string::npos to check if substring is within option
+            // string::npos is a constant that represents "not found", thus, find returns an unequal value to npos if found
+            if (toLower(option).find(lowerInput) != std::string::npos) {
+                matches.append(option); // Add to matches if user input is a substring of the suggestion
             }
         }
         return matches;
     }
 
 public:
-    // Initializes the autocomplete engine based on whether it's handling movies or actors.
-    AutoCompletionEngine(Application &application, StringType type) {
-        // Populate the 'valid' list with either Movie Titles or Actor Names
+    // Constructor
+    AutoCompletionEngine(Application &application, const StringType type) {
+        // Initializes the autocomplete engine with either movie titles or actor names from the given application
         switch (type) {
             case MOVIE: {
                 auto movies = std::move(*application.getAllMovies());
-                for (const Movie *i : movies) {
-                    valid.append(i->getTitle());
+                for (const Movie *movie : movies) {
+                    suggestionList.append(movie->getTitle());
                 }
                 break;
             }
-            case ACTOR:
+            case ACTOR: {
                 auto actors = std::move(*application.getAllActors());
-                for (const Actor *i : actors) {
-                    valid.append(i->getName());
+                for (const Actor *actor : actors) {
+                    suggestionList.append(actor->getName());
                 }
                 break;
+            }
         }
     }
 
-    std::string GetInput(std::string prompt) {
-        // std::cout << prompt;
-        // std::cin.ignore();
-        // std::getline(std::cin, buf);
-        buf = prompt;
+    // Handles user input and returns either the matched suggestion or the original input
+    std::string getUserInput(std::string prompt) {
+        userInput = std::move(prompt); // Store user input using move to prevent unnecessary copies
 
-        // Get autocomplete suggestions
-        MyList<std::string> matches = GetMatches();
+        // Find autocomplete suggestions that match the input
+        MyList<std::string> matches = findMatchingSuggestions();
 
-        // If no matches found, return original input
+        // If no suggestions are found, return the original input
         if (matches.is_empty()) {
-            return buf;
+            return userInput;
         }
 
-        // Display matches
+        // Display matching suggestions to the user
         std::cout << "\nPossible matches:\n";
         for (size_t i = 0; i < matches.get_length(); ++i) {
             std::cout << i + 1 << ". " << matches[i] << '\n';
         }
 
-        // Prompt user to select a match by index
-        std::cout << "Enter the number of the correct match (or 0 to keep original input): ";
+        // Prompt the user to select a match by its index
+        std::cout << "Enter the number of the correct match (or 0 to keep the original input): ";
         int choice;
         std::cin >> choice;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear newline
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear remaining input
 
+        // Return the selected match if the choice is valid, otherwise return the original input
         if (choice > 0 && static_cast<size_t>(choice) <= matches.get_length()) {
-            return matches[choice - 1]; // Return selected match
+            return matches[choice - 1];
         }
-
-        return buf; // Return original input if no valid selection
+        return userInput;
     }
 };
