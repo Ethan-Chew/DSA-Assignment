@@ -16,6 +16,13 @@ private:
     std::string buf; // Stores user input
     MyList<std::string> valid; // Valid autocomplete options
 
+    // Converts entire string to lowercase
+    std::string toLower(const std::string &s) {
+        std::string lower = s;
+        std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+        return lower;
+    }
+
     // Find all possible autocomplete suggestions from valid that match the current user input.
     MyList<std::string> GetMatches() {
         MyList<std::string> matches;
@@ -25,8 +32,9 @@ private:
         // Loop through all possible autocomplete suggestions and find those starting with the user's input
         for (const std::string &opt : valid) {
             // Ensure that the Movie Name is longer than the Input to avoid index Out of Bound error
-            // then if the first windowSize characters of opt match buf, it is enqueued as a suggestion.
-            if (opt.length() >= windowSize && opt.substr(0, windowSize) == buf) {
+            // Convert everything to lowercase so that substrings will match
+            // then if buf is a substring of opt, it is enqueued as a suggestion.
+            if (opt.length() >= windowSize && toLower(opt).find(toLower(buf)) != std::string::npos) {
                 matches.append(opt);
             }
         }
@@ -54,10 +62,11 @@ public:
         }
     }
 
-    std::string GetInput(const std::string &prompt = "Enter a string: ") {
-        std::cout << prompt;
-        std::cin.ignore();
-        std::getline(std::cin, buf);
+    std::string GetInput(std::string prompt) {
+        // std::cout << prompt;
+        // std::cin.ignore();
+        // std::getline(std::cin, buf);
+        buf = prompt;
 
         // Get autocomplete suggestions
         MyList<std::string> matches = GetMatches();
@@ -85,5 +94,4 @@ public:
 
         return buf; // Return original input if no valid selection
     }
-
 };
