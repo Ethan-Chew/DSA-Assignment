@@ -9,6 +9,8 @@
 #include "models/Account.h"
 #include "models/Application.h"
 #include "BasicFeatures.h"
+#include "models/Admin.h"
+#include "models/User.h"
 
 /*
  * setupApplication() uses our DataParser to parse the data from the CSV and stores it in the Application Singleton
@@ -100,9 +102,9 @@ void setupApplication(Application &application) {
  * is determined
  *
  * input: Reference to the Application Singleton
- * output: none, logged-in user is saved directly to Application
+ * output: Pointer to Account, logged-in user is saved directly to Application
  */
-Account loginUser(Application &application) {
+Account* loginUser(Application &application) {
     std::cout << "Amazing Movie App" << "\n";
     std::cout << "-----------------" << "\n";
 
@@ -121,7 +123,7 @@ Account loginUser(Application &application) {
         } else {
             if (account->comparePassword(password)) {
                 std::cout << "Welcome, " + username + "!" << "\n";
-                return *account;
+                return account;
             }
             std::cout << "Incorrect Password." << "\n";
         }
@@ -129,11 +131,59 @@ Account loginUser(Application &application) {
 }
 
 // Displays main menu and runs commands based on user input
-bool displayMenu(Application &application, bool isAdmin) {
+bool displayMenu(Application &application, Account* account) {
     int choice = -1;
     while (choice != 0) {
+        // Admin Commands
+        if (account->isUserAdmin()) {
+            Admin* adminAccount = dynamic_cast<Admin*>(account);
+            std::cout <<
+                "Available Admin Commands\n"
+                "1. Add new actor\n"
+                "2. Add new movie\n"
+                "3. Add an actor to a movie\n"
+                "4. Update actor/movie details.\n"
+                "5. Display entire database\n"
+                "0. Log Out\n"
+                "Enter Choice: ";
+            std::cin >> choice;
+
+            switch (choice) {
+                default: { break; }
+
+                // Add new actor
+                case 1: {
+                    BasicFeatures::addNewActor(application);
+                    break;
+                }
+
+                // Add new movie
+                case 2: {
+                    BasicFeatures::addNewMovie(application);
+                    break;
+                }
+
+                // Add actor to movie
+                case 3: {
+                    BasicFeatures::addActorToMovie(application);
+                    break;
+                }
+
+                // Update actor/movie details
+                case 4: {
+                    BasicFeatures::updateActorOrMovie(application);
+                    break;
+                }
+
+                case 5: {
+                    BasicFeatures::printAll(application);
+                    break;
+                }
+            }
+        }
         // User Commands
-        if (!isAdmin) {
+        else {
+            User* adminAccount = dynamic_cast<User*>(account);
             std::cout <<
                 "Available User Functions\n"
                 "1. Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user\n"
@@ -144,7 +194,7 @@ bool displayMenu(Application &application, bool isAdmin) {
                 "6. Display, Sort, and Rate a list of all Movies\n"
                 "7. Display, Sort, and Rate a list of all Actors\n"
                 "8 (Adv). Find Distance Between Two Actors\n"
-                "9. Test autocomplete"
+                "9. Test autocomplete\n"
                 "0. Log Out\n"
                 "Enter Choice: ";
             std::cin >> choice;
@@ -209,52 +259,6 @@ bool displayMenu(Application &application, bool isAdmin) {
                 }
             }
         }
-        // Admin Commands
-        else {
-            std::cout <<
-                "Available Admin Commands\n"
-                "1. Add new actor\n"
-                "2. Add new movie\n"
-                "3. Add an actor to a movie\n"
-                "4. Update actor/movie details.\n"
-                "5. Display entire database\n"
-                "0. Log Out\n"
-                "Enter Choice: ";
-            std::cin >> choice;
-
-            switch (choice) {
-                default: { break; }
-
-                // Add new actor
-                case 1: {
-                    BasicFeatures::addNewActor(application);
-                    break;
-                }
-
-                // Add new movie
-                case 2: {
-                    BasicFeatures::addNewMovie(application);
-                    break;
-                }
-
-                // Add actor to movie
-                case 3: {
-                    BasicFeatures::addActorToMovie(application);
-                    break;
-                }
-
-                // Update actor/movie details
-                case 4: {
-                    BasicFeatures::updateActorOrMovie(application);
-                    break;
-                }
-
-                case 5: {
-                    BasicFeatures::printAll(application);
-                    break;
-                }
-            }
-        }
     }
 
     // Exit app
@@ -269,13 +273,13 @@ int main()
     Application* application = Application::getInstance();
     setupApplication(*application);
 
-    Account account;
+    Account* account;
     bool exitApplication = false;
 
     // Login and Main Menu Setup
     while (!exitApplication) {
         account = loginUser(*application);
-        exitApplication = displayMenu(*application, account.isAdministrator()); // Allows user to quit app with input
+        exitApplication = displayMenu(*application, account); // Allows user to quit app with input
     }
 
     return 0;

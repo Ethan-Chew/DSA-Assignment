@@ -5,14 +5,16 @@
 #include "models/Account.h"
 
 // Constructor
-Account::Account(std::string usrname, std::string pwd, bool usrIsAdmin) {
+Account::Account(std::string usrname, std::string pwd) {
     username = usrname;
     password = pwd;
-    isAdmin = usrIsAdmin;
 }
 
 // Default Constructor
 Account::Account() {}
+
+// Destructor
+Account::~Account() { }
 
 // Retrieve Username
 std::string Account::getUsername() {
@@ -25,8 +27,4 @@ bool Account::comparePassword(std::string pwd) {
         return true;
     }
     return false;
-}
-
-bool Account::isAdministrator() {
-    return isAdmin;
 }

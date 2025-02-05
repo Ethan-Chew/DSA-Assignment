@@ -5,16 +5,15 @@
 
 #include <iostream>
 
-
 class Account {
 private:
     std::string username;
     std::string password;
-    bool isAdmin;
 public:
-    Account(std::string, std::string, bool);
+    Account(std::string, std::string);
     Account();
+    ~Account();
     std::string getUsername();
+    virtual bool isUserAdmin() const = 0;
     bool comparePassword(std::string);
-    bool isAdministrator();
 };

@@ -4,6 +4,8 @@
 
 #include "models/Application.h"
 #include "MyList.h"
+#include "models/Admin.h"
+#include "models/User.h"
 
 Application* Application::uniqueInstance = nullptr;
 Application::Application() {
@@ -12,12 +14,12 @@ Application::Application() {
     maxMovieId = 0;
 
     // Create Demo Accounts
-    accounts.add("user1", std::make_unique<Account>(Account("user1", "password1", false)));
-    accounts.add("user2", std::make_unique<Account>(Account("user2", "password2", false)));
-    accounts.add("user3", std::make_unique<Account>(Account("user3", "password3", false)));
-    accounts.add("admin1",  std::make_unique<Account>(Account("admin1", "password4", true)));
-    accounts.add("admin2", std::make_unique<Account>(Account("admin2", "password5", true)));
-    accounts.add("admin3", std::make_unique<Account>(Account("admin3", "password6", true)));
+    accounts.add("user1", std::make_unique<User>(User("user1", "password1")));
+    accounts.add("user2", std::make_unique<User>(User("user2", "password2")));
+    accounts.add("user3", std::make_unique<User>(User("user3", "password3")));
+    accounts.add("admin1",  std::make_unique<Admin>(Admin("admin1", "password4")));
+    accounts.add("admin2", std::make_unique<Admin>(Admin("admin2", "password5")));
+    accounts.add("admin3", std::make_unique<Admin>(Admin("admin3", "password6")));
 }
 
 Application* Application::getInstance() {

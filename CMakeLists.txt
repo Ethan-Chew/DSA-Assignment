@@ -27,4 +27,8 @@ add_executable(
         include/AdvancedFeatures.h
         src/AdvancedFeatures.cpp
         include/models/Rateable.h
-        src/models/Rateable.cpp)
+        src/models/Rateable.cpp
+        src/models/User.cpp
+        include/models/User.h
+        include/models/Admin.h
+        src/models/Admin.cpp)
