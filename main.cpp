@@ -253,7 +253,7 @@ bool displayMenu(Application &application, Account* account) {
 
                     std::cout << "Enter Prompt: ";
                     std::cin >> prompt;
-                    std::string res = AutoComplete.GetInput(prompt);
+                    std::string res = AutoComplete.getUserInput(prompt);
                     application.getMovieByName(res)->print();
                 }
             }
