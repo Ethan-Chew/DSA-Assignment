@@ -42,18 +42,19 @@ private:
 
 public:
     // Constructor
-    AutoCompletionEngine(Application &application, const StringType type) {
+    AutoCompletionEngine(const StringType type) {
+        Application* application = Application::getInstance();
         // Initializes the autocomplete engine with either movie titles or actor names from the given application
         switch (type) {
             case MOVIE: {
-                auto movies = std::move(*application.getAllMovies());
+                auto movies = std::move(*application->getAllMovies());
                 for (const Movie *movie : movies) {
                     suggestionList.append(movie->getTitle());
                 }
                 break;
             }
             case ACTOR: {
-                auto actors = std::move(*application.getAllActors());
+                auto actors = std::move(*application->getAllActors());
                 for (const Actor *actor : actors) {
                     suggestionList.append(actor->getName());
                 }

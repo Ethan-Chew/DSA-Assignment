@@ -15,7 +15,8 @@
  * input: Reference to the Application Singleton
  * output: none, data is saved directly to the Application
  */
-void setupApplication(Application &application) {
+void setupApplication() {
+    Application* application = Application::getInstance();
     // Parse the Actors from the CSV into the Application
     auto t1 = std::chrono::high_resolution_clock::now();
     DataParser actorParser(
@@ -39,7 +40,7 @@ void setupApplication(Application &application) {
         std::string name = names->get(i);
         int birthYear = birth->get(i);
         std::unique_ptr<Actor> actor(new Actor(id, name, birthYear));
-        application.addActor(std::move(actor));
+        application->addActor(std::move(actor));
     }
 
     // Parse the Movies from the CSV into the Application
@@ -66,7 +67,7 @@ void setupApplication(Application &application) {
     // Create Movie Objects and add to Dictionary
     for (int i = 0; i < movieIds->get_length(); i++) {
         std::unique_ptr<Movie> movie = std::make_unique<Movie>(movieIds->get(i), titles->get(i), years->get(i), plots->get(i), Genre::NONE);
-        application.addMovie(std::move(movie));
+        application->addMovie(std::move(movie));
     }
 
     // Parse the Actors and Movies relationship from the CSV into the Application
@@ -89,7 +90,7 @@ void setupApplication(Application &application) {
 
     // Create and update Actor-Movie Relationships
     for (int i = 0; i < castPersonIds->get_length(); i++) {
-        application.addActorToMovie(castPersonIds->get(i), castMovieIds->get(i));
+        application->addActorToMovie(castPersonIds->get(i), castMovieIds->get(i));
     }
 }
 
@@ -100,7 +101,8 @@ void setupApplication(Application &application) {
  * input: Reference to the Application Singleton
  * output: Pointer to Account, logged-in user is saved directly to Application
  */
-Account* loginUser(Application &application) {
+Account* loginUser() {
+    Application* application = Application::getInstance();
     std::cout << "Amazing Movie App" << "\n";
     std::cout << "-----------------" << "\n";
 
@@ -113,7 +115,7 @@ Account* loginUser(Application &application) {
         std::cin >> password;
 
         // Check if login details are valid
-        Account* account = application.getAccount(username);
+        Account* account = application->getAccount(username);
         if (account == nullptr) {
             std::cout << "No account with username found." << "\n";
         } else {
@@ -127,7 +129,8 @@ Account* loginUser(Application &application) {
 }
 
 // Displays main menu and runs commands based on user input
-bool displayMenu(Application &application, Account* account) {
+bool displayMenu(Account* account) {
+    Application* application = Application::getInstance();
     int choice = -1;
     while (choice != 0) {
         // Admin Commands
@@ -247,14 +250,14 @@ bool displayMenu(Application &application, Account* account) {
                 }
 
                 case 9: {
-                    AutoCompletionEngine AutoComplete = AutoCompletionEngine(application, MOVIE);
+                    AutoCompletionEngine AutoComplete = AutoCompletionEngine(MOVIE);
                     std::string prompt;
                     std::string response;
 
                     std::cout << "Enter Prompt: ";
                     std::cin >> prompt;
                     std::string res = AutoComplete.getUserInput(prompt);
-                    application.getMovieByName(res)->print();
+                    application->getMovieByName(res)->print();
                 }
             }
         }
@@ -270,15 +273,15 @@ bool displayMenu(Application &application, Account* account) {
 int main()
 {
     Application* application = Application::getInstance();
-    setupApplication(*application);
+    setupApplication();
 
     Account* account;
     bool exitApplication = false;
 
     // Login and Main Menu Setup
     while (!exitApplication) {
-        account = loginUser(*application);
-        exitApplication = displayMenu(*application, account); // Allows user to quit app with input
+        account = loginUser();
+        exitApplication = displayMenu(account); // Allows user to quit app with input
     }
 
     return 0;

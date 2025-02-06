@@ -15,6 +15,7 @@ public:
     void displayActorMovies();
     void displayActorsInMovie();
     void displayKnownActors();
+    void fileReport();
 
     // User Features (Advanced)
     void displayAndSortMovies();

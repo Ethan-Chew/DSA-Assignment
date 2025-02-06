@@ -276,6 +276,17 @@ void User::displayKnownActors() {
     }
 }
 
+/*
+ * File Report
+ *
+ * Allows users to file a report by specifying the Report's description, type and affected item (Actor/Movie)
+ */
+void User::fileReport() {
+    Application* application = Application::getInstance();
+
+}
+
+
 // Helper Function to handle rating of Rateable Objects
 void handleRate(Rateable* obj) {
     int rate;

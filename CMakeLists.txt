@@ -27,4 +27,6 @@ add_executable(
         src/models/User.cpp
         include/models/User.h
         include/models/Admin.h
-        src/models/Admin.cpp)
+        src/models/Admin.cpp
+        include/models/Report.h
+        src/models/Report.cpp)
