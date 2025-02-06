@@ -10,16 +10,16 @@ private:
     std::string description;
     std::string type;
     int affectedId;
-    int reporteeId;
+    std::string reporteeUsername;
     bool isResolved;
 public:
-    Report(std::string, std::string, int, int);
+    Report(std::string, std::string, int, std::string);
 
     // Getters
     std::string getDescription();
     std::string getType();
     int getAffectedId();
-    int getReporteeId();
+    std::string getReporteeUsername();
     bool getIsResolved();
 
     // Setters

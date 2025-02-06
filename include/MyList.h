@@ -9,6 +9,8 @@
 #include <models/Actor.h>
 #include <models/Movie.h>
 
+#include "models/Report.h"
+
 enum SortType {
     ALPHABETICALLY,
     AGE,

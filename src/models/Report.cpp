@@ -4,11 +4,11 @@
 
 #include "models/Report.h"
 
-Report::Report(std::string desc, std::string type, int affectedId, int reporteeId) {
+Report::Report(std::string desc, std::string type, int affectedId, std::string reporteeUsername) {
     description = desc;
     this->type = type;
     this->affectedId = affectedId;
-    this->reporteeId = reporteeId;
+    this->reporteeUsername = reporteeUsername;
 }
 
 std::string Report::getDescription() {
@@ -23,9 +23,14 @@ int Report::getAffectedId() {
     return affectedId;
 }
 
-int Report::getReporteeId() {
-    return reporteeId;
+std::string Report::getReporteeUsername() {
+    return reporteeUsername;
 }
+
+bool Report::getIsResolved() {
+    return isResolved;
+}
+
 
 bool Report::setIsResolved(bool isResolved) {
     this->isResolved = isResolved;

@@ -283,7 +283,72 @@ void User::displayKnownActors() {
  */
 void User::fileReport() {
     Application* application = Application::getInstance();
+    try {
+        // Display Starting Menu
+        std::cout << "=== Option 10: File an Error Report on a Actor or Movie ===" << std::endl;
 
+        // Ask user to choose between Actor or Movie Report
+        std::cout << "Report Type:" << std::endl;
+        std::cout << "1. Actor" << std::endl;
+        std::cout << "2. Movie" << std::endl;
+        int reportTypeInt;
+        while (true) {
+            std::cout << "\nPlease enter the Report Type (1 or 2): ";
+            if (std::cin >> reportTypeInt && (reportTypeInt == 1 || reportTypeInt == 2)) { break; }
+
+            // Validate Report Type
+            std::cout << "Invalid Report Type! Ensure Report Type is an Integer and either 1 or 2." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        }
+
+        // Ask User for Description of Report
+        std::string desc;
+        while (true) {
+            std::cout << "Report Description: ";
+            std::cin.ignore();
+            getline(std::cin, desc);
+
+            // Validate the Description Input
+            if (desc.empty()) {
+                std::cout << "The Report Description cannot be empty!" << std::endl;
+            } else { break; }
+        }
+
+        // Get the Affected ID (either ID of Actor or ID of Movie)
+        int affectedId;
+        while (true) {
+            std::cout << "\nPlease enter the Affected ID: ";
+            if (std::cin >> affectedId) {
+                // Validate that the Actor/Movie with ID exists
+                if (reportTypeInt == 1) {
+                    // Actor
+                    Actor* actor = application->getActor(affectedId);
+                    if (actor == nullptr) {
+                        std::cout << "No Actor with Actor ID (" << affectedId << ") found!" << std::endl;
+                    } else { break; }
+                } else {
+                    // Movie
+                    Movie* movie = application->getMovie(affectedId);
+                    if (movie == nullptr) {
+                        std::cout << "No Movie with Movie ID (" << affectedId << ") found!" << std::endl;
+                    } else { break; }
+                }
+            } else {
+                // Validate Affected Id
+                std::cout << "Invalid Affected ID format! Ensure that Affected ID is an integer!" << std::endl;
+                std::cin.clear(); // Clear the error flag
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+            }
+        }
+
+        // File a Report
+        application->addReport(new Report(desc, reportTypeInt == 1 ? "Actor" : "Movie", affectedId, this->getUsername()));
+    }
+    // Error Handling for bad inputs
+    catch (std::exception &e) {
+        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
+    }
 }
 
 

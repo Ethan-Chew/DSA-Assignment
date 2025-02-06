@@ -9,6 +9,9 @@
 
 Application* Application::uniqueInstance = nullptr;
 Application::Application() {
+    // Initialise the Report List
+    reports = new MyList<std::unique_ptr<Report>>();
+
     // Set max Actor and Movie Id values to aid Actor/Movie creation
     maxActorId = 0;
     maxMovieId = 0;
@@ -42,6 +45,17 @@ int Application::getMaxActorId() {
 int Application::getMaxMovieId() {
     return maxMovieId;
 }
+
+// Add/Retrieve/Update Report
+void Application::addReport(Report* report) {
+    reports->append(std::make_unique<Report>(*report));
+}
+void Application::retrieveAllReports() {
+    for (int i = 0; i < reports->get_length(); i++) {
+        std::cout << "Type: " << reports->get(i)->getType() << " | Description: " << reports->get(i)->getDescription() << " | Is Resolved: " << (reports->get(i)->getIsResolved() ? "Yes" : "No") << std::endl;
+    }
+}
+
 
 // Setters for Actor and Movie
 void Application::addActor(std::unique_ptr<Actor> actor) {

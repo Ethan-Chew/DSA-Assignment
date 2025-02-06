@@ -13,6 +13,7 @@
 #include "Account.h"
 #include "SortedList.h"
 #include "MyList.h"
+#include "Report.h"
 
 // Singleton to store data of Actors and Movies
 class Application {
@@ -26,6 +27,9 @@ private:
 
     // Singleton Checker
     static Application* uniqueInstance;
+
+    // List of Reports
+    MyList<std::unique_ptr<Report>>* reports;
 
     // Dictionary of Actors/Movies
     MyDict<int, std::unique_ptr<Actor>> actors;
@@ -51,6 +55,11 @@ public:
     // Retrieve max ID values of Actor and Movie
     int getMaxActorId();
     int getMaxMovieId();
+
+    // Add/Retrieve/Update Report
+    void addReport(Report* report);
+    // void updateReport(Report report);
+    void retrieveAllReports();
 
     // Add/Remove/Retrieve Actor Objects
     void addActor(std::unique_ptr<Actor> actor);

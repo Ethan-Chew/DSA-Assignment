@@ -194,6 +194,7 @@ bool displayMenu(Account* account) {
                 "7. Display, Sort, and Rate a list of all Actors\n"
                 "8. (Adv). Find Distance Between Two Actors\n"
                 "9. (Adv). Test autocomplete\n"
+                "10. File an Error Report on Actor or Movie\n"
                 "0. Log Out\n"
                 "Enter Choice: ";
             std::cin >> choice;
@@ -258,6 +259,10 @@ bool displayMenu(Account* account) {
                     std::cin >> prompt;
                     std::string res = AutoComplete.getUserInput(prompt);
                     application->getMovieByName(res)->print();
+                }
+
+                case 10: {
+                    userAccount->fileReport();
                 }
             }
         }
