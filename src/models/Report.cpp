@@ -9,6 +9,7 @@ Report::Report(std::string desc, std::string type, int affectedId, std::string r
     this->type = type;
     this->affectedId = affectedId;
     this->reporteeUsername = reporteeUsername;
+    isResolved = false;
 }
 
 std::string Report::getDescription() {

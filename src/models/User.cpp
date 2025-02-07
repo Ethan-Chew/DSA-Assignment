@@ -318,7 +318,7 @@ void User::fileReport() {
         // Get the Affected ID (either ID of Actor or ID of Movie)
         int affectedId;
         while (true) {
-            std::cout << "\nPlease enter the ID of the affected Actor/Movie: ";
+            std::cout << "Please enter the ID of the affected Actor/Movie: ";
             if (std::cin >> affectedId) {
                 // Validate that the Actor/Movie with ID exists
                 if (reportTypeInt == 1) {
@@ -343,7 +343,15 @@ void User::fileReport() {
         }
 
         // File a Report
-        application->addReport(new Report(desc, reportTypeInt == 1 ? "Actor" : "Movie", affectedId, this->getUsername()));
+        Report* report = new Report(desc, reportTypeInt == 1 ? "Actor" : "Movie", affectedId, this->getUsername());
+        application->addReport(report);
+
+        // Display Created Report
+        std::cout << "Report Created!" << std::endl;
+        std::cout << "Type: " << report->getType() << std::endl;
+        std::cout << "Description: " << report->getDescription() << std::endl;
+        std::cout << "Actor/Movie Affected: " << report->getAffectedId() << std::endl;
+        std::cout << std::endl;
     }
     // Error Handling for bad inputs
     catch (std::exception &e) {

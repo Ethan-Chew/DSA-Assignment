@@ -50,10 +50,9 @@ int Application::getMaxMovieId() {
 void Application::addReport(Report* report) {
     reports->append(std::make_unique<Report>(*report));
 }
-void Application::retrieveAllReports() {
-    for (int i = 0; i < reports->get_length(); i++) {
-        std::cout << "Type: " << reports->get(i)->getType() << " | Description: " << reports->get(i)->getDescription() << " | Is Resolved: " << (reports->get(i)->getIsResolved() ? "Yes" : "No") << std::endl;
-    }
+
+MyList<std::unique_ptr<Report>> *Application::retrieveAllReports() {
+    return reports;
 }
 
 
@@ -102,16 +101,16 @@ bool Application::removeMovie(const int id) {
 
 // Getters for Actor and Movie by Id
 Actor* Application::getActor(const int id) {
-    if (actors.safe_get(id) != nullptr) {
+    // if (actors.safe_get(id) != nullptr) {
         return actors[id].get();
-    }
+    // }
     return nullptr;
 }
 
 Movie* Application::getMovie(const int id) {
-    if (movies.safe_get(id) != nullptr) {
+    // if (movies.safe_get(id) != nullptr) {
         return movies[id].get();
-    }
+    // }
     return nullptr;
 }
 

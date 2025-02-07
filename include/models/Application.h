@@ -59,7 +59,7 @@ public:
     // Add/Retrieve/Update Report
     void addReport(Report* report);
     // void updateReport(Report report);
-    void retrieveAllReports();
+    MyList<std::unique_ptr<Report>> *retrieveAllReports();
 
     // Add/Remove/Retrieve Actor Objects
     void addActor(std::unique_ptr<Actor> actor);

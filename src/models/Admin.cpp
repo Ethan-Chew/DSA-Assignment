@@ -334,7 +334,7 @@ void Admin::updateActorOrMovie() {
                 // Prevent crashes if input was not int
                 try {
                     // Validate Release Year and Update if valid
-                    if (!releaseYear.empty() && std::stoi(releaseYear) > 1900 && std::stoi(releaseYear) < 2026) {
+                    if (!releaseYear.empty() && std::stoi(releaseYear) > 1900 && std::stoi(releaseYear) < 2026) { // TODO: is 1900 a good limit?
                         chosenMovie->setReleaseYear(std::stoi(releaseYear));  // Use stoi to convert string to int
                         break;
                     }
@@ -426,10 +426,47 @@ void Admin::updateActorOrMovie() {
 }
 
 void Admin::reviewReports() {
-    std::cout << "=== Option 5: Review all Reports ===" << std::endl;
+    std::cout << "\n=== Option 5: Review all Reports ===" << std::endl;
     Application* application = Application::getInstance();
 
-    application->retrieveAllReports();
+    auto reports = application->retrieveAllReports();
+    for (int i = 0; i < reports->get_length(); i++) {
+        std::cout << i + 1 << ") Type: " << reports->get(i)->getType() << " | Description: " << reports->get(i)->getDescription() << " | Is Resolved: " << (reports->get(i)->getIsResolved() ? "Yes" : "No") << std::endl;
+    }
+    std::cout << std::endl;
+
+    std::cout << "Would you like to Resolve a Report?" << std::endl;
+    std::string userResponse;
+    while (true) {
+        std::cout << "Response (Enter y or n): ";
+        if (std::cin >> userResponse && (userResponse == "y" || userResponse == "n")) { break; }
+
+        std::cout << "Reply should be either 'y' or 'n'!" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    if (userResponse == "n") { return; }
+
+    int reportId;
+    while (true) {
+        std::cout << "Please enter the Report ID: ";
+        if (std::cin >> reportId && reportId > 0 && reportId < reports->get_length()) { break; }
+
+        // Validate Affected Id
+        std::cout << "Invalid Report ID format! Ensure that Report ID is an integer!" << std::endl;
+        std::cin.clear(); // Clear the error flag
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+    }
+
+    // Display Report Details
+    Report* report = reports->get(reportId - 1).get();
+    std::cout << "Report Details:" << std::endl;
+    std::cout << "Type: " << report->getType() << std::endl;
+    std::cout << "Description: " << report->getDescription() << std::endl;
+    std::cout << "Actor/Movie Affected: " << report->getAffectedId() << std::endl;
+
+    // TODO: allow direct updates from Review Report
 }
 
 /*
