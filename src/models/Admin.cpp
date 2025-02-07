@@ -184,6 +184,135 @@ void Admin::addActorToMovie() {
     }
 }
 
+// Helper Function to Update an Actor
+void updateActor(Actor* actor) {
+    std::cout << "\nChosen Actor:" << std::endl;
+    actor->print();
+    std::cout << std::endl;
+
+    // Get relevant data to create Actor Object
+    std::string name;
+    std::string birthYear;
+
+    while (true) {
+        std::cout << "Please enter updated Actor name (';' to skip): ";
+        std::cin.ignore();
+        getline(std::cin, name);
+
+        // Validate the Name Input
+        if (name.empty()) {
+            std::cout << "Your name cannot be empty. Please enter a valid name." << std::endl;
+        }
+        else {
+            // Skip updating name if user enters ";"
+            if (name != ";") {
+                actor->setName(name);
+            }
+            break;
+        }
+    }
+
+    while (true) {
+        std::cout << "Please enter updated birth year (';' to skip): ";
+        std::cin >> birthYear;
+
+        // Skip updating birth year if user enters ";"
+        if (!birthYear.empty() && birthYear == ";") { break; }
+
+        // Prevent crashes if input was not int
+        try {
+            // Validate Birth Year and Update if valid
+            if (!birthYear.empty() && std::stoi(birthYear) > 1900 && std::stoi(birthYear) < 2026) {
+                actor->setBirthYear(std::stoi(birthYear)); // Use stoi to convert string to int
+                break;
+            }
+        } catch (std::exception &e) {}
+
+        // Validate Birth Year
+        std::cout << "Invalid Birth Year! Please enter a valid year." << std::endl;
+        std::cin.clear(); // Clear the error flag
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+    }
+
+    std::cout << "\nSuccessfully updated Actor information: " << std::endl;
+    actor->print();
+    std::cout << std::endl;
+}
+
+// Helper Function to Update a Movie
+void updateMovie(Movie* movie) {
+    std::cout << "\nChosen Movie:" << std::endl;
+    movie->print();
+    std::cout << std::endl;
+
+    // Get relevant data to create Movie Object
+    std::string title;
+    while (true) {
+        std::cout << "Please enter updated movie title (';' to skip): ";
+        std::cin.ignore();
+        getline(std::cin, title);
+
+        // Validate the Movie Title Input
+        if (title.empty()) {
+            std::cout << "The Movie Title cannot be empty! Please enter a valid Movie Plot." << std::endl;
+        }
+        else {
+            // Skip updating title if user enters ";"
+            if (title != ";") {
+                movie->setTitle(title);
+            }
+            break;
+        }
+    }
+
+    std::string releaseYear;
+
+    while (true) {
+        std::cout << "Please enter updated movie release year (';' to skip): ";
+        std::cin >> releaseYear;
+
+        // Skip updating release year if user enters ";"
+        if (!releaseYear.empty() && releaseYear == ";") { break; }
+
+        // Prevent crashes if input was not int
+        try {
+            // Validate Release Year and Update if valid
+            if (!releaseYear.empty() && std::stoi(releaseYear) > 1900 && std::stoi(releaseYear) < 2026) { // TODO: is 1900 a good limit?
+                movie->setReleaseYear(std::stoi(releaseYear));  // Use stoi to convert string to int
+                break;
+            }
+        } catch (std::exception &e) {}
+
+        // Validate Release Year
+        std::cout << "Invalid Release Year! Please enter a valid year." << std::endl;
+        std::cin.clear(); // Clear the error flag
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+    }
+
+    std::string plot;
+    while (true) {
+        std::cout << "Please enter updated movie plot (';' to skip): ";
+        std::cin.ignore();
+        getline(std::cin, plot);
+
+        // Validate the Movie Plot Input
+        if (plot.empty()) {
+            std::cout << "The Movie Plot cannot be empty! Please enter a valid Movie Plot." << std::endl;
+        }
+        else {
+            // Skip updating plot if user enters ";"
+            if (plot != ";") {
+                movie->setPlot(plot);
+            }
+            break;
+        }
+    }
+
+    std::cout << "\nSuccessfully updated Movie information: " << std::endl;
+    movie->print();
+    std::cout << std::endl;
+}
+
 /*
  * Updates either the details of the Actor or the Movie
  *
@@ -191,154 +320,44 @@ void Admin::addActorToMovie() {
  * */
 void Admin::updateActorOrMovie() {
     Application* application = Application::getInstance();
+
     try {
         // Display Menu
         std::cout << "=== Option 4: Update actor/movie details ===" << std::endl;
 
+        // Get the User's Update Choice (Movie/Actor)
         int movieActorChoice;
-        int actorMovieId;
+        while (true) {
+            std::cout << "\nUpdate (1) Actor or (2) Movie: ";
+            if (std::cin >> movieActorChoice && (movieActorChoice == 1 || movieActorChoice == 2)) { break; }
 
-        std::cout << "Update (1) Actor or (2) Movie: ";
-        std::cin >> movieActorChoice;
-
-        // Update Actor
-        if (movieActorChoice == 1) {
-            std::cout << "\nPlease enter Actor ID: ";
-            std::cin >> actorMovieId;
-
-            // Show chosen actor
-            Actor* chosenActor = application->getActor(actorMovieId);
-            std::cout << "\nActor chosen: " << std::endl;
-            chosenActor->print();
-
-            // Get relevant data to create Actor Object
-            std::string name;
-            std::string birthYear;
-
-            while (true) {
-                std::cout << "Please enter updated Actor name (';' to skip): ";
-                std::cin.ignore();
-                getline(std::cin, name);
-
-                // Validate the Name Input
-                if (name.empty()) {
-                    std::cout << "Your name cannot be empty. Please enter a valid name." << std::endl;
-                }
-                else {
-                    // Skip updating name if user enters ";"
-                    if (name != ";") {
-                        chosenActor->setName(name);
-                    }
-                    break;
-                }
-            }
-
-            while (true) {
-                std::cout << "\nPlease enter updated birth year (';' to skip): ";
-                std::cin >> birthYear;
-
-                // Skip updating birth year if user enters ";"
-                if (!birthYear.empty() && birthYear == ";") { break; }
-
-                // Prevent crashes if input was not int
-                try {
-                    // Validate Birth Year and Update if valid
-                    if (!birthYear.empty() && std::stoi(birthYear) > 1900 && std::stoi(birthYear) < 2026) {
-                        chosenActor->setBirthYear(std::stoi(birthYear)); // Use stoi to convert string to int
-                        break;
-                    }
-                } catch (std::exception &e) {}
-
-                // Validate Birth Year
-                std::cout << "Invalid Birth Year! Please enter a valid year." << std::endl;
-                std::cin.clear(); // Clear the error flag
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
-            }
-
-            std::cout << "\nSuccessfully updated Actor information: " << std::endl;
-            application->getActor(actorMovieId)->print();
+            // Validate Release Year
+            std::cout << "Invalid Choice! Please enter either 1 or 2." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
         }
 
-        // Update Movie
-        else if (movieActorChoice == 2) {
-            std::cout << "\nPlease enter Movie ID: ";
-            std::cin >> actorMovieId;
-
-            // Show chosen movie
-            Movie* chosenMovie = application->getMovie(actorMovieId);
-            std::cout << "\nMovie chosen: " << std::endl;
-            chosenMovie->print();
-
-            // Get relevant data to create Movie Object
-            std::string title;
-            while (true) {
-                std::cout << "Please enter updated movie title (';' to skip): ";
-                std::cin.ignore();
-                getline(std::cin, title);
-
-                // Validate the Movie Title Input
-                if (title.empty()) {
-                    std::cout << "The Movie Title cannot be empty! Please enter a valid Movie Plot." << std::endl;
+        // Retrieve the ID of either Actor or Movie
+        int choiceId;
+        while (true) {
+            std::cout << "Enter the " << (movieActorChoice == 1 ? "Actor ID: " : "Movie ID: ") << std::endl;
+            if (std::cin >> choiceId) {
+                if (movieActorChoice == 1) {
+                    // Selected Actor
+                    Actor* actor = application->getActor(choiceId);
+                    updateActor(actor);
+                } else {
+                    // Selected Movie
+                    Movie* movie = application->getMovie(choiceId);
+                    updateMovie(movie);
                 }
-                else {
-                    // Skip updating title if user enters ";"
-                    if (title != ";") {
-                        chosenMovie->setTitle(title);
-                    }
-                    break;
-                }
+                break;
             }
 
-            std::string releaseYear;
-
-            while (true) {
-                std::cout << "\nPlease enter updated movie release year (';' to skip): ";
-                std::cin >> releaseYear;
-
-                // Skip updating release year if user enters ";"
-                if (!releaseYear.empty() && releaseYear == ";") { break; }
-
-                // Prevent crashes if input was not int
-                try {
-                    // Validate Release Year and Update if valid
-                    if (!releaseYear.empty() && std::stoi(releaseYear) > 1900 && std::stoi(releaseYear) < 2026) { // TODO: is 1900 a good limit?
-                        chosenMovie->setReleaseYear(std::stoi(releaseYear));  // Use stoi to convert string to int
-                        break;
-                    }
-                } catch (std::exception &e) {}
-
-                // Validate Release Year
-                std::cout << "Invalid Release Year! Please enter a valid year." << std::endl;
-                std::cin.clear(); // Clear the error flag
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
-            }
-
-            std::string plot;
-            while (true) {
-                std::cout << "\nPlease enter updated movie plot (';' to skip): ";
-                std::cin.ignore();
-                getline(std::cin, plot);
-
-                // Validate the Movie Plot Input
-                if (plot.empty()) {
-                    std::cout << "The Movie Plot cannot be empty! Please enter a valid Movie Plot." << std::endl;
-                }
-                else {
-                    // Skip updating plot if user enters ";"
-                    if (plot != ";") {
-                        chosenMovie->setPlot(plot);
-                    }
-                    break;
-                }
-            }
-
-            std::cout << "\nSuccessfully updated Movie information: " << std::endl;
-            application->getMovie(actorMovieId)->print();
-        }
-
-        // Invalid Choice
-        else {
-            std::cout << "Invalid Option. Please choose either (1) Actor or (2) Movie." << std::endl;
+            // Validate Release Year
+            std::cout << "Invalid Choice! Please enter either 1 or 2." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
         }
     }
     // Error Handling for bad inputs
@@ -373,7 +392,7 @@ void Admin::reviewReports() {
     int reportId;
     while (true) {
         std::cout << "Please enter the Report ID: ";
-        if (std::cin >> reportId && reportId > 0 && reportId < reports->get_length()) { break; }
+        if (std::cin >> reportId && reportId > 0 && reportId <= reports->get_length()) { break; }
 
         // Validate Affected Id
         std::cout << "Invalid Report ID format! Ensure that Report ID is an integer!" << std::endl;
@@ -388,7 +407,15 @@ void Admin::reviewReports() {
     std::cout << "Description: " << report->getDescription() << std::endl;
     std::cout << "Actor/Movie Affected: " << report->getAffectedId() << std::endl;
 
-    // TODO: allow direct updates from Review Report
+    if (report->getType() == "Actor") {
+        Actor* actor = application->getActor(report->getAffectedId());
+        updateActor(actor);
+    } else {
+        Movie* movie = application->getMovie(report->getAffectedId());
+        updateMovie(movie);
+    }
+
+    report->setIsResolved(true);
 }
 
 /*

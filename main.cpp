@@ -197,9 +197,9 @@ bool displayMenu(Account* account) {
                 "5. Display a list of all actors that a particular actor knows.\n"
                 "6. Display, Sort, and Rate a list of all Movies\n"
                 "7. Display, Sort, and Rate a list of all Actors\n"
-                "8. (Adv). Find Distance Between Two Actors\n"
-                "9. (Adv). Test autocomplete\n"
-                "10. File an Error Report on Actor or Movie\n"
+                "8. File an Error Report on Actor or Movie\n"
+                "9. (Adv). Find Distance Between Two Actors\n"
+                "10. (Adv). Test autocomplete\n"
                 "0. Log Out\n"
                 "Enter Choice: ";
             std::cin >> choice;
@@ -249,13 +249,17 @@ bool displayMenu(Account* account) {
                     break;
                 }
 
-                // Find Distance Between Two Actors
                 case 8: {
+                    userAccount->fileReport();
+                }
+
+                // Find Distance Between Two Actors
+                case 9: {
                     userAccount->findDistanceBetweenActors();
                     break;
                 }
 
-                case 9: {
+                case 10: {
                     AutoCompletionEngine AutoComplete = AutoCompletionEngine(MOVIE);
                     std::string prompt;
                     std::string response;
@@ -264,10 +268,6 @@ bool displayMenu(Account* account) {
                     std::cin >> prompt;
                     std::string res = AutoComplete.getUserInput(prompt);
                     application->getMovieByName(res)->print();
-                }
-
-                case 10: {
-                    userAccount->fileReport();
                 }
             }
         }

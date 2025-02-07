@@ -285,7 +285,7 @@ void User::fileReport() {
     Application* application = Application::getInstance();
     try {
         // Display Starting Menu
-        std::cout << "=== Option 10: File an Error Report on a Actor or Movie ===" << std::endl;
+        std::cout << "=== Option 8: File an Error Report on a Actor or Movie ===" << std::endl;
 
         // Ask user to choose between Actor or Movie Report
         std::cout << "Report Type:" << std::endl;
@@ -375,7 +375,6 @@ void handleRate(Rateable* obj) {
 }
 
 // User Advanced Features
-
 void User::displayAndSortMovies() {
     Application* application = Application::getInstance();
     std::cout << "=== Option 6: Display and Sort a list of all Movies ===" << std::endl;
@@ -500,7 +499,7 @@ void User::displayAndSortActors() {
 
 void User::findDistanceBetweenActors() {
     Application* application = Application::getInstance();
-    std::cout << "=== Option 8 (Advanced): Find Distance Between Two Actors ===" << std::endl;
+    std::cout << "=== Option 9 (Advanced): Find Distance Between Two Actors ===" << std::endl;
 
     Actor* actor1 = nullptr;
     Actor* actor2 = nullptr;
