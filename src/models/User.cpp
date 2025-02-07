@@ -4,6 +4,7 @@
 
 #include "models/User.h"
 
+#include <chrono>
 #include <models/Application.h>
 #include <limits>
 
@@ -55,24 +56,27 @@ void User::displayActors() {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
         }
 
-        MyList<Actor*> *actorz = application->getAllActors();
-        auto *filtered = new MyList<Actor*>();
-        const int thisYear = 2025; // TODO: DONT HARDCODE YEAR
+        // Retrieve the Current Year
+        const auto now = std::chrono::system_clock::now();
+        const int currentYear = stoi(std::format("{:%Y}", now));
 
-        for (const Actor* actor : *actorz) {
-            int age = thisYear - actor->getBirthYear();
+        // Retrieve all actors and parse
+        MyList<Actor*> *actors = application->getAllActors();
+        if (actors == nullptr || actors->get_length() == 0) {
+            std::cout<< "No actors found" << std::endl;
+            return;
+        }
+
+        // Filter the list of Actors by their age
+        auto *filtered = new MyList<Actor*>();
+        for (const Actor* actor : *actors) {
+            int age = currentYear - actor->getBirthYear();
             if (age >= startAge && age <= endAge) filtered->append(const_cast<Actor *>(actor));
         }
 
         // Sort and Print
         filtered->sort(AGE);
-
-        // todo: print
-        for (const Actor* actor : *filtered) {
-            std::cout
-                << actor->getName()
-                << "\n";
-        }
+        filtered->print();
         std::cout << std::endl;
     }
     // Error Handling for bad inputs
@@ -89,8 +93,11 @@ void User::displayMovies() {
         MyList<Movie*>* movies = application->getAllMovies();
         auto* filteredMovies = new MyList<Movie*>();
 
+        // Retrieve the Current Year
+        const auto now = std::chrono::system_clock::now();
+        const int currentYear = stoi(std::format("{:%Y}", now));
+
         // Filter the LinkedList and only preserve Movies that were made in the past 3 years
-        const int currentYear = 2025; // TODO: Use STL to get current year
         for (int i = 0; i < movies->get_length(); i++) {
             Movie* movie = movies->get(i);
             if ((currentYear - movie->getReleaseYear()) <= 3) {
@@ -98,10 +105,12 @@ void User::displayMovies() {
             }
         }
 
-        filteredMovies->sort(RELEASE_YEAR);
         if (filteredMovies->get_length() == 0) {
             std::cout << "There are no Movies in the past 3 years" << std::endl;
+            return;
         }
+
+        filteredMovies->sort(RELEASE_YEAR);
         filteredMovies->print();
     }
     // Error Handling for bad inputs
