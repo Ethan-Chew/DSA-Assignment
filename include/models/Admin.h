@@ -15,4 +15,5 @@ public:
     void addActorToMovie();
     void updateActorOrMovie();
     void printAll();
+    void reviewReports();
 };

@@ -121,12 +121,14 @@ public:
 
     void print() const {
         for (int i = 0; i < size; i++) {
-            if constexpr (std::is_integral_v<T> || std::is_floating_point_v<T>) {
+            if constexpr (std::is_integral_v<T> || std::is_floating_point_v<T> || std::is_same_v<T, std::string>) {
                 std::cout << data[i] << " ";
-            } else if constexpr (std::is_same_v<T, Actor*> || std::is_same_v<T, Movie*>) {
-                data[i]->print();
             } else {
-                std::cout << std::string(data[i]) << " ";
+                if (auto* printableObj = dynamic_cast<Printable*>(data[i])) {
+                    printableObj->print();
+                } else {
+                    throw std::runtime_error("Error: Object is not Printable!");
+                }
             }
         }
         std::cout << "\n";

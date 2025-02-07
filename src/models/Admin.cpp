@@ -425,13 +425,20 @@ void Admin::updateActorOrMovie() {
     }
 }
 
+void Admin::reviewReports() {
+    std::cout << "=== Option 5: Review all Reports ===" << std::endl;
+    Application* application = Application::getInstance();
+
+    application->retrieveAllReports();
+}
+
 /*
  * Prints out our whole database of Movies and Actors
  * */
 void Admin::printAll() {
     Application* application = Application::getInstance();
     try {
-        std::cout << "=== Option 5: Printing database ===" << std::endl;
+        std::cout << "=== Option 6: Printing database ===" << std::endl;
 
         std::cout << "=== Actors ===" << std::endl;
         MyList<Actor*>* actors = application->getAllActors();

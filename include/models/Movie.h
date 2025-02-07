@@ -5,6 +5,7 @@
 #pragma once
 #include <iostream>
 
+#include "Printable.h"
 #include "Rateable.h"
 
 enum Genre {
@@ -17,7 +18,7 @@ enum Genre {
     NONE,
 };
 
-class Movie: public Rateable {
+class Movie: public Rateable, public Printable {
 private:
     int id;
     std::string title;
@@ -43,7 +44,7 @@ public:
     void setReleaseYear(int);
 
     // Movie Functions
-    void print();
+    void print() override;
 
     // Overload Comparison Operator
     bool operator<(const Movie& other) const;

@@ -5,10 +5,11 @@
 #pragma once
 #include <iostream>
 
+#include "Printable.h"
 #include "Rateable.h"
 
 
-class Actor: public Rateable {
+class Actor: public Rateable, public Printable {
 private:
     int id;
     std::string name;
@@ -28,7 +29,7 @@ public:
     void setBirthYear(int);
 
     // Actor Functions
-    void print();
+    void print() override;
 
     // Overload Comparison Operators
     bool operator<(const Actor& other) const;

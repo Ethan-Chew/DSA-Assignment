@@ -318,7 +318,7 @@ void User::fileReport() {
         // Get the Affected ID (either ID of Actor or ID of Movie)
         int affectedId;
         while (true) {
-            std::cout << "\nPlease enter the Affected ID: ";
+            std::cout << "\nPlease enter the ID of the affected Actor/Movie: ";
             if (std::cin >> affectedId) {
                 // Validate that the Actor/Movie with ID exists
                 if (reportTypeInt == 1) {

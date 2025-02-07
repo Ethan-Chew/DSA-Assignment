@@ -29,4 +29,5 @@ add_executable(
         include/models/Admin.h
         src/models/Admin.cpp
         include/models/Report.h
-        src/models/Report.cpp)
+        src/models/Report.cpp
+        include/models/Printable.h)
