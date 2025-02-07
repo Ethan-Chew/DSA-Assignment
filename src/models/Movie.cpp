@@ -5,12 +5,11 @@
 #include "models/Movie.h"
 
 // Constructor and Destructor
-Movie::Movie(int id, std::string title, int releaseYear, std::string plot, Genre genre) {
+Movie::Movie(int id, std::string title, int releaseYear, std::string plot) {
     this->id = id;
     this->title = title;
     this->releaseYear = releaseYear;
     this->plot = plot;
-    this->genre = genre;
 }
 
 Movie::~Movie() {}
@@ -28,10 +27,6 @@ std::string Movie::getPlot() {
     return this->plot;
 }
 
-Genre Movie::getGenre() {
-    return this->genre;
-}
-
 int Movie::getReleaseYear() const {
     return this->releaseYear;
 }
@@ -43,9 +38,6 @@ void Movie::setTitle(std::string title) {
 void Movie::setPlot(std::string plot) {
     this->plot = plot;
 }
-void Movie::setGenre(Genre genre) {
-    this->genre = genre;
-}
 
 void Movie::setReleaseYear(int releaseYear) {
     this->releaseYear = releaseYear;
@@ -53,7 +45,7 @@ void Movie::setReleaseYear(int releaseYear) {
 
 // Movie Functions
 void Movie::print() {
-    std::cout << "Movie ID: " << id << " | Title: " << title << " | Release Year: " << releaseYear << " | Plot: " << plot << " | Genre: " << genre << " | Rating: " << getRating() << "\n";
+    std::cout << "Movie ID: " << id << " | Title: " << title << " | Release Year: " << releaseYear << " | Plot: " << plot << " | Rating: " << getRating() << "\n";
 }
 
 // Overload Operator for Comparison

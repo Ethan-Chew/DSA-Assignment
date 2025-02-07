@@ -90,7 +90,6 @@ void Admin::addNewMovie() {
         std::string title;
         int releaseYear;
         std::string plot;
-        Genre genre = NONE;
 
         while (true) {
             std::cout << "Please enter movie title: ";
@@ -124,40 +123,8 @@ void Admin::addNewMovie() {
             } else { break; }
         }
 
-        // Display Genres
-        std::string genres[] = { "Action", "Science Fiction", "Horror", "Thriller", "Romance", "Fantasy" };
-        for (int i = 0; i < genres->length(); i++) {
-            std::cout << "[" << i+1 << "] " << genres[i] << std::endl;
-        }
-
-        int genreId;
-        while (true) {
-            std::cout << "\nSelect a Genre (from 1 to 6): ";
-            if (std::cin >> genreId && genreId >= 1 && genreId <= 6) { break; }
-
-            // Validate Genre
-            std::cout << "Invalid Genre ID! Genre ID has to be a number and within the range." << std::endl;
-            std::cin.clear(); // Clear the error flag
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
-        }
-        if (genreId == 1) {
-            genre = ACTION;
-        } else if (genreId == 2) {
-            genre = SCIFI;
-        } else if (genreId == 3) {
-            genre = HORROR;
-        } else if (genreId == 4) {
-            genre = THRILLER;
-        } else if (genreId == 5) {
-            genre = ROMANCE;
-        } else if (genreId == 6) {
-            genre = FANTASY;
-        } else {
-            genre = NONE;
-        }
-
         // Create new Movie Object with Unique Pointer for memory safety, then move into Dictionary
-        std::unique_ptr<Movie> newMovie = std::make_unique<Movie>(Movie(id, title, releaseYear, plot, genre));
+        std::unique_ptr<Movie> newMovie = std::make_unique<Movie>(Movie(id, title, releaseYear, plot));
         application->addMovie(std::move(newMovie));
 
         // Get data from Movies Dictionary as the pointer has been moved there
@@ -363,51 +330,6 @@ void Admin::updateActorOrMovie() {
                     }
                     break;
                 }
-            }
-
-            // Display Genres
-            std::string genres[] = { "Action", "Science Fiction", "Horror", "Thriller", "Romance", "Fantasy" };
-            for (int i = 0; i < genres->length(); i++) {
-                std::cout << "[" << i+1 << "] " << genres[i] << std::endl;
-            }
-
-            std::string genreId;
-            while (true) {
-                std::cout << "\nSelect a Genre (from 1 to 6) (';' to skip)";
-                std::cin >> genreId;
-
-                // Skip updating genre if user enters ";"
-                if (!genreId.empty() && genreId == ";") {
-                    break;
-                }
-
-                // Prevent crashes if input was not int
-                try {
-                    // Check genreId for validity
-                    if (std::stoi(genreId) >= 1 && std::stoi(genreId) <= 6) {
-                        switch (std::stoi(genreId)) {
-                            case 1:
-                                chosenMovie->setGenre(ACTION);
-                            case 2:
-                                chosenMovie->setGenre(SCIFI);
-                            case 3:
-                                chosenMovie->setGenre(HORROR);
-                            case 4:
-                                chosenMovie->setGenre(THRILLER);
-                            case 5:
-                                chosenMovie->setGenre(ROMANCE);
-                            case 6:
-                                chosenMovie->setGenre(FANTASY);
-                            default:
-                                chosenMovie->setGenre(NONE);
-                        }
-                    }
-                } catch (std::exception &e) {}
-
-                // Validate Genre
-                std::cout << "Invalid Genre ID! Genre ID has to be a number or ';' and within the range." << std::endl;
-                std::cin.clear(); // Clear the error flag
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
             }
 
             std::cout << "\nSuccessfully updated Movie information: " << std::endl;

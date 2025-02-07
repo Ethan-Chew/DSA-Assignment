@@ -66,7 +66,7 @@ void setupApplication() {
 
     // Create Movie Objects and add to Dictionary
     for (int i = 0; i < movieIds->get_length(); i++) {
-        std::unique_ptr<Movie> movie = std::make_unique<Movie>(movieIds->get(i), titles->get(i), years->get(i), plots->get(i), Genre::NONE);
+        std::unique_ptr<Movie> movie = std::make_unique<Movie>(movieIds->get(i), titles->get(i), years->get(i), plots->get(i));
         application->addMovie(std::move(movie));
     }
 
