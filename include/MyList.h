@@ -188,31 +188,21 @@ public:
             // Compares Actor classes by Age attribute
             case AGE:
                 comparator = [](const void* a, const void* b) {
-                    const auto* actorA = static_cast<const Actor*>(a);
-                    const auto* actorB = static_cast<const Actor*>(b);
-                    return actorA->getBirthYear() < actorB->getBirthYear();
-            };
+                    return reinterpret_cast<const Actor*>(a)->getBirthYear() < reinterpret_cast<const Actor*>(b)->getBirthYear();
+                };
             break;
 
             // Compares Movie classes by ReleaseYear attribute
             case RELEASE_YEAR:
                 comparator = [](const void* a, const void* b) {
-                    const auto* movieA = static_cast<const Movie*>(a);
-                    const auto* movieB = static_cast<const Movie*>(b);
-                    return movieA->getReleaseYear() < movieB->getReleaseYear();
-            };
+                    return reinterpret_cast<const Movie*>(a)->getReleaseYear() < reinterpret_cast<const Movie*>(b)->getReleaseYear();
+                };
             break;
 
             // Compares Movie/Actor classes by their rating
             case RATING:
                 comparator = [](const void* a, const void* b) {
-                    const auto* objA = static_cast<const Rateable*>(a);
-                    const auto* objB = static_cast<const Rateable*>(b);
-
-                    if (!objA || !objB) {
-                        throw std::invalid_argument("Comparison by Rating requires Rateable objects");
-                    }
-                    return objA->getRating() > objB->getRating();
+                    return reinterpret_cast<const Rateable*>(a)->getRating() > reinterpret_cast<const Rateable*>(b)->getRating();
                 };
             break;
         }
