@@ -149,30 +149,14 @@ void Admin::addActorToMovie() {
         // Display Menu
         std::cout << "=== Option 3: Add Actor to Movie ===" << std::endl;
 
-        int actorId;
-        while (true) {
-            std::cout << "Please enter Actor ID: ";
-            if (std::cin >> actorId) { break; }
+        Actor* actor = application->searchForActor(); // Get validated actor item
+        int actorId = actor->getId();
 
-            // Validate ActorID
-            std::cout << "Invalid Actor ID! Please enter a valid ID." << std::endl;
-            std::cin.clear(); // Clear the error flag
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
-        }
-
-        int movieId;
-        while (true) {
-            std::cout << "\nPlease enter Movie ID: ";
-            if (std::cin >> movieId) { break; }
-
-            // Validate MovieID
-            std::cout << "Invalid Movie ID! Please enter a valid ID." << std::endl;
-            std::cin.clear(); // Clear the error flag
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
-        }
+        Movie* movie = application->searchForMovie(); // Get validated movie item
+        int movieId = movie->getId();
 
         if (application->addActorToMovie(actorId, movieId)) {
-            std::cout << "Actor added successfully!" << std::endl;
+            std::cout << "Actor" << actor->getName() << " added to movie" << movie->getTitle() << "successfully!" << std::endl;
         }
         else {
             std::cout << "Please enter valid Actor and Movie IDs." << std::endl;
@@ -338,26 +322,36 @@ void Admin::updateActorOrMovie() {
         }
 
         // Retrieve the ID of either Actor or Movie
-        int choiceId;
-        while (true) {
-            std::cout << "Enter the " << (movieActorChoice == 1 ? "Actor ID: " : "Movie ID: ") << std::endl;
-            if (std::cin >> choiceId) {
-                if (movieActorChoice == 1) {
-                    // Selected Actor
-                    Actor* actor = application->getActor(choiceId);
-                    updateActor(actor);
-                } else {
-                    // Selected Movie
-                    Movie* movie = application->getMovie(choiceId);
-                    updateMovie(movie);
-                }
-                break;
-            }
+        //int choiceId;
+        // while (true) {
+        //     std::cout << "Enter the " << (movieActorChoice == 1 ? "Actor ID: " : "Movie ID: ") << std::endl;
+        //     if (std::cin >> choiceId) {
+        //         if (movieActorChoice == 1) {
+        //             // Selected Actor
+        //             Actor* actor = application->getActor(choiceId);
+        //             updateActor(actor);
+        //         } else {
+        //             // Selected Movie
+        //             Movie* movie = application->getMovie(choiceId);
+        //             updateMovie(movie);
+        //         }
+        //         break;
+        //     }
+        //
+        //     // Validate Release Year
+        //     std::cout << "Invalid Choice! Please enter either 1 or 2." << std::endl;
+        //     std::cin.clear(); // Clear the error flag
+        //     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        // }
 
-            // Validate Release Year
-            std::cout << "Invalid Choice! Please enter either 1 or 2." << std::endl;
-            std::cin.clear(); // Clear the error flag
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        if (movieActorChoice == 1) {
+            // Selected Actor
+            Actor* actor = application->searchForActor(); // Get validated actor item
+            updateActor(actor);
+        } else {
+            // Selected Movie
+            Movie* movie = application->searchForMovie(); // Get validated movie item
+            updateMovie(movie);
         }
     }
     // Error Handling for bad inputs

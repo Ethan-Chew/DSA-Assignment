@@ -5,9 +5,8 @@
 #ifndef DSA_AUTOCOMPLETIONENGINE_H
 #define DSA_AUTOCOMPLETIONENGINE_H
 
-#include "models/Application.h"
+#include <models/Application.h>
 #include "MyList.h"
-#include "PtrQueue.h"
 #include "AutoCompletionEngine.cpp"
 
 #endif //DSA_AUTOCOMPLETIONENGINE_H

@@ -14,6 +14,7 @@
 #include "SortedList.h"
 #include "MyList.h"
 #include "Report.h"
+#include "AutoCompletionEngine.h"
 
 // Singleton to store data of Actors and Movies
 class Application {
@@ -65,14 +66,14 @@ public:
     void addActor(std::unique_ptr<Actor> actor);
     bool removeActor(int);
     Actor* getActor(int);
-    Actor* getActorByName(std::string);
+    int getActorIdByName(std::string);
     MyList<Actor*>* getAllActors();
 
     // Add/Remove/Retrieve Movie Objects
     void addMovie(std::unique_ptr<Movie> movie);
     bool removeMovie(int);
     Movie* getMovie(int);
-    Movie* getMovieByName(std::string);
+    int getMovieIdByName(std::string);
     MyList<Movie*>* getAllMovies();
 
     // Relationships
@@ -87,4 +88,8 @@ public:
     // Get Movies acted by Actor ID
     MyList<Movie*>* getMovies(int);
     SortedList *getMovieActors(int id);
+
+    // Menu for search choice (name/id)
+    Actor* searchForActor();
+    Movie* searchForMovie();
 };

@@ -125,16 +125,7 @@ void User::displayActorMovies() {
     try {
         std::cout << "=== Option 3: Display all Movies an Actor starred in ===" << std::endl;
 
-        int actorId;
-        while (true) {
-            std::cout << "Please enter Actor ID: ";
-            if (std::cin >> actorId) { break; }
-
-            // Validate ActorID
-            std::cout << "Invalid Actor ID! Please enter a valid ID." << std::endl;
-            std::cin.clear(); // Clear the error flag
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
-        }
+        int actorId = application->searchForActor()->getId(); // Get Id from validated actor object
 
         // Get and sort Movies
         MyList<Movie*>* movies = application->getMovies(actorId);
@@ -161,16 +152,7 @@ void User::displayActorsInMovie() {
     try {
         std::cout << "=== Option 4: Display all the Actors in a Particular Movie ===" << std::endl;
 
-        int movieId;
-        while (true) {
-            std::cout << "\nPlease enter Movie ID: ";
-            if (std::cin >> movieId) { break; }
-
-            // Validate MovieID
-            std::cout << "Invalid Movie ID! Please enter a valid ID." << std::endl;
-            std::cin.clear(); // Clear the error flag
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
-        }
+        int movieId = application->searchForMovie()->getId(); // Get Id from validated movie object
 
         // Get and sort Actors
         MyList<Actor*>* actors = application->getActors(movieId);
@@ -198,9 +180,7 @@ void User::displayKnownActors() {
         // Display Starting Menu
         std::cout << "=== Option 5: Display list of all actors that a particular actor knows ===" << std::endl;
 
-        int actorId;
-        std::cout << "Actor ID: ";
-        std::cin >> actorId;
+        int actorId = application->searchForActor()->getId(); // Get Id from validated actor object
 
         SortedList* firstLevel = new SortedList(); // First Level Connections (directly worked with them in a Movie)
         SortedList* secondLevel = new SortedList(); // Second Level Connections (knowing someone through another person)
@@ -325,30 +305,38 @@ void User::fileReport() {
         }
 
         // Get the Affected ID (either ID of Actor or ID of Movie)
+        // int affectedId;
+        // while (true) {
+        //     std::cout << "Please enter the ID of the affected Actor/Movie: ";
+        //     if (std::cin >> affectedId) {
+        //         // Validate that the Actor/Movie with ID exists
+        //         if (reportTypeInt == 1) {
+        //             // Actor
+        //             Actor* actor = application->getActor(affectedId);
+        //             if (actor == nullptr) {
+        //                 std::cout << "No Actor with Actor ID (" << affectedId << ") found!" << std::endl;
+        //             } else { break; }
+        //         } else {
+        //             // Movie
+        //             Movie* movie = application->getMovie(affectedId);
+        //             if (movie == nullptr) {
+        //                 std::cout << "No Movie with Movie ID (" << affectedId << ") found!" << std::endl;
+        //             } else { break; }
+        //         }
+        //     } else {
+        //         // Validate Affected Id
+        //         std::cout << "Invalid Affected ID format! Ensure that Affected ID is an integer!" << std::endl;
+        //         std::cin.clear(); // Clear the error flag
+        //         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        //     }
+        // }
+
         int affectedId;
-        while (true) {
-            std::cout << "Please enter the ID of the affected Actor/Movie: ";
-            if (std::cin >> affectedId) {
-                // Validate that the Actor/Movie with ID exists
-                if (reportTypeInt == 1) {
-                    // Actor
-                    Actor* actor = application->getActor(affectedId);
-                    if (actor == nullptr) {
-                        std::cout << "No Actor with Actor ID (" << affectedId << ") found!" << std::endl;
-                    } else { break; }
-                } else {
-                    // Movie
-                    Movie* movie = application->getMovie(affectedId);
-                    if (movie == nullptr) {
-                        std::cout << "No Movie with Movie ID (" << affectedId << ") found!" << std::endl;
-                    } else { break; }
-                }
-            } else {
-                // Validate Affected Id
-                std::cout << "Invalid Affected ID format! Ensure that Affected ID is an integer!" << std::endl;
-                std::cin.clear(); // Clear the error flag
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
-            }
+        if (reportTypeInt == 1) {
+            affectedId = application->searchForActor()->getId(); // Get Id from validated actor object;
+        }
+        else {
+            affectedId = application->searchForMovie()->getId(); // Get Id from validated movie object
         }
 
         // File a Report
@@ -426,21 +414,21 @@ void User::displayAndSortMovies() {
         } else { break; }
     }
     if (optn == "y") {
-        int movieId;
-        Movie* movie;
-        while (true) {
-            std::cout << "\nMovie ID: ";
-            if (std::cin >> movieId) {
-                movie = application->getMovie(movieId);
-                if (movie == nullptr) {
-                    std::cout << "Invalid Movie ID! Please try again." << std::endl;
-                }
-                break;
-            }
+        Movie* movie = application->searchForMovie(); // Get validated movie item
 
-            // Validate Movie ID
-            std::cout << "Movie ID must be a number! Please enter a valid year." << std::endl;
-        }
+        // while (true) {
+        //     std::cout << "\nMovie ID: ";
+        //     if (std::cin >> movieId) {
+        //         movie = application->getMovie(movieId);
+        //         if (movie == nullptr) {
+        //             std::cout << "Invalid Movie ID! Please try again." << std::endl;
+        //         }
+        //         break;
+        //     }
+        //
+        //     // Validate Movie ID
+        //     std::cout << "Movie ID must be a number! Please enter a valid year." << std::endl;
+        // }
         handleRate(movie);
     }
 }
@@ -487,21 +475,21 @@ void User::displayAndSortActors() {
         } else { break; }
     }
     if (optn == "y") {
-        int actorId;
-        Actor* actor;
-        while (true) {
-            std::cout << "\nActor ID: ";
-            if (std::cin >> actorId) {
-                actor = application->getActor(actorId);
-                if (actor == nullptr) {
-                    std::cout << "Invalid Actor ID! Please try again." << std::endl;
-                }
-                break;
-            }
+        Actor* actor = application->searchForActor(); // Get validated actor item
 
-            // Validate Actor ID
-            std::cout << "Actor ID must be a number! Please enter a valid year." << std::endl;
-        }
+        // while (true) {
+        //     std::cout << "\nActor ID: ";
+        //     if (std::cin >> actorId) {
+        //         actor = application->getActor(actorId);
+        //         if (actor == nullptr) {
+        //             std::cout << "Invalid Actor ID! Please try again." << std::endl;
+        //         }
+        //         break;
+        //     }
+        //
+        //     // Validate Actor ID
+        //     std::cout << "Actor ID must be a number! Please enter a valid year." << std::endl;
+        // }
         handleRate(actor);
     }
 }
@@ -510,33 +498,32 @@ void User::findDistanceBetweenActors() {
     Application* application = Application::getInstance();
     std::cout << "=== Option 9 (Advanced): Find Distance Between Two Actors ===" << std::endl;
 
-    Actor* actor1 = nullptr;
-    Actor* actor2 = nullptr;
-    int actor1Id, actor2Id;
+    int actor1Id = application->searchForActor()->getId(); // Get validated actor item
+    int actor2Id = application->searchForActor()->getId(); // Get validated actor item
 
     // Allow input and Validate that actor exists
-    while (true) {
-        std::cout << "\nActor 1 ID: ";
-        if (std::cin >> actor1Id) {
-            actor1 = application->getActor(actor1Id);
-            if (actor1 == nullptr) {
-                std::cout << "Actor with ID: " << actor1Id << " does not exist. Please try again." << std::endl;
-            } else { break; }
-        } else {
-            std::cout << "Invalid Actor ID! Please try again." << std::endl;
-        }
-    }
-    while (true) {
-        std::cout << "\nActor 2 ID: ";
-        if (std::cin >> actor2Id) {
-            actor2 = application->getActor(actor2Id);
-            if (actor2 == nullptr) {
-                std::cout << "Actor with ID: " << actor1Id << " does not exist. Please try again." << std::endl;
-            } else { break; }
-        } else {
-            std::cout << "Invalid Actor ID! Please try again." << std::endl;
-        }
-    }
+    // while (true) {
+    //     std::cout << "\nActor 1 ID: ";
+    //     if (std::cin >> actor1Id) {
+    //         actor1 = application->getActor(actor1Id);
+    //         if (actor1 == nullptr) {
+    //             std::cout << "Actor with ID: " << actor1Id << " does not exist. Please try again." << std::endl;
+    //         } else { break; }
+    //     } else {
+    //         std::cout << "Invalid Actor ID! Please try again." << std::endl;
+    //     }
+    // }
+    // while (true) {
+    //     std::cout << "\nActor 2 ID: ";
+    //     if (std::cin >> actor2Id) {
+    //         actor2 = application->getActor(actor2Id);
+    //         if (actor2 == nullptr) {
+    //             std::cout << "Actor with ID: " << actor1Id << " does not exist. Please try again." << std::endl;
+    //         } else { break; }
+    //     } else {
+    //         std::cout << "Invalid Actor ID! Please try again." << std::endl;
+    //     }
+    // }
 
     // Run BFS and find the distance between the two Actors
     if (actor1Id == actor2Id) {

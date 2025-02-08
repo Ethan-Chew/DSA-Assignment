@@ -2,10 +2,8 @@
 #include <limits>
 #include <utility>
 #include "MyList.h"
-#include "models/Application.h"
-#include "PtrQueue.h"
-
 #include "AutoCompletionEngine.h"
+#include <models/Application.h>
 
 // Used to initialise autocomplete for either actors or movies
 enum StringType {
@@ -72,11 +70,11 @@ public:
 
         // If no suggestions are found, return the original input
         if (matches.is_empty()) {
-            return userInput;
+            return nullptr;
         }
 
         // Display matching suggestions to the user
-        std::cout << "\nPossible matches:\n";
+        std::cout << "\nFound matches:\n";
         for (size_t i = 0; i < matches.get_length(); ++i) {
             std::cout << i + 1 << ". " << matches[i] << '\n';
         }
@@ -91,6 +89,6 @@ public:
         if (choice > 0 && static_cast<size_t>(choice) <= matches.get_length()) {
             return matches[choice - 1];
         }
-        return userInput;
+        return nullptr;
     }
 };

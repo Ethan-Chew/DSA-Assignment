@@ -260,21 +260,8 @@ bool displayMenu(Account* account) {
                 }
 
                 case 10: {
-                    AutoCompletionEngine AutoComplete = AutoCompletionEngine(MOVIE);
-                    std::string prompt;
-                    std::string response;
-
-                    std::cout << "Enter Prompt: ";
-                    std::cin >> prompt;
-                    std::string res = AutoComplete.getUserInput(prompt);
-
-                    auto movie = application->getMovieByName(res);
-                    if (movie == nullptr) {
-                        std::cout << "No Movie with that name was found!" << std::endl;
-                    } else {
-                        movie->print();
-                    }
-                    std::cout << std::endl;
+                    std::cout << application->searchForActorMovie(1) << std::endl;
+                    std::cout << application->searchForActorMovie(2) << std::endl;
                 }
             }
         }

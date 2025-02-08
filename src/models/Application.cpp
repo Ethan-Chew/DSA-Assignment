@@ -6,6 +6,7 @@
 #include "MyList.h"
 #include "models/Admin.h"
 #include "models/User.h"
+#include "AutoCompletionEngine.h"
 
 Application* Application::uniqueInstance = nullptr;
 Application::Application() {
@@ -115,18 +116,18 @@ Movie* Application::getMovie(const int id) {
 }
 
 // Getters for Actor and Movie by name
-Actor* Application::getActorByName(const std::string name) {
+int Application::getActorIdByName(const std::string name) {
     if (actorNames.safe_get(name) != nullptr) {
-        return actors[actorNames[name]].get();
+        return actorNames[name];
     }
-    return nullptr;
+    return 0;
 }
 
-Movie* Application::getMovieByName(const std::string name) {
+int Application::getMovieIdByName(const std::string name) {
     if (movieNames.safe_get(name) != nullptr) {
-        return movies[movieNames[name]].get();
+        return movieNames[name];
     }
-    return nullptr;
+    return 0;
 }
 
 MyList<Actor*>* Application::getAllActors() {
@@ -210,4 +211,138 @@ SortedList* Application::getActorMovies(int id) {
 
 SortedList* Application::getMovieActors(int id) {
     return moviesToActors[id].get();
+}
+
+Actor* Application::searchForActor() {
+    int inputChoice;
+    int actorId;
+
+    // Input validation while true loops
+    while (true) {
+        // Validate search-by input (1/2)
+        while (true) {
+            std::cout << "=== Select Options ===\n"
+                     "1. Select by Id\n"
+                     "2. Select by name\n"
+                     "Please choose an option: ";
+            if (std::cin >> inputChoice) {
+                if (inputChoice == 1 || inputChoice == 2) {
+                    break;
+                }
+            }
+
+            // Validate Input
+            std::cout << "Invalid choice! Please enter either 1 (Id) or 2 (name)." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        }
+
+        // If search-by-Id was selected
+        if (inputChoice == 1) {
+            // Validate Id
+            while (true) {
+                std::cout << "Please enter Actor ID: ";
+                if (std::cin >> actorId) { break; }
+
+                // Validate ActorID
+                std::cout << "Invalid Actor ID! Please enter a valid ID." << std::endl;
+                std::cin.clear(); // Clear the error flag
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+            }
+        }
+        // If search-by-name was selected
+        else {
+            AutoCompletionEngine AutoComplete = AutoCompletionEngine(ACTOR);
+            std::string name;
+
+            // Validate name
+            while (true) {
+                std::cout << "Please enter actor name: ";
+                std::cin.ignore();
+                getline(std::cin, name);
+
+                std::string actorName = AutoComplete.getUserInput(name);
+
+                actorId = getActorIdByName(actorName);
+                if (actorId != 0) {
+                    break;
+                }
+                std::cout << "No Actor with that name was found!" << std::endl;
+            }
+        }
+
+        // Validate valid Actor object (Id/Name exists in data) before passing actor to caller
+        Actor* actor = getActor(actorId);
+        if (actor != nullptr) {
+            return actor; // All checks pass
+        }
+        std::cout << "Actor not found, please enter a valid Id or Name." << std::endl;
+    }
+}
+
+Movie* Application::searchForMovie() {
+    int inputChoice;
+    int movieId;
+
+    // Input validation while true loops
+    while (true) {
+        // Validate search-by input options are either 1 or 2
+        while (true) {
+            std::cout << "=== Select Options ===\n"
+                     "1. Select by Id\n"
+                     "2. Select by name\n"
+                     "Please choose an option: ";
+            if (std::cin >> inputChoice) {
+                if (inputChoice == 1 || inputChoice == 2) {
+                    break;
+                }
+            }
+
+            // Validate Input
+            std::cout << "Invalid choice! Please enter either 1 (Id) or 2 (name)." << std::endl;
+            std::cin.clear(); // Clear the error flag
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+        }
+
+        // If search-by-Id was selected
+        if (inputChoice == 1) {
+            // Validate Id
+            while (true) {
+                std::cout << "Please enter Movie ID: ";
+                if (std::cin >> movieId) { break; }
+
+                // Validate MovieId
+                std::cout << "Invalid Movie ID! Please enter a valid ID." << std::endl;
+                std::cin.clear(); // Clear the error flag
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
+            }
+        }
+        // If search-by-name was selected
+        else {
+            AutoCompletionEngine AutoComplete = AutoCompletionEngine(MOVIE);
+            std::string title;
+
+            // Validate name
+            while (true) {
+                std::cout << "Please enter movie name: ";
+                std::cin.ignore();
+                getline(std::cin, title);
+
+                std::string movieName = AutoComplete.getUserInput(title);
+
+                movieId = getMovieIdByName(movieName);
+                if (movieId != 0) {
+                    break;
+                }
+                std::cout << "No movie with that name was found!" << std::endl;
+            }
+        }
+
+        // Validate valid Movie object (Id/Name exists in data) before passing movie to caller
+        Movie* movie = getMovie(movieId);
+        if (movie != nullptr) {
+            return movie; // All checks pass
+        }
+        std::cout << "Movie not found, please enter a valid Id or Name." << std::endl;
+    }
 }

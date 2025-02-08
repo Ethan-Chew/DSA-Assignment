@@ -30,4 +30,6 @@ add_executable(
         src/models/Admin.cpp
         include/models/Report.h
         src/models/Report.cpp
-        include/models/Printable.h)
+        include/models/Printable.h
+        src/AutoCompletionEngine.cpp
+        include/AutoCompletionEngine.h)
