@@ -260,8 +260,9 @@ bool displayMenu(Account* account) {
                 }
 
                 case 10: {
-                    std::cout << application->searchForActorMovie(1) << std::endl;
-                    std::cout << application->searchForActorMovie(2) << std::endl;
+
+                    application->searchForActor()->print();
+                    application->searchForMovie()->print();
                 }
             }
         }

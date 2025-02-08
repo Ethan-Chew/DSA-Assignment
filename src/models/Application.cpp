@@ -7,6 +7,7 @@
 #include "models/Admin.h"
 #include "models/User.h"
 #include "AutoCompletionEngine.h"
+#include <limits>
 
 Application* Application::uniqueInstance = nullptr;
 Application::Application() {
