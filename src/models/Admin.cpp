@@ -321,29 +321,6 @@ void Admin::updateActorOrMovie() {
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
         }
 
-        // Retrieve the ID of either Actor or Movie
-        //int choiceId;
-        // while (true) {
-        //     std::cout << "Enter the " << (movieActorChoice == 1 ? "Actor ID: " : "Movie ID: ") << std::endl;
-        //     if (std::cin >> choiceId) {
-        //         if (movieActorChoice == 1) {
-        //             // Selected Actor
-        //             Actor* actor = application->getActor(choiceId);
-        //             updateActor(actor);
-        //         } else {
-        //             // Selected Movie
-        //             Movie* movie = application->getMovie(choiceId);
-        //             updateMovie(movie);
-        //         }
-        //         break;
-        //     }
-        //
-        //     // Validate Release Year
-        //     std::cout << "Invalid Choice! Please enter either 1 or 2." << std::endl;
-        //     std::cin.clear(); // Clear the error flag
-        //     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
-        // }
-
         if (movieActorChoice == 1) {
             // Selected Actor
             Actor* actor = application->searchForActor(); // Get validated actor item
@@ -410,39 +387,4 @@ void Admin::reviewReports() {
     }
 
     report->setIsResolved(true);
-}
-
-/*
- * Prints out our whole database of Movies and Actors
- * */
-void Admin::printAll() {
-    Application* application = Application::getInstance();
-    try {
-        std::cout << "=== Option 6: Printing database ===" << std::endl;
-
-        std::cout << "=== Actors ===" << std::endl;
-        MyList<Actor*>* actors = application->getAllActors();
-        actors->print();
-
-        std::cout << "=== Movies ===" << std::endl;
-        MyList<Movie*>* movies = application->getAllMovies();
-        movies->print();
-
-        std::cout << "=== Movie Cast of each movie ===" << std::endl;
-        for (int i = 0; i < movies->get_length(); i++) {
-            int movieId = movies->get(i)->getId();
-            movies->get(i)->print();
-            application->getActors(movieId)->print();
-        }
-
-        std::cout << "=== Movies each actor was casted in ===" << std::endl;
-        for (int i = 0; i < actors->get_length(); i++) {
-            int actorId = actors->get(i)->getId();
-            actors->get(i)->print();
-            application->getMovies(actorId)->print();
-        }
-    }
-    catch (std::exception &e) {
-        std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
-    }
 }

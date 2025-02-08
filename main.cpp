@@ -143,7 +143,6 @@ bool displayMenu(Account* account) {
                 "3. Add an actor to a movie\n"
                 "4. Update actor/movie details.\n"
                 "5. Review all Reports\n"
-                "6. Display entire database\n"
                 "0. Log Out\n"
                 "Enter Choice: ";
             std::cin >> choice;
@@ -178,11 +177,6 @@ bool displayMenu(Account* account) {
                 case 5:
                     adminAccount->reviewReports();
                     break;
-
-                case 6: {
-                    adminAccount->printAll();
-                    break;
-                }
             }
         }
         // User Commands

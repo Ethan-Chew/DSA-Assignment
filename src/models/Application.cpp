@@ -259,8 +259,13 @@ Actor* Application::searchForActor() {
             // Validate name
             while (true) {
                 std::cout << "Please enter actor name: ";
-                std::cin.ignore();
-                std::getline(std::cin, name);
+
+                // Only clear input buffer if previous input was not from getline()
+                if (std::cin.peek() == '\n') {
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                }
+
+                std::getline(std::cin, name);  // Read full line
 
                 std::string actorName = AutoComplete.getUserInput(name);
 
@@ -272,7 +277,7 @@ Actor* Application::searchForActor() {
             }
         }
 
-        // Validate valid Actor object (Id/Name exists in data) before passing actor to caller
+        // Validate valid Actor object (ID/Name exists in data) before passing actor to caller
         Actor* actor = getActor(actorId);
         if (actor != nullptr) {
             return actor; // All checks pass
@@ -290,8 +295,8 @@ Movie* Application::searchForMovie() {
         // Validate search-by input options are either 1 or 2
         while (true) {
             std::cout << "=== Select Options ===\n"
-                     "1. Select by Id\n"
-                     "2. Select by name\n"
+                     "1. Select by ID\n"
+                     "2. Select by Title\n"
                      "Please choose an option: ";
             if (std::cin >> inputChoice) {
                 if (inputChoice == 1 || inputChoice == 2) {
@@ -323,19 +328,23 @@ Movie* Application::searchForMovie() {
             AutoCompletionEngine AutoComplete = AutoCompletionEngine(MOVIE);
             std::string title;
 
-            // Validate name
+            // Validate title
             while (true) {
-                std::cout << "Please enter movie name: ";
-                std::cin.ignore();
-                getline(std::cin, title);
+                std::cout << "Please enter the Movie Title: ";
 
+                // Only clear input buffer if previous input was not from getline()
+                if (std::cin.peek() == '\n') {
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                }
+
+                std::getline(std::cin, title);  // Read full line
                 std::string movieName = AutoComplete.getUserInput(title);
 
                 movieId = getMovieIdByName(movieName);
                 if (movieId != 0) {
                     break;
                 }
-                std::cout << "No movie with that name was found!" << std::endl;
+                std::cout << "No Movie with that name was found!" << std::endl;
             }
         }
 

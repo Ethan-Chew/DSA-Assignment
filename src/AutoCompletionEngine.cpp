@@ -30,15 +30,15 @@ AutoCompletionEngine::AutoCompletionEngine(StringType type) {
     Application *application = Application::getInstance();
     switch (type) {
         case MOVIE: {
-            auto movies = std::move(*application->getAllMovies());
-            for (const Movie *movie : movies) {
+            MyList<Movie*>* allMovies = application->getAllMovies();
+            for (const Movie *movie : *allMovies) {
                 suggestionList.append(movie->getTitle());
             }
             break;
         }
         case ACTOR: {
-            auto actors = std::move(*application->getAllActors());
-            for (const Actor *actor : actors) {
+            MyList<Actor*>* allActors = application->getAllActors();
+            for (const Actor *actor : *allActors) {
                 suggestionList.append(actor->getName());
             }
             break;
