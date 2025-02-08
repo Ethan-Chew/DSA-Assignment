@@ -60,18 +60,18 @@ void User::displayActors() {
         const auto now = std::chrono::system_clock::now();
         const int currentYear = stoi(std::format("{:%Y}", now));
 
-        // Retrieve all actors and parse
+        // Retrieve all actors filter it by their age
         MyList<Actor*> *actors = application->getAllActors();
-        if (actors == nullptr || actors->get_length() == 0) {
-            std::cout<< "No actors found" << std::endl;
-            return;
-        }
-
-        // Filter the list of Actors by their age
         auto *filtered = new MyList<Actor*>();
         for (const Actor* actor : *actors) {
             int age = currentYear - actor->getBirthYear();
             if (age >= startAge && age <= endAge) filtered->append(const_cast<Actor *>(actor));
+        }
+
+        if (filtered->get_length() == 0) {
+            std::cout << "No actors found" << std::endl;
+            std::cout << std::endl;
+            return;
         }
 
         // Sort and Print

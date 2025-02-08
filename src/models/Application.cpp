@@ -222,9 +222,9 @@ Actor* Application::searchForActor() {
     while (true) {
         // Validate search-by input (1/2)
         while (true) {
-            std::cout << "=== Select Options ===\n"
-                     "1. Select by Id\n"
-                     "2. Select by name\n"
+            std::cout << "=== Actor/Movie Search Options ===\n"
+                     "1. Search by ID\n"
+                     "2. Select by Name\n"
                      "Please choose an option: ";
             if (std::cin >> inputChoice) {
                 if (inputChoice == 1 || inputChoice == 2) {
@@ -260,7 +260,7 @@ Actor* Application::searchForActor() {
             while (true) {
                 std::cout << "Please enter actor name: ";
                 std::cin.ignore();
-                getline(std::cin, name);
+                std::getline(std::cin, name);
 
                 std::string actorName = AutoComplete.getUserInput(name);
 

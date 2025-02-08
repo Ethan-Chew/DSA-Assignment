@@ -202,7 +202,7 @@ public:
             // Compares Movie/Actor classes by their rating
             case RATING:
                 comparator = [](const void* a, const void* b) {
-                    return reinterpret_cast<const Rateable*>(a)->getRating() > reinterpret_cast<const Rateable*>(b)->getRating();
+                    return reinterpret_cast<const Rateable*>(a)->getRating() < reinterpret_cast<const Rateable*>(b)->getRating();
                 };
             break;
         }

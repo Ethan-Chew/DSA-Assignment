@@ -199,7 +199,6 @@ bool displayMenu(Account* account) {
                 "7. Display, Sort, and Rate a list of all Actors\n"
                 "8. File an Error Report on Actor or Movie\n"
                 "9. (Adv). Find Distance Between Two Actors\n"
-                "10. (Adv). Test autocomplete\n"
                 "0. Log Out\n"
                 "Enter Choice: ";
             std::cin >> choice;
@@ -251,18 +250,13 @@ bool displayMenu(Account* account) {
 
                 case 8: {
                     userAccount->fileReport();
+                    break;
                 }
 
                 // Find Distance Between Two Actors
                 case 9: {
                     userAccount->findDistanceBetweenActors();
                     break;
-                }
-
-                case 10: {
-
-                    application->searchForActor()->print();
-                    application->searchForMovie()->print();
                 }
             }
         }
