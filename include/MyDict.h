@@ -11,212 +11,213 @@
 
 #include "MyList.h"
 
+// Template to check if a type T is "string-like"
 template<typename T>
 struct is_string_like {
     static constexpr bool value =
-            std::is_convertible_v<T, std::string_view> || // check if T can be converted into a string view
-            (std::is_pointer_v<T> && // if its a pointer
-            std::is_same_v<std::remove_cv_t<std::remove_pointer_t<T>>, char>); 
-            // remove the pointer from the type, and remove the const/volatile from the type
+            std::is_convertible_v<T, std::string_view> || // Check if T can be converted to std::string_view
+            (std::is_pointer_v<T> && // Check if T is a pointer
+            std::is_same_v<std::remove_cv_t<std::remove_pointer_t<T>>, char>); // Check if the underlying type is char
 };
 
+// Helper variable template to simplify checking if a type is string-like
 template<typename T>
-inline constexpr bool is_string_like_v = is_string_like<T>::value; // check the value of is_string_like
+inline constexpr bool is_string_like_v = is_string_like<T>::value;
 
-
-// hash map that uses an internal linked list for colision resolution
-// in laymans terms: each mapping of the hashmap resolves to a bucket/linked list
-// the linked list stores k/v where k is the full key, and v is the unique pointer/object 
-// this ensures that collisions will not happen, as the program will crawl the bucket to resolve a full match 
-// for the provided key
+// Hash map implementation using separate chaining for collision resolution
 template<typename K, typename V>
 class MyDict
 {
 private:
+    // Node structure for the linked list in each bucket
     struct Node
     {
-        K key;
-        V val;
-        std::unique_ptr<Node> next;
+        K key; // The key of the key-value pair
+        V val; // The value of the key-value pair
+        std::unique_ptr<Node> next; // Pointer to the next node in the linked list
         Node(const K& k, V v) : key(k), val(std::move(v)), next(nullptr) {};
     };
 
-    // INIT defines how many "buckets" we start off with
-    static const int INIT = 128; 
+    // Initial number of buckets in the hash map
+    static const int INIT = 128;
 
-    // load factor is when it resizes, 0.5 means that the list will resize when 
-    // it's half full
+    // Load factor threshold for resizing the hash map
     static constexpr double LD_FAC = 0.5;
 
+    // List of buckets, where each bucket is a linked list of nodes
     MyList<std::unique_ptr<Node>> buckets;
-    int count;
+    int count; // Number of elements in the hash map
 
-    // hash method
+    // Hash function to compute the hash value for a given key
     uint64_t get_hash(const K &key) {
         if constexpr (std::is_integral_v<K>) {
-            // for integers we can just use the int as a key
+            // For integer keys, use the key itself as the hash value
             return static_cast<size_t>(key);
         }
         else if constexpr (is_string_like_v<K>) {
-            // textbook fnv-1a algorithm for string hashing
-            uint64_t hash = 0xcbf29ce484222325ULL;
-            std::string_view sv = key;
+            // Use the FNV-1a hash algorithm for string-like keys
+            uint64_t hash = 0xcbf29ce484222325ULL; // FNV offset basis
+            std::string_view sv = key; // Convert key to string_view for hashing
             for (char c : sv) {
-                hash ^= static_cast<unsigned char>(c);
-                hash *= 0x100000001b3ULL;
+                hash ^= static_cast<unsigned char>(c); // XOR with the current character
+                hash *= 0x100000001b3ULL; // Multiply by the FNV prime
             }
             return hash;
         }
         else
         {
+            // Throw an exception for unsupported key types
             throw std::invalid_argument("key type is not supported.");
         }
     }
 
-    // finds bucket index using the hash value, fast modulo bithack
+    // Compute the bucket index from the hash value using a fast modulo operation
     size_t get_index(uint64_t hash, size_t size) {
-        return hash & (size - 1);
+        return hash & (size - 1); // Equivalent to hash % size, but faster
     }
 
-    // gets the bucket index that the key maps to
+    // Compute the bucket index for a given key
     size_t hash(const K &key) {
         return get_index(get_hash(key), buckets.get_length());
     }
 
-    // doubles the size of the hashmap and rehashes all existing entries
+    // Resize the hash map by doubling the number of buckets and rehashing all elements
     void rehash()
     {
         MyList<std::unique_ptr<Node>> new_buckets;
         int new_size = buckets.get_length() * 2;
 
+        // Initialize the new buckets with null pointers
         for (int i = 0; i < new_size; i++)
         {
             new_buckets.append(nullptr);
         }
 
+        // Rehash all existing elements into the new buckets
         for (int i = 0; i < buckets.get_length(); i++)
         {
             auto& bucket = buckets.get(i);
             while (bucket)
             {
-                auto next = std::move(bucket->next);
-                size_t new_idx = get_index(get_hash(bucket->key), new_size);
-                bucket->next = std::move(new_buckets.get(new_idx));
-                new_buckets.replace(new_idx, std::move(bucket));
-                bucket = std::move(next);
+                auto next = std::move(bucket->next); // Save the next node
+                size_t new_idx = get_index(get_hash(bucket->key), new_size); // Compute new bucket index
+                bucket->next = std::move(new_buckets.get(new_idx)); // Move the node to the new bucket
+                new_buckets.replace(new_idx, std::move(bucket)); // Replace the bucket with the new node
+                bucket = std::move(next); // Move to the next node in the old bucket
             }
         }
-        buckets = std::move(new_buckets);
+        buckets = std::move(new_buckets); // Replace the old buckets with the new ones
     }
 
 public:
+    // Constructor initializes the hash map with INIT buckets
     MyDict() : count(0) {
-        // init buckets as per the init defined
         for (int i = 0; i < INIT; i++) {
             buckets.append(nullptr);
         }
     }
 
-    // adds a KV pair to dict by resolving the bucket it should be in
-    // and prepends it to the linked list, otherwise updates the existing value
+    // Add a key-value pair to the hash map
     void add(const K& key, V val) {
         if (static_cast<double>(count + 1) / buckets.get_length() > LD_FAC) {
-            rehash();
+            rehash(); // Resize if the load factor is exceeded
         }
 
-        size_t idx = hash(key);
-        auto& current = buckets.get(idx);
-        Node* curr_ptr = current.get();
+        size_t idx = hash(key); // Compute the bucket index
+        auto& current = buckets.get(idx); // Get the bucket
+        Node* curr_ptr = current.get(); // Get the head of the linked list
 
+        // Traverse the linked list to check if the key already exists
         while (curr_ptr) {
             if (curr_ptr->key == key) {
-                curr_ptr->val = std::move(val);
+                curr_ptr->val = std::move(val); // Update the value if the key exists
                 return;
             }
             curr_ptr = curr_ptr->next.get();
         }
 
+        // Insert the new key-value pair at the head of the linked list
         auto new_node = std::make_unique<Node>(key, std::move(val));
         new_node->next = std::move(current);
         current = std::move(new_node);
-        count++;
+        count++; // Increment the element count
     }
 
-    // allows operators T val = dict[K] and dict[K] = val 
-    // if key exists, it returns a ref to the existing value
-    // otherwise, it creates a new node, and returns a ref to the 
-    // newly inserted value
+    // Overloaded subscript operator for accessing and modifying values
     V& operator[](const K& key) {
-        size_t idx = hash(key);
-        auto& current = buckets.get(idx);
-        Node* curr_ptr = current.get();
+        size_t idx = hash(key); // Compute the bucket index
+        auto& current = buckets.get(idx); // Get the bucket
+        Node* curr_ptr = current.get(); // Get the head of the linked list
 
+        // Traverse the linked list to check if the key exists
         while (curr_ptr) {
             if (curr_ptr->key == key) {
-                // return val ref if it exists
-                return curr_ptr->val;
+                return curr_ptr->val; // Return the value if the key exists
             }
             curr_ptr = curr_ptr->next.get();
         }
 
-        // expand if load factor is reached
+        // Resize if the load factor is exceeded
         if (static_cast<double>(count + 1) / buckets.get_length() > LD_FAC) {
             rehash();
-            idx = hash(key);
+            idx = hash(key); // Recompute the bucket index after resizing
         }
 
+        // Insert a new key-value pair at the head of the linked list
         auto new_node = std::make_unique<Node>(key, V{});
-        V& ref = new_node->val;
-        new_node->next = std::move(buckets.get(idx));
-        buckets.replace(idx, std::move(new_node));
-        count++;
-        // return ref to newly created val
-        return ref;
+        V& ref = new_node->val; // Get a reference to the new value
+        new_node->next = std::move(buckets.get(idx)); // Move the current head to the next node
+        buckets.replace(idx, std::move(new_node)); // Replace the bucket with the new node
+        count++; // Increment the element count
+        return ref; // Return the reference to the new value
     }
 
-    // Used when key may not exist to prevent memory error
+    // Safely get a pointer to the value associated with a key
     V* safe_get(const K& key) {
-        size_t idx = hash(key);
-        auto& current = buckets.get(idx);
-        Node* curr_ptr = current.get();
+        size_t idx = hash(key); // Compute the bucket index
+        auto& current = buckets.get(idx); // Get the bucket
+        Node* curr_ptr = current.get(); // Get the head of the linked list
 
+        // Traverse the linked list to find the key
         while (curr_ptr) {
             if (curr_ptr->key == key) {
-                return &curr_ptr->val;
+                return &curr_ptr->val; // Return a pointer to the value if the key exists
             }
             curr_ptr = curr_ptr->next.get();
         }
-        return nullptr;
+        return nullptr; // Return nullptr if the key does not exist
     }
 
-    // finds the key and removes if it exists
+    // Remove a key-value pair from the hash map
     bool remove(const K& key) {
-        size_t idx = hash(key);
-        auto& bucket = buckets.get(idx);
+        size_t idx = hash(key); // Compute the bucket index
+        auto& bucket = buckets.get(idx); // Get the bucket
 
         if (!bucket) {
-            return false;
+            return false; // Return false if the bucket is empty
         }
 
+        // Check if the key is in the head of the linked list
         if (bucket->key == key) {
-            bucket = std::move(bucket->next);
-            count--;
+            bucket = std::move(bucket->next); // Remove the head node
+            count--; // Decrement the element count
             return true;
         }
 
+        // Traverse the linked list to find the key
         Node* current = bucket.get();
         while (current->next) {
             if (current->next->key == key) {
-                current->next = std::move(current->next->next);
-                count--;
+                current->next = std::move(current->next->next); // Remove the node
+                count--; // Decrement the element count
                 return true;
             }
             current = current->next.get();
         }
-        return false;
+        return false; // Return false if the key was not found
     }
 
-    // displays a nicely formatted version of the map content
+    // Display the contents of the hash map in a formatted manner
     void display() const {
         if (is_empty()) {
             std::cout << "{ }" <<"\n";
@@ -226,10 +227,12 @@ public:
         std::cout << "{" << "\n";
         bool first_item = true;
 
+        // Iterate through all buckets
         for (int i = 0; i < buckets.get_length(); i++) {
-            const auto& current = buckets.get(i);
-            Node* curr_ptr = current.get();
+            const auto& current = buckets.get(i); // Get the bucket
+            Node* curr_ptr = current.get(); // Get the head of the linked list
 
+            // Traverse the linked list and print each key-value pair
             while (curr_ptr) {
                 if (!first_item) {
                     std::cout << "," << "\n";
@@ -242,16 +245,17 @@ public:
         std::cout << "\n" << "}" << "\n";
     }
 
-    // basically returns all the keys of the hashmap in a container provided
-    // given container provides an append method, otherwise behaviour is undefined
+    // Return all keys in the hash map as a container
     template <typename Container>
     Container *keys() const {
         Container container = new Container();
 
+        // Iterate through all buckets
         for (int i = 0; i < buckets.get_length(); i++) {
-            const std::unique_ptr<Node> &cur = buckets.get(i);
-            Node *cur_ptr = cur.get();
+            const std::unique_ptr<Node> &cur = buckets.get(i); // Get the bucket
+            Node *cur_ptr = cur.get(); // Get the head of the linked list
 
+            // Traverse the linked list and append each key to the container
             while (cur_ptr != nullptr) {
                 container.append(cur_ptr->key.get());
                 cur_ptr = cur_ptr->next.get();
@@ -261,15 +265,17 @@ public:
         return container;
     }
 
-    // same as above, but returns values
+    // Return all values in the hash map as a container
     template <typename Container>
     Container *values() const {
         Container container = new Container();
 
+        // Iterate through all buckets
         for (int i = 0; i < buckets.get_length(); i++) {
-            const std::unique_ptr<Node> &cur = buckets.get(i);
-            Node *cur_ptr = cur.get();
+            const std::unique_ptr<Node> &cur = buckets.get(i); // Get the bucket
+            Node *cur_ptr = cur.get(); // Get the head of the linked list
 
+            // Traverse the linked list and append each value to the container
             while (cur_ptr != nullptr) {
                 container.append(cur_ptr->val.get());
                 cur_ptr = cur_ptr->next.get();
@@ -279,20 +285,17 @@ public:
         return container;
     }
 
-    // same as above, but returns in a MyList instance instead.
+    // Return all values in the hash map as a MyList of raw pointers
     auto *values() const {
-        // MyList<T> where T is a dummy value of type V without instantiation, dereferences to get raw value type
-        // then removes any references from the type
-        // * for pointer type
-        // basically returns a list of raw pointers (we can't be giving away unique ptr ownership, the table must own it)
+        // Create a MyList of raw pointers to the values
         auto* vals = new MyList<std::remove_reference_t<decltype(*std::declval<V>())>*>();
 
-        // Iterate through every element in the bucket
+        // Iterate through all buckets
         for (int i = 0; i < buckets.get_length(); i++) {
-            const auto& current = buckets.get(i); // Returns the unique_ptr<Node>
-            Node* curr_ptr = current.get();
+            const auto& current = buckets.get(i); // Get the bucket
+            Node* curr_ptr = current.get(); // Get the head of the linked list
 
-            // Iterate through nodes with the same ID
+            // Traverse the linked list and append each value to the list
             while (curr_ptr != nullptr) {
                 vals->append(curr_ptr->val.get());
                 curr_ptr = curr_ptr->next.get();
@@ -302,10 +305,12 @@ public:
         return vals;
     }
 
+    // Check if the hash map is empty
     bool is_empty() const {
         return count == 0;
     }
 
+    // Get the number of elements in the hash map
     size_t get_size() const {
         return count;
     }

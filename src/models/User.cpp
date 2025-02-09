@@ -16,7 +16,12 @@ bool User::isUserAdmin() const {
 }
 
 // User Basic Functions
-
+/*
+ * Display Actors between two ages inclusive
+ *
+ * Input: x, y (starting and ending age of Actors)
+ * Output: Actors printed in ascending order of age within the range
+ */
 void User::displayActors() {
     Application* application = Application::getInstance();
     try {
@@ -80,6 +85,12 @@ void User::displayActors() {
     }
 }
 
+/*
+* Display movies made within the past 3 years (in ascending order of year)
+*
+* Input: None
+* Output: All Movies made in the past 3 years, sorted in ascending order
+*/
 void User::displayMovies() {
     Application* application = Application::getInstance();
     try {
@@ -115,6 +126,12 @@ void User::displayMovies() {
 }
 
 // Display all movies an actor starred in (in alphabetical order)
+/*
+ * Displays the Movies that a particular actor starred in
+ *
+ * Input: Either the Actor's Name or ID
+ * Output: All movies that an actor has acted in, sorted alphabetically
+ */
 void User::displayActorMovies() {
     Application* application = Application::getInstance();
     try {
@@ -142,6 +159,12 @@ void User::displayActorMovies() {
 }
 
 // Display all the actors in a particular movie (in alphabetical order)
+/*
+ * Display all the Actors in a particular movie
+ *
+ * Input: Either the Movie's Title or ID
+ * Output: All actors starred in the movie, sroted alphabetically
+ */
 void User::displayActorsInMovie() {
     Application* application = Application::getInstance();
     try {
@@ -169,6 +192,13 @@ void User::displayActorsInMovie() {
 }
 
 // Display a list of all actors that a particular actor knows.
+/*
+ * Display a List of Actors that a Particular Actor knows
+ * Created using BFS
+ *
+ * Input: Either the Actor's Name or ID
+ * Output: All Actors that the inputted Actor knows (splitted into Level One and Two Connections)
+ */
 void User::displayKnownActors() {
     Application* application = Application::getInstance();
     try {
@@ -260,6 +290,12 @@ void User::displayKnownActors() {
     }
 }
 
+/*
+* Allows users to file a report by specifying the Report's description, type and affected item (Actor/Movie)
+*
+* Input: Report Details (Type, Description, ID of Affected Movie/Actor)
+* Output: Filed Report
+*/
 void User::fileReport() {
     Application* application = Application::getInstance();
     try {
@@ -334,6 +370,14 @@ void handleRate(Rateable* obj) {
 }
 
 // User Advanced Features
+/*
+ * Allows users to Display and Sort all actors by: Alphabetical, Age, Rating
+ *
+ * Input: Sorting Option
+ * Output: Sorted List of Actors
+ *
+ * Secondary Input: Actor Rating (from 1 to 5)
+ */
 void User::displayAndSortMovies() {
     Application* application = Application::getInstance();
     std::cout << "\n=== Option 6: Display and Sort a list of all Movies ===" << std::endl;
@@ -382,6 +426,14 @@ void User::displayAndSortMovies() {
     }
 }
 
+/*
+ * Allows users to Display and Sort all actors by: Alphabetical, Age, Rating
+ *
+ * Input: Sorting Option
+ * Output: Sorted List of Actors
+ *
+ * Secondary Input: Actor Rating (from 1 to 5)
+ */
 void User::displayAndSortActors() {
     Application* application = Application::getInstance();
     std::cout << "\n=== Option 7: Display and Sort a list of all Actors ===" << std::endl;
@@ -430,6 +482,13 @@ void User::displayAndSortActors() {
     }
 }
 
+/*
+ * Finding the 'Path' between how 2 Actors can possibly know each other
+ * Path Finding using BFS
+ *
+ * Input: Either the Name or ID of 2 Different Actors
+ * Output: Distance between both Actors and Path between both actors
+ */
 void User::findDistanceBetweenActors() {
     Application* application = Application::getInstance();
     std::cout << "\n=== Option 9 (Advanced): Find Distance Between Two Actors ===" << std::endl;

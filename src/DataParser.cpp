@@ -1,4 +1,3 @@
-#include <iostream>
 #include <filesystem>
 #include <fstream>
 #include <functional>
@@ -18,7 +17,6 @@ struct HeaderSpec {
     ColumnType type;
     HeaderSpec(const std::string &n, ColumnType t) : name(n), type(t) {}
 };
-
 
 class DataParser {
 private:
@@ -95,8 +93,6 @@ private:
             headerCount++;
         }
     }
-
-
 
 public:
     template<typename... Headers>
@@ -198,7 +194,5 @@ public:
         return std::move(result);
     }
 
-    void SaveFile(std::unique_ptr<MyDict<std::string, void*>, std::function<void(MyDict<std::string, void*>*)>>) {
-
-    }
+    void SaveFile(std::unique_ptr<MyDict<std::string, void*>, std::function<void(MyDict<std::string, void*>*)>>) {}
 };

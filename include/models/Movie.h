@@ -9,7 +9,6 @@
 #include "Printable.h"
 #include "Rateable.h"
 
-
 class Movie: public Rateable, public Printable {
 private:
     int id;

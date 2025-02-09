@@ -131,7 +131,6 @@ Account* loginUser() {
 
 // Displays main menu and runs commands based on user input
 bool displayMenu(Account* account) {
-    Application* application = Application::getInstance();
     int choice = -1;
     while (choice != 0) {
         // Admin Commands
@@ -180,6 +179,7 @@ bool displayMenu(Account* account) {
                     break;
             }
         }
+
         // User Commands
         else {
             User* userAccount = dynamic_cast<User*>(account);
@@ -193,7 +193,7 @@ bool displayMenu(Account* account) {
                 "6. Display, Sort, and Rate a list of all Movies\n"
                 "7. Display, Sort, and Rate a list of all Actors\n"
                 "8. File an Error Report on Actor or Movie\n"
-                "9. (Adv). Find Distance Between Two Actors\n"
+                "9. Find Distance Between Two Actors\n"
                 "0. Log Out\n"
                 "Enter Choice: ";
             std::cin >> choice;
@@ -266,15 +266,12 @@ bool displayMenu(Account* account) {
 
 int main()
 {
-    Application* application = Application::getInstance();
-    setupApplication();
+    setupApplication(); // Parse CSV and setup Application Singleton
 
-    Account* account;
     bool exitApplication = false;
-
     // Login and Main Menu Setup
     while (!exitApplication) {
-        account = loginUser();
+        Account *account = loginUser();
         exitApplication = displayMenu(account); // Allows user to quit app with input
     }
 

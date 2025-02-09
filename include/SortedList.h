@@ -5,7 +5,6 @@
 
 #include <iostream>
 
-
 class SortedList {
 private:
     int* data;

@@ -27,6 +27,7 @@ Application::Application() {
     accounts.add("admin3", std::make_unique<Admin>(Admin("admin3", "password6")));
 }
 
+// Singleton checker/maintainer/getter
 Application* Application::getInstance() {
     if (uniqueInstance == nullptr) {
         uniqueInstance = new Application();

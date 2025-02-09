@@ -15,6 +15,12 @@ bool Admin::isUserAdmin() const {
 
 // Admin Basic Features
 
+/*
+ * Add a New Actor
+ *
+ * Input: Various fields (Name and Birth Year) to create a new actor object
+ * Output: Created Actor
+ */
 void Admin::addNewActor() {
     Application* application = Application::getInstance();
 
@@ -67,7 +73,12 @@ void Admin::addNewActor() {
     }
 }
 
-
+/*
+ * Adds a New Movie
+ *
+ * Input: Various fields (Release Year, Plot and Genre) to create a new movie object
+ * Output: Created Movie
+ * */
 void Admin::addNewMovie() {
     Application* application = Application::getInstance();
 
@@ -135,7 +146,12 @@ void Admin::addNewMovie() {
     }
 }
 
-
+/*
+ * Adds existing Actor to an existing Movie
+ *
+ * Input: Either the Name/Title or ID of an Actor/Movie
+ * Output: None, Confirmation that Relationship has been created
+ * */
 void Admin::addActorToMovie() {
     Application* application = Application::getInstance();
 
@@ -164,6 +180,11 @@ void Admin::addActorToMovie() {
 }
 
 // Helper Function to Update an Actor
+/*
+ * Input: Movie Object (passed into the function via other functions)
+ * Output: Success message + newly updated Movie Object
+ * Users: updateActorOrMovie, reviewReports
+ */
 void updateActor(Actor* actor) {
     std::cout << "\nChosen Actor:" << std::endl;
     actor->print();
@@ -222,6 +243,11 @@ void updateActor(Actor* actor) {
 }
 
 // Helper Function to Update a Movie
+/*
+ * Input: Movie Object (passed into the function via other functions)
+ * Output: Success message + newly updated Movie Object
+ * Users: updateActorOrMovie, reviewReports
+ */
 void updateMovie(Movie* movie) {
     std::cout << "\nChosen Movie:" << std::endl;
     movie->print();
@@ -262,7 +288,7 @@ void updateMovie(Movie* movie) {
         // Prevent crashes if input was not int
         try {
             // Validate Release Year and Update if valid
-            if (!releaseYear.empty() && std::stoi(releaseYear) > 1900 && std::stoi(releaseYear) < 2026) { // TODO: is 1900 a good limit?
+            if (!releaseYear.empty() && std::stoi(releaseYear) > 1900 && std::stoi(releaseYear) < 2026) {
                 movie->setReleaseYear(std::stoi(releaseYear));  // Use stoi to convert string to int
                 break;
             }
@@ -301,7 +327,12 @@ void updateMovie(Movie* movie) {
     std::cout << std::endl;
 }
 
-
+/*
+* Updates either the details of the Actor or the Movie
+*
+* Input: Choice between Updating an Actor vs Movie; Then, respective details of Actor/Movie
+* Output: Updated Actor/Movie
+*/
 void Admin::updateActorOrMovie() {
     Application* application = Application::getInstance();
 
@@ -337,6 +368,12 @@ void Admin::updateActorOrMovie() {
     }
 }
 
+/*
+ * Allows Admins to review all Report made by Users and take appropriate action
+ *
+ * Input: Check if the Admin wants to act on any report; If yes, the Report ID, and required Information
+ * Output: Updated Actor/Movie
+ */
 void Admin::reviewReports() {
     std::cout << "\n=== Option 5: Review all Reports ===" << std::endl;
     Application* application = Application::getInstance();
@@ -375,7 +412,7 @@ void Admin::reviewReports() {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
     }
 
-
+    // Display Report Details
     Report* report = reports->get(reportId - 1).get();
     // Ensure Report is not already marked as completed
     if (report->getIsResolved() == true) {

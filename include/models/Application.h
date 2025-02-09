@@ -9,13 +9,10 @@
 #include "Actor.h"
 #include "Movie.h"
 
-#include <iostream>
-
 #include "Account.h"
 #include "SortedList.h"
 #include "MyList.h"
 #include "Report.h"
-#include "AutoCompletionEngine.h"
 
 // Singleton to store data of Actors and Movies
 class Application {
