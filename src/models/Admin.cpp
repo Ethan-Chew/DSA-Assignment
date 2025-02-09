@@ -31,7 +31,10 @@ void Admin::addNewActor() {
 
         while (true) {
             std::cout << "Please enter name: ";
-            std::cin.ignore();
+            // Only clear input buffer if previous input was not from getline()
+            if (std::cin.peek() == '\n') {
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
             getline(std::cin, name);
 
             // Validate the Name Input
@@ -82,7 +85,10 @@ void Admin::addNewMovie() {
 
         while (true) {
             std::cout << "Please enter movie title: ";
-            std::cin.ignore();
+            // Only clear input buffer if previous input was not from getline()
+            if (std::cin.peek() == '\n') {
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
             getline(std::cin, title);
 
             // Validate the Name Input
@@ -103,7 +109,10 @@ void Admin::addNewMovie() {
 
         while (true) {
             std::cout << "\nPlease enter movie plot: ";
-            std::cin.ignore();
+            // Only clear input buffer if previous input was not from getline()
+            if (std::cin.peek() == '\n') {
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            }
             getline(std::cin, plot);
 
             // Validate the Movie Plot Input
@@ -166,7 +175,10 @@ void updateActor(Actor* actor) {
 
     while (true) {
         std::cout << "Please enter updated Actor name (';' to skip): ";
-        std::cin.ignore();
+        // Only clear input buffer if previous input was not from getline()
+        if (std::cin.peek() == '\n') {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
         getline(std::cin, name);
 
         // Validate the Name Input
@@ -219,12 +231,15 @@ void updateMovie(Movie* movie) {
     std::string title;
     while (true) {
         std::cout << "Please enter updated movie title (';' to skip): ";
-        std::cin.ignore();
+        // Only clear input buffer if previous input was not from getline()
+        if (std::cin.peek() == '\n') {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
         getline(std::cin, title);
 
         // Validate the Movie Title Input
         if (title.empty()) {
-            std::cout << "The Movie Title cannot be empty! Please enter a valid Movie Plot." << std::endl;
+            std::cout << "The Movie Title cannot be empty! Please enter a valid Movie Title." << std::endl;
         }
         else {
             // Skip updating title if user enters ";"
@@ -262,7 +277,10 @@ void updateMovie(Movie* movie) {
     std::string plot;
     while (true) {
         std::cout << "Please enter updated movie plot (';' to skip): ";
-        std::cin.ignore();
+        // Only clear input buffer if previous input was not from getline()
+        if (std::cin.peek() == '\n') {
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
         getline(std::cin, plot);
 
         // Validate the Movie Plot Input
@@ -324,6 +342,10 @@ void Admin::reviewReports() {
     Application* application = Application::getInstance();
 
     auto reports = application->retrieveAllReports();
+    if (reports->get_length() == 0) {
+        std::cout << "There are no Reports!" << std::endl;
+        return;
+    }
     for (int i = 0; i < reports->get_length(); i++) {
         std::cout << i + 1 << ") Type: " << reports->get(i)->getType() << " | Description: " << reports->get(i)->getDescription() << " | Is Resolved: " << (reports->get(i)->getIsResolved() ? "Yes" : "No") << std::endl;
     }
@@ -353,8 +375,15 @@ void Admin::reviewReports() {
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Discard invalid input
     }
 
-    // Display Report Details
+
     Report* report = reports->get(reportId - 1).get();
+    // Ensure Report is not already marked as completed
+    if (report->getIsResolved() == true) {
+        std::cout << "Report has already been resolved!" << std::endl;
+        return;
+    }
+
+    // Display Report Details
     std::cout << "Report Details:" << std::endl;
     std::cout << "Type: " << report->getType() << std::endl;
     std::cout << "Description: " << report->getDescription() << std::endl;
