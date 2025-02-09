@@ -141,16 +141,14 @@ MyList<Movie*>* Application::getAllMovies() {
 
 // Relationships
 bool Application::addActorToMovie(const int actorId, const int movieId) {
-    // Check if actor or movie objects exists before creating relationship
-    if (actors.safe_get(actorId) == nullptr || movies.safe_get(movieId) == nullptr) {
-        return false;
-    }
-
     // Add Actor to the Actor-to-Movie Relationship
     SortedList *actorMovieIds = actorsToMovies[actorId].get();
     if (actorMovieIds == nullptr) {
         actorsToMovies[actorId] = std::make_unique<SortedList>(SortedList());
         actorMovieIds = actorsToMovies[actorId].get();
+    }
+    if (actorMovieIds->find(movieId) != -1) { // Check if the Relationship already exists
+        return false;
     }
     actorMovieIds->insert(movieId);
 
@@ -159,6 +157,9 @@ bool Application::addActorToMovie(const int actorId, const int movieId) {
     if (movieActorIds == nullptr) {
         moviesToActors[movieId] = std::make_unique<SortedList>(SortedList());
         movieActorIds = moviesToActors[movieId].get();
+    }
+    if (movieActorIds->find(actorId) != -1) { // Check if the Relationship already exists
+        return false;
     }
     movieActorIds->insert(actorId);
 

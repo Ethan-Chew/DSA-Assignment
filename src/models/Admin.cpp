@@ -145,7 +145,7 @@ void Admin::addActorToMovie() {
             std::cout << "Actor '" << actor->getName() << "' was added to movie '" << movie->getTitle() << "' successfully!" << std::endl;
         }
         else {
-            std::cout << "Please enter valid Actor and Movie IDs." << std::endl;
+            std::cout << "Relationship already exists!" << std::endl;
         }
     }
     // Error Handling for bad inputs
