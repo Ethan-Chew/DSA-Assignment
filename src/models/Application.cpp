@@ -222,7 +222,7 @@ Actor* Application::searchForActor() {
     while (true) {
         // Validate search-by input (1/2)
         while (true) {
-            std::cout << "=== Actor/Movie Search Options ===\n"
+            std::cout << "=== Actor Search Options ===\n"
                      "1. Search by ID\n"
                      "2. Select by Name\n"
                      "Please choose an option: ";
@@ -294,7 +294,7 @@ Movie* Application::searchForMovie() {
     while (true) {
         // Validate search-by input options are either 1 or 2
         while (true) {
-            std::cout << "=== Select Options ===\n"
+            std::cout << "=== Movie Search Options ===\n"
                      "1. Select by ID\n"
                      "2. Select by Title\n"
                      "Please choose an option: ";

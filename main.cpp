@@ -103,8 +103,9 @@ void setupApplication() {
  */
 Account* loginUser() {
     Application* application = Application::getInstance();
-    std::cout << "Amazing Movie App" << "\n";
-    std::cout << "-----------------" << "\n";
+    std::cout << "-----------------" << std::endl;
+    std::cout << "Amazing Movie App" << std::endl;
+    std::cout << "-----------------" << std::endl;
 
     // Login System
     while (true) {
@@ -137,7 +138,7 @@ bool displayMenu(Account* account) {
         if (account->isUserAdmin()) {
             Admin* adminAccount = dynamic_cast<Admin*>(account);
             std::cout <<
-                "Available Admin Commands\n"
+                "\nAvailable Admin Commands\n"
                 "1. Add new actor\n"
                 "2. Add new movie\n"
                 "3. Add an actor to a movie\n"
@@ -183,7 +184,7 @@ bool displayMenu(Account* account) {
         else {
             User* userAccount = dynamic_cast<User*>(account);
             std::cout <<
-                "Available User Functions\n"
+                "\nAvailable User Functions\n"
                 "1. Display (in ascending order of age) the actors with age between x and y (inclusive) where x and y are integer values to be entered by the user\n"
                 "2. Display movies made within the past 3 years (in ascending order of year)\n"
                 "3. Display all movies an actor starred in (in alphabetical order)\n"

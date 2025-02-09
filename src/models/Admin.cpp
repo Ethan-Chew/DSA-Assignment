@@ -26,7 +26,7 @@ void Admin::addNewActor() {
 
     try {
         // Display Menu
-        std::cout << "=== Option 1: Add New Actor ===" << std::endl;
+        std::cout << "\n=== Option 1: Add New Actor ===" << std::endl;
 
         // Set Actor ID to be 1 more than the highest value currently in the database
         int id = application->getMaxActorId() + 1;
@@ -81,7 +81,7 @@ void Admin::addNewMovie() {
 
     try {
         // Display Menu
-        std::cout << "=== Option 2: Add New Movie ===" << std::endl;
+        std::cout << "\n=== Option 2: Add New Movie ===" << std::endl;
 
         // Set Movie ID to be 1 more than the highest value currently in the database
         int id = application->getMaxMovieId() + 1;
@@ -147,8 +147,9 @@ void Admin::addActorToMovie() {
 
     try {
         // Display Menu
-        std::cout << "=== Option 3: Add Actor to Movie ===" << std::endl;
+        std::cout << "\n=== Option 3: Add Actor to Movie ===" << std::endl;
 
+        // std::cout << ""
         Actor* actor = application->searchForActor(); // Get validated actor item
         int actorId = actor->getId();
 
@@ -156,7 +157,7 @@ void Admin::addActorToMovie() {
         int movieId = movie->getId();
 
         if (application->addActorToMovie(actorId, movieId)) {
-            std::cout << "Actor" << actor->getName() << " added to movie" << movie->getTitle() << "successfully!" << std::endl;
+            std::cout << "Actor '" << actor->getName() << "' was added to movie '" << movie->getTitle() << "' successfully!" << std::endl;
         }
         else {
             std::cout << "Please enter valid Actor and Movie IDs." << std::endl;
@@ -307,7 +308,7 @@ void Admin::updateActorOrMovie() {
 
     try {
         // Display Menu
-        std::cout << "=== Option 4: Update actor/movie details ===" << std::endl;
+        std::cout << "\n=== Option 4: Update actor/movie details ===" << std::endl;
 
         // Get the User's Update Choice (Movie/Actor)
         int movieActorChoice;
