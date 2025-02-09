@@ -1,3 +1,8 @@
+/*
+* Created By: Lim Yu Yang (S10255816J)
+* Group: 4
+*/
+
 #pragma once
 #ifndef MYDICT_H
 #define MYDICT_H

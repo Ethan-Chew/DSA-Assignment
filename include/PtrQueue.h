@@ -1,3 +1,8 @@
+/*
+* Created By: Darius Koh (S10255626K)
+* Group: 4
+*/
+
 #ifndef PTR_QUEUE_H
 #define PTR_QUEUE_H
 

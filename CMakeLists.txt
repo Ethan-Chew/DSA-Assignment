@@ -10,11 +10,9 @@ include_directories(src)
 
 add_executable(
         dsa main.cpp
-        include/models/Stack.h
         include/SortedList.h
         include/PtrQueue.h
 
-        src/models/Stack.cpp
         src/models/SortedList.cpp
 
         src/models/Account.cpp

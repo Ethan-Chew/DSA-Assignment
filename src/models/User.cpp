@@ -16,12 +16,7 @@ bool User::isUserAdmin() const {
 }
 
 // User Basic Functions
-/*
- * Display Actors between two ages inclusive
- *
- * Input: x, y (starting and ending age of Actors)
- * Output: Actors printed in ascending order of age within the range
- */
+
 void User::displayActors() {
     Application* application = Application::getInstance();
     try {
@@ -84,7 +79,7 @@ void User::displayActors() {
         std::cout << "An error has occurred with exception: " << e.what() << " Please try again." << std::endl;
     }
 }
-// Display movies made within the past 3 years (in ascending order of year)
+
 void User::displayMovies() {
     Application* application = Application::getInstance();
     try {
@@ -265,11 +260,6 @@ void User::displayKnownActors() {
     }
 }
 
-/*
- * File Report
- *
- * Allows users to file a report by specifying the Report's description, type and affected item (Actor/Movie)
- */
 void User::fileReport() {
     Application* application = Application::getInstance();
     try {
@@ -348,7 +338,7 @@ void User::displayAndSortMovies() {
     Application* application = Application::getInstance();
     std::cout << "\n=== Option 6: Display and Sort a list of all Movies ===" << std::endl;
 
-    std::cout << "Filtering Options" << std::endl;
+    std::cout << "Sorting Options" << std::endl;
     std::cout << "[1] Alphabetically" << std::endl;
     std::cout << "[2] Release Year" << std::endl;
     std::cout << "[3] Rating" << std::endl;

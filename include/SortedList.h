@@ -1,6 +1,7 @@
-//
-// Created by ethan on 16/1/2025.
-//
+/*
+* Created By: Ethan Chew (S10255990K)
+* Group: 4
+*/
 
 #include <iostream>
 

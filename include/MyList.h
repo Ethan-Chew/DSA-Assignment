@@ -1,3 +1,8 @@
+/*
+* Created By: Ethan Chew (S10255990K), Lim Yu Yang (S10255816J)
+* Group: 4
+*/
+
 #ifndef MYLIST_H
 #define MYLIST_H
 

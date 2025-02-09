@@ -14,13 +14,7 @@ bool Admin::isUserAdmin() const {
 }
 
 // Admin Basic Features
-// Admin Basic Functions
-/*
- * Add a New Actor
- *
- * Retrieves input for various fields (Name and Birth Year) to create a new actor object,
- * then saves it into the Application
- */
+
 void Admin::addNewActor() {
     Application* application = Application::getInstance();
 
@@ -70,12 +64,7 @@ void Admin::addNewActor() {
     }
 }
 
-/*
- * Adds a New Movie
- *
- * Retrieves input for various fields (Release Year, Plot and Genre) to create a new movie object,
- * then saves it into the Application
- * */
+
 void Admin::addNewMovie() {
     Application* application = Application::getInstance();
 
@@ -137,11 +126,7 @@ void Admin::addNewMovie() {
     }
 }
 
-/*
- * Adds existing Actor to an existing Movie
- *
- * Retrieves input about the Actor ID and Movie ID, then modifies the relationship between them
- * */
+
 void Admin::addActorToMovie() {
     Application* application = Application::getInstance();
 
@@ -298,11 +283,7 @@ void updateMovie(Movie* movie) {
     std::cout << std::endl;
 }
 
-/*
- * Updates either the details of the Actor or the Movie
- *
- * Asks the user if they would like to update an Actor or Movie, then proceeds to take input of new field values
- * */
+
 void Admin::updateActorOrMovie() {
     Application* application = Application::getInstance();
 
