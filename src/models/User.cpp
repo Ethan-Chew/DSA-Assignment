@@ -473,16 +473,18 @@ void User::findDistanceBetweenActors() {
                     break;
                 }
             }
+            if (didFind) { break; }
         }
+        if (didFind) { break; }
     }
 
     if (didFind) {
         std::cout << "Backtracking from Actor 2 to Actor 1: ";
         // Backtrack from the end to the start
         int currNode = actor2Id; // Start from the end
-        int distance = 0;
+        int distance = -1;
         while (currNode != -1) {
-            if (distance > 0) { // Handle Formatting
+            if (distance >= 0) { // Handle Formatting
                 std::cout << " -> ";
             }
             std::cout << currNode;
